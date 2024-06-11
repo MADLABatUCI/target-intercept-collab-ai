@@ -27,16 +27,26 @@ import { writeRealtimeDatabase,writeURLParameters,readRealtimeDatabase,
 
 // Define the configuration file for first database
 
-const firebaseConfig_db1 = {
-    apiKey: "AIzaSyAZKFzh1o0fytvilXTs3sJu_AfvFfAZDGk",
-    authDomain: "uci-hri-exp2.firebaseapp.com",
-    databaseURL: "https://uci-hri-exp2-default-rtdb.firebaseio.com",
-    projectId: "uci-hri-exp2",
-    storageBucket: "uci-hri-exp2.appspot.com",
-    messagingSenderId: "1074930278032",
-    appId: "1:1074930278032:web:34a303f487af2cd82f4215"
-  };
+// const firebaseConfig_db1 = {
+//     apiKey: "AIzaSyAZKFzh1o0fytvilXTs3sJu_AfvFfAZDGk",
+//     authDomain: "uci-hri-exp2.firebaseapp.com",
+//     databaseURL: "https://uci-hri-exp2-default-rtdb.firebaseio.com",
+//     projectId: "uci-hri-exp2",
+//     storageBucket: "uci-hri-exp2.appspot.com",
+//     messagingSenderId: "1074930278032",
+//     appId: "1:1074930278032:web:34a303f487af2cd82f4215"
+// };
 
+const firebaseConfig_db1 = {
+    apiKey: "AIzaSyDcc2RhAdA6I95EYqWpxJ69h8j4OawjzH4",
+    authDomain: "collab-ai-f09f1.firebaseapp.com",
+    databaseURL: "https://collab-ai-f09f1-default-rtdb.firebaseio.com",
+    projectId: "collab-ai-f09f1",
+    storageBucket: "collab-ai-f09f1.appspot.com",
+    messagingSenderId: "756574854064",
+    appId: "1:756574854064:web:133da37f9203a849161475"
+  };
+  
 // Get the reference to the two databases using the configuration files
 const [ db1 , firebaseUserId1 ] = await initializeRealtimeDatabase( firebaseConfig_db1 );
 // const [ db2 , firebaseUserId2 ] = await initializeSecondRealtimeDatabase( firebaseConfig_db2 );
@@ -88,7 +98,7 @@ function writeGameDatabase(){
     let path7   = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/roundTime';
     let path11  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/playerScore';
  
-    let path14  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIClicks_Adjusted';
+    // let path14  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIClicks_Adjusted';
     let path8   = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIcaughtTargets';
     let path9   = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIClicks';
     let path10  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/aiScore';
@@ -96,6 +106,7 @@ function writeGameDatabase(){
 
     let path18  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIcaughtTargets_offline';
     let path19  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIClicks_offline';
+    let path20 = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/aiScore_offline';
     // let path20  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIClicks_Adjusted_offline';
     // let path21  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIplayerLocation_offline';
     // let path22  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIplayerLocation';
@@ -116,13 +127,13 @@ function writeGameDatabase(){
     writeRealtimeDatabase(db1, path11, score);
     writeRealtimeDatabase(db1, path12, currentCondition);
     writeRealtimeDatabase(db1, path13, curSeeds);
-    writeRealtimeDatabase(db1, path14, aiClicks_adjusted);
+    // writeRealtimeDatabase(db1, path14, aiClicks_adjusted);
     // writeRealtimeDatabase(db1, path15, drtResponses);
     // writeRealtimeDatabase(db1, path16, drtFalseAlarm);
     writeRealtimeDatabase(db1, path17, AIeventStream);
     writeRealtimeDatabase(db1, path18, AIcaughtTargets_offline);
     writeRealtimeDatabase(db1, path19, aiClicks_offline);
-    // writeRealtimeDatabase(db1, path20, aiClicks_adjusted_offline);
+    writeRealtimeDatabase(db1, path20, aiScore_offline);
     // writeRealtimeDatabase(db1, path21, AIplayerLocation_offline);
     // writeRealtimeDatabase(db1, path22, AIplayerLocation);
     writeRealtimeDatabase(db1, path23, AIeventStream_offline);
@@ -652,7 +663,9 @@ async function resetGame(){
     AIplayer.score          = null
     AIcaughtTargets         = null;
     AIplayerLocation        = null;
-    aiClicks_adjusted       = null;
+    // aiClicks_adjusted       = null;
+    aiClicks                = null;
+    aiClicks_offline        = null;
 
     aiScore_offline                 = null;
     AIplayer_offline.score          = null
@@ -677,7 +690,8 @@ async function resetGame(){
     aiScore                 = 0;
     player.score            = 0;
     AIplayer.score          = 0
-    aiClicks_adjusted       = [];
+    aiClicks                = [];
+    aiClicks_offline        = [];
     AIcaughtTargets         = [];
     AIplayerLocation        = [];
 
@@ -927,7 +941,7 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked};
+                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -963,7 +977,7 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked};
+                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -1015,11 +1029,12 @@ function updateObjects(settings) {
 
                 // *************************** Data Writing *********************************//
                 let gameState = extractGameState(objects);
-                let objectData      = {ID: obj.ID, value: obj.value,
+                let objectData    = {ID: obj.ID, value: obj.value,
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked};
+                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+
 
                 let AIplayerData      = {x: AIplayer.x, y: AIplayer.y, speed: AIplayer.velocity, 
                                     targetX: AIplayer.targetX, targetY: AIplayer.targetY,
@@ -1057,7 +1072,7 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked};
+                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
 
                 let AIplayerData      = {x: AIplayer_offline.x, y: AIplayer_offline.y, speed: AIplayer_offline.velocity, 
                                     targetX: AIplayer_offline.targetX, targetY: AIplayer_offline.targetY,
@@ -1130,13 +1145,13 @@ function updateObjects(settings) {
         // aiIntention.push();
         let aiIntention = {frame: frameCountGame, x: AIplayer.targetX, y: AIplayer.targetY, id: bestSolCollab.ID};
         aiClicks.push(aiIntention);
-        aiClicks_adjusted.push(aiIntention);
+        // aiClicks_adjusted.push(aiIntention);
         numAIChanges++;
     } else if (prevBestSolCollab == null) {
         // aiIntention.push
         let aiIntention = {frame: frameCountGame, x: AIplayer.targetX, y: AIplayer.targetY, id: bestSolCollab.ID};
         aiClicks.push(aiIntention);
-        aiClicks_adjusted.push(aiIntention);
+        // aiClicks_adjusted.push(aiIntention);
     }
 
     // **************************************** Run the Offline AI Planner ****************************************//
@@ -1160,8 +1175,9 @@ function updateObjects(settings) {
         numAIChanges++;
     } else if (prevBestSolCollab == null) { // first decision
         // aiIntention.push
-        let aiIntention_offline = {frame: frameCountGame, x: AIplayer.targetX, y: AIplayer.targetY, id: bestSolOffline.ID};
-        aiClicks.push(aiIntention_offline);
+        let aiIntention_offline = {frame: frameCountGame, x: AIplayer_offline.targetX, y: AIplayer_offline.targetY, id: bestSolOffline.ID};
+        aiClicks_offline.push(aiIntention_offline);
+        numAIChanges++;
     }
 
      // ************************************* Run the Human Assistive AI Planner ***********************************//
@@ -1171,34 +1187,34 @@ function updateObjects(settings) {
     // MS8
     [ firstStep, bestSol, allSol ] = runAIPlanner( objects, player , observableRadius , center, 'human', settings.AIStabilityThreshold, bestSol, allSol, frameCountGame, settings.alpha );
     
-    if (settings.AIMode>0) {    
-        // MS6
-        // Calculate the value of the human's current target
-        player.shownAdvice = true;
+    // if (settings.AIMode>0) {    
+    //     // MS6
+    //     // Calculate the value of the human's current target
+    //     player.shownAdvice = true;
 
-        if (settings.AIMode >= 2) {
-            //if ((frameCountGame > 100) & (player.moving)) {
-            //    console.log( 'test case');
-            //}
-            // MS7
-            let [ valueHumanPlan , valuesSuggestions ] = calcValueHumanPlan( bestSol , allSol, player , settings.AIadviceAngleThreshold, ctx, objects  ); 
-            player.shownAdvice = false;
+    //     if (settings.AIMode >= 2) {
+    //         //if ((frameCountGame > 100) & (player.moving)) {
+    //         //    console.log( 'test case');
+    //         //}
+    //         // MS7
+    //         let [ valueHumanPlan , valuesSuggestions ] = calcValueHumanPlan( bestSol , allSol, player , settings.AIadviceAngleThreshold, ctx, objects  ); 
+    //         player.shownAdvice = false;
 
-            const deltaX = player.x - center.x;
-            const deltaY = player.y - center.y;
-            const distanceToCenter = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    //         const deltaX = player.x - center.x;
+    //         const deltaY = player.y - center.y;
+    //         const distanceToCenter = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-            if ((numFramesAfterCaughtTarget > settings.AIframeDelay) && (distanceToCenter > 50)) {
-                if (!player.moving) {
-                    player.shownAdvice = true;
-                } else if (player.moving && (valueHumanPlan <= settings.AIadviceThresholdHigh)) {
-                    player.shownAdvice = true;
-                }
-            }
-            //console.log( 'Numframesplayernotmoving=' + numFramesPlayernotMoving + ' NumFramesAfterCaughtTarget=' + numFramesAfterCaughtTarget + ' ValuePlan=' + valueHumanPlan);
-        }
+    //         if ((numFramesAfterCaughtTarget > settings.AIframeDelay) && (distanceToCenter > 50)) {
+    //             if (!player.moving) {
+    //                 player.shownAdvice = true;
+    //             } else if (player.moving && (valueHumanPlan <= settings.AIadviceThresholdHigh)) {
+    //                 player.shownAdvice = true;
+    //             }
+    //         }
+    //         //console.log( 'Numframesplayernotmoving=' + numFramesPlayernotMoving + ' NumFramesAfterCaughtTarget=' + numFramesAfterCaughtTarget + ' ValuePlan=' + valueHumanPlan);
+    //     }
          
-    }
+    // }
 }
 
 function spawnObject(settings){
@@ -1238,7 +1254,7 @@ function spawnObject(settings){
                             x: newObject.x, y: newObject.y,
                             dx: newObject.dx, dy: newObject.dy,
                             vx: newObject.vx, vy: newObject.vy, speed: newObject.speed,
-                            clicked: newObject.clicked, marked: newObject.marked};
+                            clicked: newObject.clicked, marked: newObject.marked, AImarked: newObject.AImarked};
 
         let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                             dx: player.dx, dy: player.dy,
@@ -1464,6 +1480,7 @@ function extractGameState(objects){
         speed: obj.speed,
         clicked: obj.clicked,
         marked:obj.marked,
+        AImarked:obj.AImarked,
         value: obj.value
     }));
 }
@@ -2576,7 +2593,7 @@ $(document).ready( function(){
                                     x: objects[i].x, y: objects[i].y,
                                     dx: objects[i].dx, dy: objects[i].dy,
                                     vx: objects[i].vx, vy: objects[i].vy, speed: objects[i].speed,
-                                    clicked: objects[i].clicked, marked: objects[i].marked};
+                                    clicked: objects[i].clicked, marked: objects[i].marked, AImarked: objects[i].AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
