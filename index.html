@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="robots" content="noindex" />
+        <link rel="shortcut icon" href="https://web.communications.uci.edu/assets/_common/favicon.ico" />
+
+        <!-- Page Title -->
+        <title>MADLAB Exp</title>
+
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+        <!-- Firebase Config -->
+        <script src="js/firebaseconfig.js"></script>
+        <script src="js/firebasepsych1.1.js" type="module"></script>
+
+        <!-- <script src="js/AIplannerv1.4.js"></script> -->
+        <script src="js/AIplannerv1.5.js"></script>
+         
+        <!-- Custom Links -->
+        <style type="text/css">
+            .site-header {
+                background-color: #0064a4 !important;
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+            #anteater-img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .page-footer {
+                background: url('images/madlablogo2.png');
+                background-repeat: no-repeat; background-position: center; background-size: contain;
+                padding-top: 10px;
+            }
+            .site-header .container {
+                padding-top: 10px;
+                padding-bottom: 10px
+            }
+            .text-header {
+                color: #0064a4;
+            }
+            .page-title-header {
+                margin-top: 5px; margin-bottom:5px;
+                font-size: 1.4rem;
+                padding-top: 0.2em;
+                padding-bottom: 0.2em;
+            }
+            .active {
+                background-color: #0064a4 !important;
+            }
+            .trialbox {
+                border: 5px solid #0064a4; border-radius: 20px;
+                width:100%; background: #EEEEEE;
+                padding-top: 20px; padding-bottom: 20px; padding-left: 50px; padding-right: 50px;
+                margin: 0 auto; margin-bottom: 20px;
+              }
+            .right-button {
+                display: flex; justify-content: center /*flex-end*/;
+                margin-top: 10px;
+            }
+            #imagetrial {
+                border: 2px solid black; border-radius: 10px;
+            }
+            #experiment-title {
+                color: #ffffff;
+                padding-top: 0em;
+            }
+            h2#experiment-title {
+                margin-top: 0;
+                margin-bottom: 0;
+                font-size: 1.6rem; /* Adjust the size as needed */
+            }
+        </style>
+
+        <!--
+            Load all pages necessary for experiment:
+                - Consent Page
+                - Instructions
+                - Comprehension Quiz
+                - Experiment
+                - Completed Page
+        -->
+        <script>
+            $(document).ready(function(){
+                if (DEBUG){
+                    // $('#consent-main-content').load("html/consent.html");
+
+                    $("#task-header").attr("hidden", false);
+                    $("#task-main-content").attr("hidden", false);
+ 
+                    // // // Load Main Experiment
+                    $('#task-main-content').load('html/game-main-exp.html');
+
+                    // loading an instructional page
+                    // $('#comprehension-quiz-main-content').attr("hidden", false);
+
+                    // $('#comprehension-quiz-main-content').load("html/instructions-gameplay-pg4.html");
+                } else{
+                    $('#consent-main-content').load("html/consent.html");
+                }
+            });
+        </script>
+
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-2">
+                        <img id="anteater-img" src="images/BCeater-right.png" width='70px' height='30px' />
+                    </div>
+                    <div class="col-8 text-center">
+                        <!--
+                        ****************************************************************
+                        *                       EXPERIMENT NAME                        *
+                        ****************************************************************
+                        -->
+                        <h2 id="experiment-title">Experiment Name Goes Here width = "600px" height = '30px'</h2>
+                    </div>
+                    <div class="col-2">
+                        <img class="float-right" id="anteater-img" src="images/BCeater-left.png" width="70px" height="30px" />
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main role="main" class="container" id="super-container">
+            <div class="container main-container" style="margin-bottom: 0px">
+                <!--
+                    PAGE HEADER
+
+                    This is the main title at the top of the page.
+                    This should change throughout the experiment; going
+                    from consent to instructions to experiment, etc.
+
+                    Be sure to modify the section titles in the
+                    metadata.js file. The titles to be
+                    modified are:
+
+                        - consent-header
+                        - instructions-header
+                        - comprehension-quiz-header
+                        - task-header
+                        - experiment-complete-header
+                -->
+                <div class="row page-title justify-content-center">
+                    <!--
+                        Consent Page
+                    -->
+                    <h2 class="page-title-header" id="consent-header" hidden = "true">
+                        Consent Page
+                    </h2>
+                    <!--
+                        Instructions
+                    -->
+                    <h2 class="page-title-header" id="instructions-header" hidden="true">
+                        Instructions
+                    </h2>
+                    <!--
+                        Comprehension
+                    -->
+                    <h2 class="page-title-header" id="comprehension-quiz-header"  hidden="true">
+                        Comprehension Quiz
+                    </h2>
+                    <!--
+                    **********************
+                    *   Trial Information
+                    **********************
+                    -->
+                    <h2 class="page-title-header" id="task-header" hidden="true">
+                         
+                    </h2>
+                    <!--
+                        Experiment Survey Page
+                    -->
+                    <h2 class="page-title-header" id="exp-survey-header" hidden="true">
+                        Survey
+                    </h2>
+                    <!--
+                        Experiment Completed Page
+                    -->
+                    <h2 class="page-title-header" id="exp-complete-header" hidden="true">
+                        Experiment Complete
+                    </h2>
+                </div>
+                <!---------------------------------------------------------------------------------------------------->
+                <!---------------------------------------------------------------------------------------------------->
+
+
+                <!---------------------------------------------------------------------------------------------------->
+                <!--                                        MAIN CONTENT                                            -->
+                <!---------------------------------------------------------------------------------------------------->
+                <div class="row page-content justify-content-center">
+                    <!-- CONSENT PAGE -->
+                    <div class="row" id="consent-main-content">
+                        
+                    </div>
+                    <!-- INSTRUCTIONS -->
+                    <div class="row" id="instructions-main-content" style="width: 100%" hidden="true">
+                        
+                    </div>
+                    <!-- COMPREHENSION QUIZ PAGE -->
+                    <div class="row" id="comprehension-quiz-main-content" style="width: 100%" hidden="true">
+                        
+                    </div>
+                    <!-- EXPERIMENT -->
+                    <div class="row" id="task-main-content" style="width: 100%" hidden="true">
+                        
+                    </div>
+                    <!-- EXPERIMENT SURVEY -->
+                    <div class="row" id="survey-main-content" style="width: 100%" hidden="true">
+                        
+                    </div>
+                    <!-- TASK COMPLETE -->
+                    <div class="row" id="task-complete" style="width: 100%" hidden="true">
+                        
+                    </div>
+                </div>
+            </div>       
+        </main>
+
+        <!-- PAGE FOOTER -->
+        <footer class="page-footer fixed-bottom" style="background-color: #0064a4; text-align: center; color: #ffffff;" hidden>
+            <!--
+                NOTE TO SELF - THIS CAN BE DELETED TO MAKE THE FOOTER A LITTLE SMALLER
+                <div class="container">
+                <div class="row">-- >
+                    <section>
+                        <div class="container">
+                            <!--<p class="float-left">
+                                Powered By :
+                            </p>-- >
+                            <p class="float-right">
+                                <a href="https://steyvers.socsci.uci.edu/madlab/">
+                                    <!--<b style="color: #ffffff">
+                                        MADLAB
+                                    </b>-- >
+                                </a>
+                            </p>
+                        </div>
+                    </section>
+            <!--    </div>
+            </div>-->
+        </footer>
+
+        <!-- Custom JavaScript -->
+        <script src="js/metadata.js">
+        </script>
+    </body>
+</html>

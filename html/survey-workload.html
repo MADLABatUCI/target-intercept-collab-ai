@@ -1,0 +1,197 @@
+<!--
+survey.html
+
+    Author      :   Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Survey HTML file.
+
+This file contains all of the task survey information. This is
+conducted at the end of the experiment.
+-->
+<html>
+    <head>
+        <link rel="stylesheet" href="css/survey-workload.css">
+        <!--
+            Custom JavaScript - Experiment Page Metadata and Functionality
+        -->
+        <script src="js/survey-workload.js" type="module">
+        </script>
+    </head>
+    <body>
+        <!--------------------------------------------------------------------------------
+        ----------------------------------------------------------------------------------
+        |   Survey Content - Main Container                                              |
+        |       This holds all of the survey content for a given experiment              |
+        ----------------------------------------------------------------------------------
+        --------------------------------------------------------------------------------->
+        <div class="col-12 trialbox justify-content-center" id="survey-container">
+            <!--------------------------------------------
+            |   Row 1 - Difficulty Question              |
+            --------------------------------------------->
+            <div class="row" id="survey-question-container">
+                <!-- Trial Question Information (actual question) -->
+                <div class="col-12 text-center" id="survey-task-container">
+                    <!-- Update trial question here -->
+                    <h5 class="trial-task trial-question trial-information" id="survey-task">
+                        Please respond to the following survey questions about your subjective feeling of workload in this experiment.
+                    </h5>
+                    
+                </div>
+            </div>
+            <!--------------------------------------------
+            |   Row 2 - Topic Options                    |
+            --------------------------------------------->
+            <div class="row" id="survey-likert-table-container">
+                <div class="col-12">
+                    <div class="row" id="survey-likert-legend-header-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            <b>Topic</b>
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-legend' id="survey-likert-legend-header">
+                                <li>
+                                    <label><b>Very Low</b></label>
+                                    <label>1</label>
+                                </li>
+                                <li>
+                                    <label>2</label>
+                                </li>
+                                <li>
+                                    <label>3</label>
+                                </li>
+                                <li>
+                                    <label>4</label>
+                                </li>
+                                <li>
+                                    <label>5</label>
+                                </li>
+                                <li>
+                                    <label>6</label>
+                                </li>
+
+                                <li>
+                                    <label><b>Very High</b></label>
+                                    <label>7</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 01 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            How mentally demanding was the task?
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic01-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="Mental" value="1"></li>
+                                <li><input type="radio" name="Mental" value="2"></li>
+                                <li><input type="radio" name="Mental" value="3"></li>
+                                <li><input type="radio" name="Mental" value="4"></li>
+                                <li><input type="radio" name="Mental" value="5"></li>
+                                <li><input type="radio" name="Mental" value="6"></li>
+                                <li><input type="radio" name="Mental" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 02 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            How physically demanding was the task?
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic02-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="Physical" value="1"></li>
+                                <li><input type="radio" name="Physical" value="2"></li>
+                                <li><input type="radio" name="Physical" value="3"></li>
+                                <li><input type="radio" name="Physical" value="4"></li>
+                                <li><input type="radio" name="Physical" value="5"></li>
+                                <li><input type="radio" name="Physical" value="6"></li>
+                                <li><input type="radio" name="Physical" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 03 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            How hurried or rushed was the pace of the task? 
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic03-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="Hurried" value="1"></li>
+                                <li><input type="radio" name="Hurried" value="2"></li>
+                                <li><input type="radio" name="Hurried" value="3"></li>
+                                <li><input type="radio" name="Hurried" value="4"></li>
+                                <li><input type="radio" name="Hurried" value="5"></li>
+                                <li><input type="radio" name="Hurried" value="6"></li>
+                                <li><input type="radio" name="Hurried" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 04 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            How successful were you in accomplishing what you were asked to do?
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic03-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="Success" value="1"></li>
+                                <li><input type="radio" name="Success" value="2"></li>
+                                <li><input type="radio" name="Success" value="3"></li>
+                                <li><input type="radio" name="Success" value="4"></li>
+                                <li><input type="radio" name="Success" value="5"></li>
+                                <li><input type="radio" name="Success" value="6"></li>
+                                <li><input type="radio" name="Success" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 05 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            How hard did you have to work to accomplish your level of performance?
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic04-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="Hard" value="1"></li>
+                                <li><input type="radio" name="Hard" value="2"></li>
+                                <li><input type="radio" name="Hard" value="3"></li>
+                                <li><input type="radio" name="Hard" value="4"></li>
+                                <li><input type="radio" name="Hard" value="5"></li>
+                                <li><input type="radio" name="Hard" value="6"></li>
+                                <li><input type="radio" name="Hard" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 06 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            How insecure, discouraged, irritated, stressed, and annoyed were you?
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic05-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="Insecure" value="1"></li>
+                                <li><input type="radio" name="Insecure" value="2"></li>
+                                <li><input type="radio" name="Insecure" value="3"></li>
+                                <li><input type="radio" name="Insecure" value="4"></li>
+                                <li><input type="radio" name="Insecure" value="5"></li>
+                                <li><input type="radio" name="Insecure" value="6"></li>
+                                <li><input type="radio" name="Insecure" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-------------------------------------------------
+            |   Submit/Proceed Button                         |
+            -------------------------------------------------->
+            <div class="row" id="survey-submit-button-container">
+                <div class="col-12 right-button">
+                    <button class="btn btn-primary" id="survey-complete-button" disabled>
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

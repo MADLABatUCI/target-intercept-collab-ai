@@ -1,0 +1,265 @@
+<!--
+survey.html
+
+    Author      :   Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Survey HTML file.
+
+This file contains all of the task survey information. This is
+conducted at the end of the experiment.
+-->
+<html>
+    <head>
+        <link rel="stylesheet" href="css/survey-usability.css">
+        <!--
+            Custom JavaScript - Experiment Page Metadata and Functionality
+        -->
+        <script src="js/survey-usability.js" type="module">
+        </script>
+    </head>
+    <body>
+        <!--------------------------------------------------------------------------------
+        ----------------------------------------------------------------------------------
+        |   Survey Content - Main Container                                              |
+        |       This holds all of the survey content for a given experiment              |
+        ----------------------------------------------------------------------------------
+        --------------------------------------------------------------------------------->
+        <div class="col-12 trialbox justify-content-center" id="survey-container">
+            <!--------------------------------------------
+            |   Row 1 - Difficulty Question              |
+            --------------------------------------------->
+            <div class="row" id="survey-question-container">
+                <!-- Trial Question Information (actual question) -->
+                <div class="col-12 text-center" id="survey-task-container">
+                    <!-- Update trial question here -->
+                    <h5 class="trial-task trial-question trial-information" id="survey-task">
+                        Please indicate the extent to which you agree or disagree with the following statements: 
+                    </h5>
+                    
+                </div>
+            </div>
+            <!--------------------------------------------
+            |   Row 2 - Topic Options                    |
+            --------------------------------------------->
+            <div class="row" id="survey-likert-table-container">
+                <div class="col-12">
+                    <div class="row" id="survey-likert-legend-header-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            <b>Topic</b>
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-legend' id="survey-likert-legend-header">
+                                <li>
+                                    <label><b>Strongly Disagree</b></label>
+                                    <label>1</label>
+                                </li>
+                                <li>
+                                    <label>2</label>
+                                </li>
+                                <li>
+                                    <label>3</label>
+                                </li>
+                                <li>
+                                    <label>4</label>
+                                </li>
+                                <li>
+                                    <label>5</label>
+                                </li>
+                                <li>
+                                    <label>6</label>
+                                </li>
+
+                                <li>
+                                    <label><b>Strongly Agree</b></label>
+                                    <label>7</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 01 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I think that I would like to use this AI assistant frequently. 
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic01-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q01" value="1"></li>
+                                <li><input type="radio" name="q01" value="2"></li>
+                                <li><input type="radio" name="q01" value="3"></li>
+                                <li><input type="radio" name="q01" value="4"></li>
+                                <li><input type="radio" name="q01" value="5"></li>
+                                <li><input type="radio" name="q01" value="6"></li>
+                                <li><input type="radio" name="q01" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 02 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I found the AI assistant to be unnecessarily complex.
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic02-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q02" value="1"></li>
+                                <li><input type="radio" name="q02" value="2"></li>
+                                <li><input type="radio" name="q02" value="3"></li>
+                                <li><input type="radio" name="q02" value="4"></li>
+                                <li><input type="radio" name="q02" value="5"></li>
+                                <li><input type="radio" name="q02" value="6"></li>
+                                <li><input type="radio" name="q02" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 03 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I thought the AI assistant's suggestions were easy to use.
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic03-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q03" value="1"></li>
+                                <li><input type="radio" name="q03" value="2"></li>
+                                <li><input type="radio" name="q03" value="3"></li>
+                                <li><input type="radio" name="q03" value="4"></li>
+                                <li><input type="radio" name="q03" value="5"></li>
+                                <li><input type="radio" name="q03" value="6"></li>
+                                <li><input type="radio" name="q03" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 03 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I think that I would need the support of a technical person to be able to use this AI assistant.
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic04-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q04" value="1"></li>
+                                <li><input type="radio" name="q04" value="2"></li>
+                                <li><input type="radio" name="q04" value="3"></li>
+                                <li><input type="radio" name="q04" value="4"></li>
+                                <li><input type="radio" name="q04" value="5"></li>
+                                <li><input type="radio" name="q04" value="6"></li>
+                                <li><input type="radio" name="q04" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 04 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I found the various functions in this AI assistant were well integrated.
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic05-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q05" value="1"></li>
+                                <li><input type="radio" name="q05" value="2"></li>
+                                <li><input type="radio" name="q05" value="3"></li>
+                                <li><input type="radio" name="q05" value="4"></li>
+                                <li><input type="radio" name="q05" value="5"></li>
+                                <li><input type="radio" name="q05" value="6"></li>
+                                <li><input type="radio" name="q05" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Topic 05 -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I thought there was too much inconsistency in this AI assistant.
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic06-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q06" value="1"></li>
+                                <li><input type="radio" name="q06" value="2"></li>
+                                <li><input type="radio" name="q06" value="3"></li>
+                                <li><input type="radio" name="q06" value="4"></li>
+                                <li><input type="radio" name="q06" value="5"></li>
+                                <li><input type="radio" name="q06" value="6"></li>
+                                <li><input type="radio" name="q06" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I would imagine that most people would learn to use this AI assistant very quickly.
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic07-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q07" value="1"></li>
+                                <li><input type="radio" name="q07" value="2"></li>
+                                <li><input type="radio" name="q07" value="3"></li>
+                                <li><input type="radio" name="q07" value="4"></li>
+                                <li><input type="radio" name="q07" value="5"></li>
+                                <li><input type="radio" name="q07" value="6"></li>
+                                <li><input type="radio" name="q07" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I found the AI assistant very cumbersome to use.
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic08-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q08" value="1"></li>
+                                <li><input type="radio" name="q08" value="2"></li>
+                                <li><input type="radio" name="q08" value="3"></li>
+                                <li><input type="radio" name="q08" value="4"></li>
+                                <li><input type="radio" name="q08" value="5"></li>
+                                <li><input type="radio" name="q08" value="6"></li>
+                                <li><input type="radio" name="q08" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I felt very confident using the AI assistant.
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic09-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q09" value="1"></li>
+                                <li><input type="radio" name="q09" value="2"></li>
+                                <li><input type="radio" name="q09" value="3"></li>
+                                <li><input type="radio" name="q09" value="4"></li>
+                                <li><input type="radio" name="q09" value="5"></li>
+                                <li><input type="radio" name="q09" value="6"></li>
+                                <li><input type="radio" name="q09" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            I needed to learn a lot of things before I could get going with this AI assistant. 
+                        </div>
+                        <div class="col-10 text-center survey-likert-legend-container">
+                            <ul class='likert-topic' id="survey-topic10-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q10" value="1"></li>
+                                <li><input type="radio" name="q10" value="2"></li>
+                                <li><input type="radio" name="q10" value="3"></li>
+                                <li><input type="radio" name="q10" value="4"></li>
+                                <li><input type="radio" name="q10" value="5"></li>
+                                <li><input type="radio" name="q10" value="6"></li>
+                                <li><input type="radio" name="q10" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-------------------------------------------------
+            |   Submit/Proceed Button                         |
+            -------------------------------------------------->
+            <div class="row" id="survey-submit-button-container">
+                <div class="col-12 right-button">
+                    <button class="btn btn-primary" id="survey-complete-button" disabled>
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

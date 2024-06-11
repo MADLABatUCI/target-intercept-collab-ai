@@ -1,0 +1,32 @@
+/*
+integrity-pledge.css
+
+    Author      :   Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Integrity pledge (or Comprehension Quiz) styling file.
+
+There will be no comprehension quiz for this experiment.
+Rather, we will have participants check an "Integrity Pledge"
+button and submit.
+
+Everything is in order as it appears in the HTML file (top to bottom).
+*/
+
+/**************************************
+*   Main Container                    *
+**************************************/
+
+/**************************************
+*   Integrity Pledge
+**************************************/
+/*  Button  */
+#integrity-pledge-button {
+    width: 2rem;
+    height: 1.5rem;
+}
+/*  Submit  */
+#integrity-pledge-submit {
+    width: 100%;
+}

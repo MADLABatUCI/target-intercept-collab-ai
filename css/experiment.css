@@ -1,0 +1,244 @@
+/*
+experiment.css
+
+    Author      :   Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Experiment styling file.
+
+Every element in the experiment page that needs styling will be in here.
+I have added every id to this file as well as additional classes. There
+will be some ids that are here but do not have any styling; that is ok.
+They are here just for reference and if styling is ever needed it can
+be done.
+
+Everything is in order as it appears in the HTML file (top to bottom).
+*/
+
+/**************************************
+*   Main Container                    *
+**************************************/
+#mainexperiment-container {
+    display: flex; /* This will create a flex container */
+    flex-direction: row; /* This will arrange the child elements in a row */
+    justify-content: center; /* This will center the children in the main axis */
+    align-items: start; /* This will align the children to the start of the cross axis */
+    gap: 20px; /* This adds space between the children */
+}
+
+
+/**************************************
+*   Row 1                             *
+*   Trial Question                    *
+**************************************/
+#task-question-container {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #0064a4;
+}
+#task-question-container-topic {
+    background-color: #0064a4;
+    border: 2px solid #0064a4;
+    border-radius: 5px;
+    padding-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+#task-question-container-topic-header {
+    
+}
+#task-question-container-topic-name {
+    /*float: right;*/
+}
+#trial-task {
+    text-align: left;
+}
+
+
+/**************************************
+*   Row 2                             *
+*   Trial Options & GPT Input         *
+**************************************/
+/*
+    Trial Options
+*/
+#task-options-and-gpt-container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+#task-options-container {
+    display: grid;
+    /*border-right: 2px solid #0064a4;*/
+}
+#task-options-header-container {
+
+}
+#task-options-header {
+
+}
+#task-options-header-text {
+    margin-top: 0.5rem;
+}
+#task-options-choices-container {
+    display: contents;
+}
+/* Individual Choice Options */
+/* A */
+#task-options-choices-container-A {
+    margin-bottom: 0.25rem;
+}
+#participant-trial-option-A {
+
+}
+#participant-trial-option-text-A {
+
+}
+/* B */
+#task-options-choices-container-B {
+    margin-bottom: 0.25rem;
+}
+#participant-trial-option-B {
+
+}
+#participant-trial-option-text-B {
+
+}
+/* C */
+#task-options-choices-container-C {
+    margin-bottom: 0.25rem;
+}
+#participant-trial-option-C {
+
+}
+#participant-trial-option-text-C {
+
+}
+/* D */
+#task-options-choices-container-D {
+    margin-bottom: 0.25rem;
+}
+#participant-trial-option-D {
+
+}
+#participant-trial-option-text-D {
+
+}
+/* All Button Choices Class */
+.participant-trial-option {
+    width: 100%;
+    font-size: 1.1em;
+}
+/*
+    GPT Input/Help
+*/
+#task-gpt-container {
+    border: 5px solid rgb(25, 195, 125);
+    background-color: #565869;
+    border-radius: 5px;
+    color: white;
+}
+#task-gpt-header-container {
+    background-color: #40414f;
+    border-bottom: 2px solid black;
+}
+#task-gpt-header-text {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+#task-gpt-text-box-container {
+    margin-top: 0.5rem;
+}
+#task-gpt-text-box-image-container {
+
+}
+#task-gpt-text-box-image {
+    background-color: rgb(25, 195, 125);
+    border-radius: 5px;
+    padding: 5px;
+}
+#task-gpt-text-box-explanation-container {
+
+}
+#task-gpt-text-box-explanation-text {
+    text-align: left;
+    padding-left: 10px;
+}
+
+
+/**************************************
+*   Row 3                             *
+*   Trial Likert & Submit Buttons     *
+**************************************/
+#task-likert-scale-container {
+    padding-top: 1rem;
+    border-top: 2px solid #0064a4;
+}
+/*
+    Header Question
+*/
+#task-likert-scale-header-container {
+
+}
+#task-likert-scale-header-text {
+    
+}
+#task-likert-scale-plain-text-container {
+    font-size: 1.25em;
+}
+/*
+    Likert Radio Buttons
+*/
+#task-likert-scale-radio-button-container {
+
+}
+#task-likert-scale-radio-button-selection {
+
+}
+.likert {
+    list-style:none;
+    width:100%;
+    margin:0;
+    padding: 0 0 35px;
+    margin-bottom: 15px;
+    display:block;
+}
+.likert:last-of-type {
+    border-bottom:0;
+}
+.likert:before {
+    content: '';
+    position: relative;
+    top: 3.45em;
+    left: 5%;
+    display: block;
+    background-color: rgb(25, 195, 125);
+    height: 0.5em;
+    width: 90%;
+}
+.likert li {
+    display:inline-block;
+    width:5.5%;
+    text-align:center;
+    vertical-align: top;
+}
+.likert li label {
+    width:100%;
+    font-size: 1.25em;
+}
+input[name="likert"] {
+  position:relative;
+  display: block;
+  margin: auto;
+  z-index: 1;
+  width: 100%;
+  height: 1.5em
+}
+/*
+    Submit Button
+*/
+#proceedMainexperiment {
+    width: 100%;
+    font-size: 1.25em;
+    margin-top: -30px;
+}

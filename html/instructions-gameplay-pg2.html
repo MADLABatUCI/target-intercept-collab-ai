@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/experiment.css">
+        <!--
+            Custom JavaScript - Experiment Page Metadata and Functionality
+        -->
+        <link rel="stylesheet" type="text/css" href="css/instructions-gameplay-pgs1-3.css"> <!-- Link to your external stylesheet -->
+        <!-- Inline styles moved to external CSS for better organization -->
+        <script type="module" src ="js/instructions-gameplay-pg2.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">          
+                <div id="gameContainer">
+                    <canvas id="gameCanvas" width="800" height="800"></canvas>
+                    <!-- ... other elements inside gameContainer ... -->
+                    <canvas id="scoreCanvas" width="50" height="80"></canvas>
+                </div>
+                <div id="textboxContainer">
+                    <div id="gameInstructions">
+                        <h1> <em>Instructions:</em></h1>
+                        <ul>
+                            <li>The target circles will now move along a path and your job is to intercept them before they disappear.</li>
+                            <li>There will be <em>two</em> targets. Because the targets will move at different speeds, you will need to plan your movements to collect both targets.</li>
+                            <li>Note: Sometimes, it may be difficult to catch up to the target.</li>
+                            <li>Click OK to continue.</li>
+                        </ul>
+                    </div>
+                </div>
+                                <!-- Custom Alert Pop-up -->
+                <div id="customAlert" class="custom-alert" style="display: none;">
+                    <div class="custom-alert-content">
+                        <!-- <span class="custom-alert-close" onclick="closeCustomAlert()">&times;</span> -->
+                        <p id="customAlertMessage">Your custom message here!</p>
+                        <button onclick="closeCustomAlert()">OK</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+    </body>
+</html>

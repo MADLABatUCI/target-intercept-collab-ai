@@ -1,0 +1,197 @@
+/*
+survey.css
+
+    Author      :   Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Survey styling file.
+
+Every element in the survey page that needs styling will be in here.
+I have added every id to this file as well as additional classes. There
+will be some ids that are here but do not have any styling; that is ok.
+They are here just for reference and if styling is ever needed it can
+be done.
+
+Everything is in order as it appears in the HTML file (top to bottom).
+*/
+
+/**************************************
+*   Row 1                             *
+*   Survey Question                   *
+**************************************/
+#survey-question-container {
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #0064a4;
+}
+#survey-task {
+    text-align: left;
+}
+
+
+/**************************************
+*   Row 2
+*   Topic Options
+**************************************/
+#survey-likert-table-container {
+    margin-bottom: 4rem;
+}
+#survey-likert-legend-header-container {
+    margin-top: 2rem;
+    border-bottom: 2px solid #0064a4;
+}
+/*  Likert Legend - Title Row   */
+.survey-likert-topic-header {
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    width:100%;
+    font-size: 1.25em;
+    border-right: 2px solid #0064a4;
+}
+.survey-likert-legend-container {
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.survey-likert-legend-header {
+    margin-bottom: 50px;
+}
+.likert-legend {
+    list-style:none;
+    width:100%;
+    margin:0;
+    padding:0 0 0 0px;
+    display:block;
+}
+.likert-legend li {
+    display:inline-block;
+    width:5.5%;
+    text-align:center;
+}
+.likert-legend li label {
+    width:100%;
+    font-size: 1.25em;
+}
+/*  Likert Topic Row    */
+.survey-likert-topic-container {
+    height: 250px;
+    /*padding-bottom: 0.5rem;*/
+    border-bottom: 2px solid #0064a4;
+}
+/*  Shared Styling  */
+.likert-topic {
+    list-style:none;
+    width:100%;
+    margin:0;
+    padding:0 0 0 0px;
+    display:block;
+}
+.likert-topic:last-of-type {
+    border-bottom:0;
+}
+.likert-topic:before {
+    content: '';
+    position: relative;
+    top: 1em;
+    left: 5%;
+    display: block;
+    height: 0.5em;
+    width: 90%;
+}
+.likert-topic li {
+    display:inline-block;
+    width:5.5%;
+    text-align:center;
+    vertical-align: top;
+}
+/*  Individual Styling  */
+#survey-topic01-likert-scale-radio-button-selection:before {
+    background-color: #9e0142;
+}
+#survey-topic02-likert-scale-radio-button-selection:before {
+    background-color: #d53e4f;
+}
+#survey-topic03-likert-scale-radio-button-selection:before {
+    background-color: #f46d43;
+}
+#survey-topic04-likert-scale-radio-button-selection:before {
+    background-color: #fdae61;
+}
+#survey-topic05-likert-scale-radio-button-selection:before {
+    background-color: #fee08b;
+}
+#survey-topic06-likert-scale-radio-button-selection:before {
+    background-color: #e6f598;;
+}
+#survey-topic07-likert-scale-radio-button-selection:before {
+    background-color: #abdda4;
+}
+#survey-topic08-likert-scale-radio-button-selection:before {
+    background-color: #66c2a5;
+}
+#survey-topic09-likert-scale-radio-button-selection:before {
+    background-color: #3288bd;
+}
+#survey-topic10-likert-scale-radio-button-selection:before {
+    background-color: #5e4fa2;
+}
+/*  Input Radio Button Styling  */
+input[name="Mental"] {
+    position:relative;
+    display: block;
+    margin: auto;
+    z-index: 1;
+    width: 100%;
+    height: 2em
+}
+input[name="Physical"] {
+    position:relative;
+    display: block;
+    margin: auto;
+    z-index: 1;
+    width: 100%;
+    height: 2em
+}
+input[name="Hurried"] {
+    position:relative;
+    display: block;
+    margin: auto;
+    z-index: 1;
+    width: 100%;
+    height: 2em
+}
+input[name="Success"] {
+    position:relative;
+    display: block;
+    margin: auto;
+    z-index: 1;
+    width: 100%;
+    height: 2em
+}
+input[name="Hard"] {
+    position:relative;
+    display: block;
+    margin: auto;
+    z-index: 1;
+    width: 100%;
+    height: 2em
+}
+input[name="Insecure"] {
+    position:relative;
+    display: block;
+    margin: auto;
+    z-index: 1;
+    width: 100%;
+    height: 2em
+}
+
+/**************************************
+*   Row 3
+*   Submit Button
+**************************************/
+#survey-complete-button {
+    width: 100%;
+    font-size: 1.25em;
+}

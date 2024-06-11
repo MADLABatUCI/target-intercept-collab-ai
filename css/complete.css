@@ -1,0 +1,114 @@
+/*
+complete.css
+
+    Author      :   Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Complete Page styling file.
+
+Every element in the complete page that needs styling will be in here.
+I have added every id to this file as well as additional classes. There
+will be some ids that are here but do not have any styling; that is ok.
+They are here just for reference and if styling is ever needed it can
+be done.
+
+Everything is in order as it appears in the HTML file (top to bottom).
+*/
+
+/**************************************
+*   Row 1
+*   Thank You message
+**************************************/
+#complete-page-content-container {
+    text-align: center;
+    /* Trialbox class does this */
+    /*border: 5px solid #0064a4;
+    border-radius: 20px;
+    width:100%;
+    background: #EEEEEE;
+    padding: 20px 50px 20px 50px;
+    margin: 0 auto 20px auto;*/
+}
+#complete-message-to-participant-container {
+    border-bottom: 2px solid #0064a0;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+#complete-message-thank-you {
+    color: green;
+    margin-bottom: 1rem;
+}
+#complete-message-main-text {
+    margin-bottom: 0.5rem;
+}
+#complete-message-sub-text {
+    
+}
+
+
+/**************************************
+*   Row 2
+*   Unique Code
+**************************************/
+#complete-unique-code-container {
+    
+}
+#unique-code-text {
+    margin-bottom: 1rem;
+}
+#how-to-get-compensated-text {
+    color: red;
+    margin-bottom: 0.5rem;
+}
+#compensation-note {
+    color: red;
+    margin-bottom: 0.5rem;
+}
+#unique-code-text-box {
+    margin-bottom: 0.5rem;
+}
+#code {
+    text-align: center;
+    width: 75%;
+    height: 2.5rem;
+    vertical-align: bottom;
+    border: 2px solid #0064a0;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+#unique-code-copy-button-container {
+    
+}
+#unique-code-copy-button {
+    width: 75%;
+}
+
+
+/**************************************
+*   Row 3
+*   User Feedback
+**************************************/
+#complete-user-feedback-container {
+    border-bottom: 2px solid #0064a0;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+#user-feedback-header {
+    margin-bottom: 1rem;
+}
+#user-feedback-text-container {
+
+}
+#user-feedback-text {
+    width: 75%;
+    border: 2px solid #0064a0;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+#user-feedback-button-container {
+
+}
+#user-feedback-button {
+    width: 75%;
+}

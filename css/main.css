@@ -1,0 +1,52 @@
+#gameContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Change to column to stack children vertically */
+    align-items: center; /* This will center the children horizontally */
+}
+
+#gameCanvas {
+    background-color: #D3D3D3; /* Light grey background */
+    border: 2px solid black;
+    margin: 0 20px; /* Adds space between the canvas and other elements */
+}
+
+#sliderContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Creates space between each slider */
+    align-items: center; /* Centers the sliders */
+}
+
+#robotContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#aiAssistRobot {
+    margin-top: 20px; /* Adjust as needed */
+}
+
+#toggleAIAssistance {
+    margin-top: 10px; /* Space between the robot image and the button */
+}
+
+#messageBox {
+    display: none; /* Initially hidden */
+    background: white;
+    padding: 10px;
+    border: 1px solid #000;
+    margin-top: 10px; /* Space between the toggle button and the message box */
+    text-align: center; /* Center the text within the message box */
+}
+
+.gamePage {
+    display: none; /* Hide all pages by default */
+    width: 100%; /* Ensure each page takes full width */
+}
+
+/* When a page is active, it should be set to display block */
+.activePage {
+    display: block; /* Show the active page */
+}

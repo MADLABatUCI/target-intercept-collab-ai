@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/experiment.css">
+        <!--
+            Custom JavaScript - Experiment Page Metadata and Functionality
+        -->
+        <link rel="stylesheet" type="text/css" href="css/instructions-gameplay-pg4.css"> <!-- Link to your external stylesheet -->
+        <!-- Inline styles moved to external CSS for better organization -->
+        <script type="module" src ="js/instructions-gameplay-pg4.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">          
+                <div id="gameContainer">
+                    <canvas id="gameCanvas" width="800" height="800"></canvas>
+                    <!-- ... other elements inside gameContainer ... -->
+                    <canvas id="scoreCanvas" width="80" height="50"></canvas>
+                </div>
+                <div id="textboxContainer">
+                    <div id="gameInstructions">
+                        <h1> <em>Instructions:</em></h1>
+                        <ul>
+                            <li><em>Your task:</em> Reach a score of 30 by the end of the game.</li>
+                            <li>You have 30 seconds.</li>
+                            <li>This task will look very similar to the full game. </li>
+                            <li>Targets will continuously flow into the game screen.</li>
+                            <li>The score is in the box to the right of the game view.</li>
+                            
+                            <!-- <li></li> -->
+                        </ul>
+                    </div>
+                </div>
+                <div id="customAlert" class="custom-alert" style="display: none;">
+                    <div class="custom-alert-content">
+                        <!-- <span class="custom-alert-close" onclick="closeCustomAlert()">&times;</span> -->
+                        <p id="customAlertMessage">Your custom message here!</p>
+                        <button onclick="closeCustomAlert()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

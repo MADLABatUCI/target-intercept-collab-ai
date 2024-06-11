@@ -1,0 +1,223 @@
+
+#gameContainer{
+    position: relative;
+    display: flex;
+    flex-direction: row; /* Change to row to align children horizontally */
+    justify-content: center; /* Center the children horizontally */
+    align-items: center; /* Align the children to the start of the cross axis */
+    /* gap: 5px; Optional: Adds space between the canvas and the textbox */
+    flex: 1; /* Ensures the container takes up the full width of the page */
+}
+#gameCanvas {
+    background-color: #D3D3D3; /* Light grey background */
+    border: 2px solid black;
+    margin: 0 20px; /* Adds space between the canvas and other elements */
+}
+
+#scoreCanvas {
+    background-color: #ffffff; /* White background for better readability */
+    border: 1px solid #000000; /* Black border for visibility */
+    border-radius: 4px; /* Rounded corners for a smoother look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin-top: 10px; /* Space from the top of the gameContainer */
+    /* margin-left: auto; Aligns the canvas to the right inside the flex container */
+    margin-right: 5px; /* Space from the right edge of the gameContainer */
+    padding: 5px; /* Padding inside the canvas */
+    display: block; /* Ensures the canvas is treated as a block for margin auto to work */
+    text-align: left;
+}
+
+#scoreContainer{
+    position: fixed;
+    display: flex;
+    flex-direction: row; /* Change to row to align children horizontally */
+    justify-content: center; /* Center the children horizontally */
+    align-items: center; /* Align the children to the start of the cross axis */
+    gap: 0px; /* Optional: Adds space between the canvas and the textbox */
+    /* flex: 0; Ensures the container takes up the full width of the page */
+    top:300;
+    left: 10
+}
+
+#sliderContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Creates space between each slider */
+    align-items: center; /* Centers the sliders */
+}
+
+#robotContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Change to row to align children horizontally */
+    justify-content: start; /* Center the children horizontally */
+    align-items: left; /* Align the children to the start of the cross axis */
+    /* gap: 5px; Optional: Adds space between the canvas and the textbox */
+    flex: 1; /* Ensures the container takes up the full width of the page */
+}
+
+#aiAssistRobot {
+    margin-top: 20px; /* Adjust as needed */
+    /* background-color: yellow;  */
+}
+
+#aiAssistRobotCaption{
+    background-color: yellow; 
+    color: #333;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.robot-button {
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.robot-button:hover {
+    border-color: blue;
+}
+
+.robot-button-selected {
+    border-color: blue;
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+}
+
+.robot-button-purple {
+    background-color: rgba(128, 0, 128, 0.5);
+}
+
+.robot-button-green {
+    background-color: rgba(0, 128, 0, 0.5);
+}
+
+.robot-button-brown {
+    background-color: rgba(139, 69, 19, 0.5);
+}
+.robot-button-blue {
+    background-color: rgba(0, 0, 255, 0.5);
+}
+.robot-button-copper{
+    background-color: rgba(184, 115, 51, 0.5);
+}
+.robot-button-iron{
+    background-color: rgba(128, 128, 128, 0.5);
+}
+
+#aiModeStatus {
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding:10px;
+}
+
+#toggleAIAssistance {
+    margin-top: 10px; /* Space between the robot image and the button */
+}
+
+#messageBox {
+    display: none; /* Initially hidden */
+    background: white;
+    padding: 10px;
+    border: 1px solid #000;
+    margin-top: 10px; /* Space between the toggle button and the message box */
+    text-align: center; /* Center the text within the message box */
+}
+
+.gamePage {
+    display: none; /* Hide all pages by default */
+    width: 100%; /* Ensure each page takes full width */
+}
+
+/* When a page is active, it should be set to display block */
+.activePage {
+    display: block; /* Show the active page */
+}
+
+#textboxContainer {
+    /* Styles for the new textbox container */
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start; /* Align the textbox to the start of the cross axis */
+    width: 300px; /* Adjust the width as needed */
+    height: 800px; /* Adjust the height as needed */
+    padding: 10px;
+    border: 1px solid #0064a4; /* Optional: Adds a border to the textbox container */
+    background-color: #f8f9fa; /* Optional: Background color for the textbox container */
+}
+
+#gameTextbox {
+    width: 100%; /* This makes the div responsive to its container */
+    height: auto; /* Adjust the height or set a fixed height if necessary */
+    padding: 0.1em; /* Add some padding inside the div */
+    background-color: #f8f9fa; /* The background color for the div */
+    border: 1px solid #ced4da; /* Similar to default textarea border */
+    /* border-radius: 0.25rem; Similar to default textarea border-radius */
+    /* margin-bottom: 1rem; Add some margin at the bottom */
+    white-space: pre-wrap; /* Respect whitespace and newlines in your text */
+    overflow-y: auto; /* Add scrollbar if content is too long */
+}
+
+#gameInstructions {
+    color: #333; /* Text color - adjust as needed */
+    font-size: 1rem; /* Adjust font size as needed */
+    line-height: 1.5; /* Adjust line height for better readability */
+}
+
+#gameInstructions h1 {
+    font-size: 1.25rem; /* Slightly larger font size for the heading */
+    margin-bottom: 0.5rem; /* Space below the heading */
+}
+
+#gameInstructions ul {
+    padding-left: 1.5rem; /* Space for bullet points */
+}
+
+#gameInstructions li {
+    margin-bottom: 0.25rem; /* Space between bullet points */
+}
+
+.custom-alert {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1); /* Semi-transparent black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+.custom-alert-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 300px; /* Adjust as needed */
+}
+
+.custom-alert-close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.custom-alert p {
+    margin-bottom: 15px;
+}
+
+.custom-alert button {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+

@@ -1,0 +1,195 @@
+<!--
+consent.html
+
+    Author      :   Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Consent HTML file.
+
+This file contains all of the consent information for an experiment.
+Remember that this is a template, so this might not encompass all of
+the information you want to convey in your consent form. However, this
+is a good starting point and you should be able to edit this page as
+you need.
+
+Be sure to update the consent.js file with all of the consent
+metadata necessary. This information includes:
+    - Lead Researcher
+    - Compensation
+    - Etc
+-->
+<html>
+    <head>
+        <link rel="stylesheet" href="css/consent.css">
+        <!--
+            Custom JavaScript - Consent Page Metadata and Functionality
+        -->
+        <script src="js/consent.js" type="module">
+        </script>
+    </head>
+    <body>
+        <div class="col-12 trialbox">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="block-text">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <h3 id="consent-text-header"><b>Welcome to the experiment!</b></h3>
+                                        </p>
+                                        <p id="header-message">
+                                            <b>Please, read the information below <b>carefully</b> before you decide to participate in this study.</b>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <img id="university-seal" src="images/uci_seal.png" alt="Dummy University logo"
+                                            height="125" width="125"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="highlight">
+                        <hr />
+                        <h3 align="center">
+                            <b>Participant Information Sheet</b>
+                        </h3>
+
+                        <h5><b>Project Summary</b></h5>
+                        <p class="ml-4" id="experiment-summary">
+                            The information here should be set in the js/consent-page-metadata.js file under
+                            EXPERIMENT_SUMMARY.
+                        </p>
+
+                        <h5><b>Time Commitment</b></h5>
+                        <p class="ml-4">
+                            The study typically takes
+                            <b><i>
+                                <text id="time-commitment">
+                                    40-50 minutes
+                                </text>
+                            </i></b>
+                            to complete.
+                            <br />
+                            <b><u>Note</u> :</b> This page will not save your progress.
+                            <!--If you close the window or navigate away from the page, all progress
+                            will be lost and you would have to restart the experiment to complete the HIT.-->
+                        </p>
+
+                        <h5><b>Benefits & Risks</b></h5>
+                        <p class="ml-4" id="benefits-and-risks">
+                            The information here should be set in the js/consent-page-metadata.js file under
+                            BENEFITS_AND_RISKS.
+                        </p>
+
+                        <h5><b>Eligibility Requirements</b></h5>
+                        <p class="ml-4" id="eligibility-requirements">
+                            The information here should be set in the js/consent-page-metadata.js file under
+                            ELIGIBILITY_REQUIREMENTS.
+                        </p>
+
+                        <h5><b>Reimbursement & Compensation</b></h5>
+                        <p class="ml-4">
+                            You will receive 
+                            <b>
+                                <text id="compensation">
+                                    $7.00
+                                </text>
+                                 <i>USD</i>
+                            </b>
+                            in return for your participation via 
+                            <i>
+                                <text id="recruitment-service">
+                                    Amazon Mechanical Turk
+                                </text>
+                            </i>.
+                            <br />
+                            <b><u>Note</u> :</b> 
+                            You must click on the <i>Redirect to Prolific</i> button at the end
+                            <b>
+                                <text id="comprehension-quiz">
+                                    4/5
+                                </text>
+                            </b> 
+                            of the study to be compensated.
+                            <!--This study contains a number of checks to make sure that participants are finishing the tasks honestly and completely.
+                            As long as you read the instructions and complete the tasks, your <b>HIT</b> will be approved.
+                            If you fail these checks, your <b>HIT</b> will be rejected.
+                            <b>An approved HIT will receive compensation of $6.00 <zi>US</i> for completion of the task.</b>-->
+                            <!--You will receive <i>how much</i> in return for your participation via mTurk.
+                            Note that you will not be able to participate unless you successfully answer 3 simple questions based on the instructions within 3 attempts.-->
+                        </p>
+
+                        <h5><b>Confidentiality & Anonymity</b></h5>
+                        <p class="ml-4">
+                            All research data collected will be stored securely and confidentially on a password protected server indefinitely.
+                            Identifying details will not be associated with any data provided by you as part of any publication or presentation.
+                        </p>
+
+                        <h5><b>Contact Information</b></h5>
+                        <p class="ml-4">
+                            University of California, Irvine - Department of Cognitive Sciences
+                            <br /> <!--<br />If you have questions, concerns, suggestions, or complaint, please contact:<br />-->
+                            <span><b>Lead Researcher : </b>
+                                <i>
+                                    <text id="lead-researcher">
+                                        Sheer Karny
+                                    </text>
+                                </i>
+                            </span>
+                                (<a id="lead-researcher-email" target="_top">skarny@uci.edu</a>)
+                            <br />
+                            <span><b>Co-Lead Researcher: </b>
+                                <i>
+                                    Lukas Mayer
+                                </i>
+                            </span>
+                                (<a href="mailto:mark.steyvers@uci.edu?Subject=Noisy%20Image%20Classification" target="_top">lwmayer@uci.edu</a>)
+                        </p>
+                        <br />
+                        <hr />
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="row justify-content-center">
+                        <h3>
+                            <b>Consent Form</b>
+                        </h3>
+                    </div>
+                    <div class="row">
+                        <div id="consent-form-box">
+                            <p>
+                                <input type="checkbox" name="terms" id="terms" value="True">  <b>Check here</b> to confirm that:
+                                you have read and understood the <i>Participant Information Sheet</i>,
+                                you are taking part in this research study voluntarily,
+                                you meet the eligility requirements,
+                                and you are agreeing that your anonymised data may be shared in public repositories.
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div id="consent-form-button" class="col-md-12">
+                            <input class="btn btn-primary btn-sm" type="submit" name="submit" id="submit-consent" value="Submit and Proceed" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </body>
+</html>

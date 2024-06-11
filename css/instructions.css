@@ -1,0 +1,350 @@
+/*
+instruction.css
+
+    Author      :   Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Instruction styling file.
+
+Every element in the experiment page that needs styling will be in here.
+I have added every id to this file as well as additional classes. There
+will be some ids that are here but do not have any styling; that is ok.
+They are here just for reference and if styling is ever needed it can
+be done.
+
+Everything is in order as it appears in the HTML file (top to bottom).
+*/
+
+#instruction-main-container {
+    /*text-align: center;*/
+}
+
+mark {
+    background-color: #f7eb5f;
+    border-radius: 5px;
+}
+.mark {
+    background-color: #f7eb5f;
+    /*border: 1px solid #f7eb5f;*/
+    border-radius: 5px;
+    color: black;
+}
+/**************************************
+*   Row 1                             
+*   Instruction Text
+*
+*       Classes are shared
+*       IDs are unique
+**************************************/
+#instruction-text-container {
+
+}
+/*  Shared amongst all instruction pages */
+.instruction-page {
+    /*text-align: center;*/
+}
+.instruction-text-line-01 {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.instruction-text-line-02 {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.instruction-text-line-03 {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.instruction-text-line-04 {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+/*  Pertaining to individual instruction pages */
+/*  Page 01 */
+#instruction-page-01 {
+
+}
+#read-all-instructions-carefully {
+    color: red;
+    text-align: left; /*center;*/
+}
+#navigate-instructions-text {
+    text-align: center;
+}
+/*  Page 02 */
+#instruction-page-02 {
+
+}
+/*  Page 03 */
+#instruction-page-03 {
+
+}
+/*  Page 04 */
+#instruction-page-04 {
+
+}
+/*  Page 05 */
+#instruction-page-05 {
+
+}
+/*  Page 06 */
+#instruction-page-06 {
+
+}
+/*  Page 07 */
+#instruction-page-07 {
+
+}
+/*  Page 08 */
+#instruction-page-08 {
+
+}
+/*  Page 09 */
+#instruction-page-09 {
+
+}
+/*  Page 10 */
+#instruction-page-10 {
+
+}
+
+
+/**************************************
+*   Row 2                             
+*   Instruction Example Task Container
+*
+*       Example Task Container
+**************************************/
+#instruction-example-task-container {
+
+}
+
+/**************************************
+*   Main Container                    *
+**************************************/
+#instruction-mainexperiment-container {
+    display: visible;
+    padding: 10px 25px 10px 25px;
+    margin: 0px auto 1rem auto;
+}
+
+
+/**************************************
+*   Row 1                             *
+*   Trial Question                    *
+**************************************/
+#instruction-task-question-container {
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid #0064a4;
+}
+#instruction-task-question-container-topic {
+    background-color: #0064a4;
+    border: 2px solid #0064a4;
+    border-radius: 5px;
+    padding-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    color: white;
+}
+#instruction-task-question-container-topic-header {
+    
+}
+#instruction-task-question-container-topic-name {
+    /*float: right;*/
+}
+#instruction-trial-task {
+    text-align: left;
+}
+
+
+/**************************************
+*   Row 2                             *
+*   Trial Options        *
+**************************************/
+/*
+    Trial Options
+*/
+#instruction-task-options-and-gpt-container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+#instruction-task-options-container {
+    display: grid;
+    /*border-right: 2px solid #0064a4;*/
+}
+#instruction-task-options-header-container {
+
+}
+#instruction-task-options-header {
+
+}
+#instruction-task-options-header-text {
+    margin-top: 0.25rem;
+}
+#instruction-task-options-choices-container {
+    display: contents;
+}
+/* Individual Choice Options */
+/* A */
+#instruction-task-options-choices-container-A {
+    margin-bottom: 0.25rem;
+}
+#instruction-participant-trial-option-A {
+    font-size: 0.8rem;
+    width: 100%;
+}
+#instruction-participant-trial-option-text-A {
+
+}
+/* B */
+#instruction-task-options-choices-container-B {
+    margin-bottom: 0.25rem;
+}
+#instruction-participant-trial-option-B {
+    font-size: 0.8rem;
+    width: 100%;
+}
+#instruction-participant-trial-option-text-B {
+
+}
+/* C */
+#instruction-task-options-choices-container-C {
+    margin-bottom: 0.25rem;
+}
+#instruction-participant-trial-option-C {
+    font-size: 0.8rem;
+    width: 100%;
+}
+#instruction-participant-trial-option-text-C {
+
+}
+/* D */
+#instruction-task-options-choices-container-D {
+    margin-bottom: 0.25rem;
+}
+#instruction-participant-trial-option-D {
+    font-size: 0.8rem;
+    width: 100%;
+}
+#instruction-participant-trial-option-text-D {
+
+}
+/* All Button Choices Class */
+.instruction-participant-trial-option {
+    width: 100%;
+    font-size: 1.1em;
+}
+/*
+    GPT Input/Help
+*/
+#instruction-task-gpt-container {
+    border: 5px solid rgb(25, 195, 125);
+    background-color: #565869;
+    border-radius: 5px;
+    color: white;
+}
+#instruction-task-gpt-header-container {
+    background-color: #40414f;
+    border-bottom: 2px solid black;
+}
+#instruction-task-gpt-header-text {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    text-align: left;
+}
+#instruction-task-gpt-text-box-container {
+    margin-top: 0.25rem;
+}
+#instruction-task-gpt-text-box-image-container {
+
+}
+#instruction-task-gpt-text-box-image {
+    background-color: rgb(25, 195, 125);
+    border-radius: 5px;
+    padding: 5px;
+}
+#instruction-task-gpt-text-box-explanation-container {
+
+}
+#instruction-task-gpt-text-box-explanation-text {
+    text-align: left;
+    padding-left: 10px;
+}
+
+
+/**************************************
+*   Row 3                             *
+*   Trial Likert & Submit Buttons     *
+**************************************/
+#instruction-task-likert-scale-container {
+    padding-top: 1rem;
+    border-top: 2px solid #0064a4;
+}
+/*
+    Header Question
+*/
+#instruction-task-likert-scale-header-container {
+
+}
+#instruction-task-likert-scale-header-text {
+    
+}
+#instruction-task-likert-scale-plain-text-container {
+    font-size: 1.25em;
+}
+/*
+    Likert Radio Buttons
+*/
+#instruction-task-likert-scale-radio-button-container {
+
+}
+#instruction-task-likert-scale-radio-button-selection {
+
+}
+.instruction-likert {
+    list-style:none;
+    width:100%;
+    margin:0;
+    padding: 0 0 35px;
+    margin-bottom: 15px;
+    display:block;
+}
+.instruction-likert:last-of-type {
+    border-bottom:0;
+}
+.instruction-likert:before {
+    content: '';
+    position: relative;
+    top: 2.7em;
+    left: 5%;
+    display: block;
+    background-color: rgb(25, 195, 125);
+    height: 0.25em;
+    width: 90%;
+}
+.instruction-likert li {
+    display:inline-block;
+    width:5.5%;
+    text-align:center;
+    vertical-align: top;
+}
+.instruction-likert li label {
+    width:100%;
+    font-size: 1em;
+}
+input[name="instruction-likert"] {
+  position:relative;
+  display: block;
+  margin: auto;
+  z-index: 1;
+  width: 50%;
+  height: 1em
+}
+/*
+    Submit Button
+*/
+#instruction-proceedMainexperiment {
+    width: 100%;
+    font-size: 1em;
+    margin-top: -50px;
+}

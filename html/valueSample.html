@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Sampling Regime</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <script>
+       // MS: adding a random number generator
+function lcg(seed) {
+    const a = 1664525;
+    const c = 1013904223;
+    const m = Math.pow(2, 32);
+    let current = seed;
+  
+    return function() {
+      current = (a * current + c) % m;
+      return current / m;
+    };
+}
+
+let rng = lcg(123);
+
+// function betaOneTwoSample(){
+//     let u1 = rng();
+//     let u2 = rng();
+
+//     // Convert to Beta(1, 2) using the transformation technique
+//     let fillRadius = u1 / (u1 + Math.pow(u2, 1 / 2));
+
+//     return fillRadius
+// }
+
+// function valueSkewSample(eta){
+//     let u = rng();
+
+//     // Eta controls the skewness of the value distribution
+//     // Apply the non-linear transformation
+//     return Math.pow(u, eta);
+// }
+
+// let values = [];
+// for (let i = 0; i < 100; i++) {
+//     // let sample = betaOneTwoSample();
+//     let sample = valueSkewSample(1.7);
+//     values.push(sample);
+// }
+
+
+function gamma(z) {
+    const g = 7;
+    const C = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+               771.32342877765313, -176.61502916214059, 12.507343278686905,
+               -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+    if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * gamma(1 - z));
+    z -= 1;
+    let x = C[0];
+    for (let i = 1; i < g + 2; i++)
+        x += C[i] / (z + i);
+    let t = z + g + 0.5;
+    return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x;
+}
+// Beta function using the Gamma function
+function beta(alpha, beta) {
+    return gamma(alpha) * gamma(beta) / gamma(alpha + beta);
+}
+// Beta distribution PDF
+function betaPDF(x, a, background) {
+    if (x < 0 || x > 1) return 0;
+    return (Math.pow(x, a - 1) * Math.pow(1 - x, b - 1)) / beta(a, b);
+}
+// Function to calculate the probability of each bin
+function binProbabilities(alpha, beta, bins) {
+    let step = 1 / bins;
+    let probabilities = [];
+    for (let i = 0; i < bins; i++) {
+        let lower = i * step;
+        let upper = (i + 1) * step;
+        probabilities.push(integrate(betaPDF, lower, upper, alpha, beta, 1000));
+    }
+    return probabilities;
+}
+// Numerical integration using the trapezoidal rule
+function integrate(func, start, end, alpha, beta, numSteps) {
+    let total = 0;
+    let step = (end - start) / numSteps;
+    for (let i = 0; i < numSteps; i++) {
+        let x0 = start + i * step;
+        let x1 = start + (i + 1) * step;
+        total += 0.5 * (func(x0, alpha, beta) + func(x1, alpha, beta)) * step;
+    }
+    return total;
+}
+
+// Continuing from the previous functions...
+
+// Function to calculate cumulative probabilities
+function cumulativeProbabilities(probabilities) {
+    let cumulative = [];
+    let sum = 0;
+    for (let prob of probabilities) {
+        sum += prob;
+        cumulative.push(sum);
+    }
+    return cumulative;
+}
+
+// Function to sample from the distribution
+function sampleFromDistribution(cumulative, totalSamples = 1) {
+    let samples = [];
+    for (let i = 0; i < totalSamples; i++) {
+        let random = Math.random();  // generate a random number between 0 and 1
+        let index = cumulative.findIndex(cum => cum >= random);
+        samples.push(index);
+    }
+    return samples;
+}
+
+// Example usage
+let a = 1;
+let b = 2;
+let bins = 16;  // Number of bins
+
+let probabilities = binProbabilities(a, b, bins);
+let cumulative = cumulativeProbabilities(probabilities);
+let numSamples = 350;  // Number of samples to generate
+
+let values = sampleFromDistribution(cumulative, numSamples);
+
+// Create a histogram generator
+let histogram = d3.histogram()
+            .domain([0, bins - 1])  // Adjust the domain to cover all bin indices
+            .thresholds(d3.range(bins)); // Create thresholds that align with each bin index
+
+// Generate the bins
+let histbins = histogram(values);
+
+// Create scales for the x and y axes
+let x = d3.scaleLinear()
+    .domain([0, bins - 1])  // Adjust the domain of the x-axis
+    .range([0, 500]); // 500 is the width of the SVG
+
+let y = d3.scaleLinear()
+    .domain([0, d3.max(histbins, d => d.length)])
+    .range([100, 0]); // 100 is the height of the SVG
+
+// Create an SVG
+let svg = d3.select("body")
+    .append("svg")
+    .attr("width", 500)
+    .attr("height", 100);
+
+// Draw the bars
+svg.selectAll("rect")
+    .data(histbins)  // Use histbins
+    .enter()
+    .append("rect")
+    .attr("x", d => x(d.x0))
+    .attr("y", d => y(d.length))
+    .attr("width", d => x(d.x1) - x(d.x0))
+    .attr("height", d => 100 - y(d.length))
+    .style("fill", "steelblue");
+
+    </script>
+</body>
+</html>
