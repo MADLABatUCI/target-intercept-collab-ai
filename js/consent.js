@@ -103,7 +103,7 @@ var ELIGIBILITY_REQUIREMENTS = `
         DEFAULT:
             $5.00
 */
-var COMPENSATION = "$6.00";
+var COMPENSATION = "$5.00";
 
 /*
     Recruitment Service
