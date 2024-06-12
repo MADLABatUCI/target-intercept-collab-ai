@@ -66,9 +66,9 @@ var STATICOBJDEBUG = false; // Set to true to use static object locations for de
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab1-debug";
+   studyId    = "uci-hri-experiment-collab2-debug";
 } else {
-    studyId   = "uci-hri-experiment-collab1";
+    studyId   = "uci-hri-experiment-collab2";
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
