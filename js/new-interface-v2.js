@@ -330,7 +330,7 @@ let drtLightChoice      = 0; // random choice of light to display
 
 let maxFrames = null;
 if (DEBUG){
-    maxFrames         = 10 * fps;// settings.maxSeconds * fps;
+    maxFrames         = settings.maxSeconds * fps;// settings.maxSeconds * fps;
 } else{ // set it to whatever you want
     maxFrames         = settings.maxSeconds * fps; //120 * 60; // Two minutes in frames
 }
