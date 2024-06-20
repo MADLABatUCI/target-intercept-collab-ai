@@ -66,9 +66,9 @@ var STATICOBJDEBUG = false; // Set to true to use static object locations for de
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab2-debug";
+   studyId    = "uci-hri-experiment-collab-DaC-debug";
 } else {
-    studyId   = "uci-hri-experiment-collab2";
+    studyId   = "uci-hri-experiment-collab-DaC";
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
@@ -330,7 +330,7 @@ let drtLightChoice      = 0; // random choice of light to display
 
 let maxFrames = null;
 if (DEBUG){
-    maxFrames         = 180 * fps;// settings.maxSeconds * fps;
+    maxFrames         = 30 * fps;// settings.maxSeconds * fps;
 } else{ // set it to whatever you want
     maxFrames         = settings.maxSeconds * fps; //120 * 60; // Two minutes in frames
 }
@@ -692,6 +692,7 @@ async function resetGame(){
     AIplayer_offline.score          = 0
     // aiClicks_adjusted_offline       = [];
     AIcaughtTargets_offline         = [];
+    totalScore                      = 0;
     // AIplayerLocation_offline        = [];
     
     player.x        = canvas.width/2;
@@ -909,12 +910,20 @@ function updateObjects(settings) {
             let willOverlap = willSquareAndCircleOverlap(player.x, player.y, player.dx, player.dy, player.width,
                 obj.x, obj.y, obj.dx, obj.dy, obj.size, player.timeToIntercept);
             
-            if (willOverlap){
-                obj.willOverlap = willOverlap;
-            } else {
-                obj.willOverlap = false;
-            }
+            obj.willOverlap = willOverlap;
 
+            let inRegion = splitGameHalf(obj);
+            obj.inPlayerRegion = inRegion;
+
+            // console.log("In Region", inRegion);
+
+          
+            
+            // if (willOverlap){
+            //     obj.willOverlap = willOverlap;
+            // } else {
+            //     obj.willOverlap = false;
+            // }
 
             // console.log("Will overlap", willOverlap);
 
@@ -934,7 +943,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -970,7 +980,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -1013,7 +1024,7 @@ function updateObjects(settings) {
                 AIplayer.score    += obj.value;
 
                 // Pause before going for the object. Simulate the time it takes to click.
-                if (obj.ID == AIplayer.ID && settings.AICollab == 1) planDelay = true;
+                // if (obj.ID == AIplayer.ID && settings.AICollab == 1) planDelay = true;
 
                 // *************************** Data Writing *********************************//
                 let gameState = extractGameState(objects);
@@ -1021,7 +1032,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
 
                 let AIplayerData      = {x: AIplayer.x, y: AIplayer.y, speed: AIplayer.velocity, 
@@ -1060,7 +1072,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
                 let AIplayerData      = {x: AIplayer_offline.x, y: AIplayer_offline.y, speed: AIplayer_offline.velocity, 
                                     targetX: AIplayer_offline.targetX, targetY: AIplayer_offline.targetY,
@@ -1097,9 +1110,9 @@ function updateObjects(settings) {
     let objectsRemoved;
 
     // Apply the AI settings
-    // if (settings.AICollab == 1) objectsRemoved = objects.filter(obj => !obj.willOverlap);
-    // if (settings.AICollab == 0) objectsRemoved = objects;
-    objectsRemoved = objects;
+    if (settings.AICollab == 1) objectsRemoved = objects.filter(obj => obj.inPlayerRegion);
+    if (settings.AICollab == 0) objectsRemoved = objects;
+    // objectsRemoved = objects;
     
     // SK1 Online AI player
     [ firstStepCollab, bestSolCollab, allSolCollab ] = runAIPlanner(objectsRemoved, AIplayer , observableRadius , center, 'collab', 
@@ -1121,6 +1134,7 @@ function updateObjects(settings) {
         objects.forEach((obj, index) => {
             if (obj.ID == AIplayer.ID){
                 obj.AImarked = true;
+                obj.AIclicked = true;
             } 
             if (obj.ID == prevFirstStepCollab.ID){
                 obj.AImarked = false;
@@ -1243,7 +1257,8 @@ function spawnObject(settings){
                             x: newObject.x, y: newObject.y,
                             dx: newObject.dx, dy: newObject.dy,
                             vx: newObject.vx, vy: newObject.vy, speed: newObject.speed,
-                            clicked: newObject.clicked, marked: newObject.marked, AImarked: newObject.AImarked};
+                            clicked: newObject.clicked, AIclicked: newObject.AIclicked,
+                            marked: newObject.marked, AImarked: newObject.AImarked};
 
         let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                             dx: player.dx, dy: player.dy,
@@ -1297,20 +1312,6 @@ function createComposite(settings) {
     let cumulative      = cumulativeProbabilities(probabilities);
     let fillRadius      = parseInt(sampleFromDistribution(cumulative, 1));
 
-    // let fillRadius = values[valueCounter];
-    // valueCounter++;
-    // if (DEBUG){
-    //     console.log("Value Sampled", fillRadius);
-    //     console.log("Data Type of Value", typeof fillRadius);
-    //     // console.log("Sampled Value base datatype", typeof fillRadius);
-    //     // console.log("Sampled Value changed dtype", typeof parseInt(fillRadius));
-    // } 
-
-    // Eta controls the skewness of the value distribution
-    // let eta = settings.valueSkew || 1; // Default to 1 if not provided
-    // Apply the non-linear transformation
-    // let fillRadius = Math.pow(u, eta) * shapeSize;
-
     // sample from a distribution of speeds
     let speedRange = settings.speedHigh - settings.speedLow
     let speedSample = randomGenerator()  * speedRange + settings.speedLow;
@@ -1340,9 +1341,11 @@ function createComposite(settings) {
         spawnX: 0,
         spawnY: 0,
         clicked: false,
+        AIclicked: false,
         marked: false,
         AImarked: false,
         willOverlap: false,
+        inPlayerRegion: false,
     };
     // console.log(newObj.speed);
  
@@ -2336,6 +2339,13 @@ function drawLight(randChoice) {
     ctx.fill();
 }
 
+function drawPlayerHalfDEBUG( orthoLineX, orthoLineY) {
+    ctx.beginPath();
+    ctx.moveTo(player.x, player.y); // Set the starting point of the line
+    ctx.lineTo(orthoLineX, orthoLineY); // Set the end point of the line
+    ctx.stroke(); // Draw the line
+}
+
 function showTargetMessage(isCaught) {
     var messageBox = document.getElementById('messageBox');
     var gameMessage = document.getElementById('gameMessage');
@@ -2514,6 +2524,128 @@ function willSquareAndCircleOverlap(x1, y1, vx1, vy1, r1, x2, y2, vx2, vy2, r2, 
     return checkOverlap(t1) || checkOverlap(t2) || checkOverlap(0);
 }
 
+// function splitGameHalf(obj){
+//     // radial distance to center
+//     let distanceToCenter = Math.sqrt((player.x - center.x) ** 2 + (player.y - center.y) ** 2);
+
+//     console.log(distanceToCenter);
+
+//     let orthoAngle = player.angle + Math.PI / 2;
+
+//     // Calculate the angle between the center and the object
+//     let objAngle = Math.atan2(obj.y - center.y, obj.x - center.x);
+
+//     let playerAngle = Math.atan2(player.y - center.y, player.x - center.x);
+
+//     function calculateOrthogonalLine(player, center, distanceToCenter){
+//         let orthoAngle = playerAngle + Math.PI / 2;
+
+//         let orthoLineX = player.x + distanceToCenter * Math.cos(orthoAngle);
+//         let orthoLineY = player.y + distanceToCenter * Math.sin(orthoAngle);
+
+//         return [orthoLineX, orthoLineY];
+//     }
+
+//     let [orthoLineX, orthoLineY] = calculateOrthogonalLine(player, center, distanceToCenter);   
+
+//     if (DEBUG){
+//         // call the draw function 
+//         drawPlayerHalfDEBUG( orthoLineX, orthoLineY);
+//     }
+//     // check if object is in the player's alotted pi region
+//     let normalizedObjAngle = (objAngle - playerAngle + Math.PI) % (2 * Math.PI);
+//     let normalizedOrthoAngle = (orthoAngle - playerAngle + Math.PI) % (2 * Math.PI);
+
+//     // The object is in the interception region if its angle is greater than the orthogonal angle
+//     // return [normalizedObjAngle > normalizedOrthoAngle, normalizedObjAngle, normalizedOrthoAngle];
+
+//     return normalizedObjAngle > normalizedOrthoAngle;
+// }
+
+// function splitGameHalf(obj) {
+//     // Calculate the distance from the player to the center
+//     let distanceToCenter = Math.sqrt((player.x - center.x) ** 2 + (player.y - center.y) ** 2);
+//     console.log(distanceToCenter);
+
+//     // Calculate the angle between the player and the center
+//     let playerAngle = Math.atan2(player.y - center.y, player.x - center.x);
+ 
+//     // Calculate the orthogonal angle (90 degrees or PI/2 radians)
+//     let orthoAngle = playerAngle + Math.PI / 2;
+
+//     // Calculate the angle between the object and the center
+//     let objAngle = Math.atan2(obj.y - center.y, obj.x - center.x);
+
+//     // Normalize angles to range [0, 2*PI)
+//     function normalizeAngle(angle) {
+//         return (angle + 2 * Math.PI) % (2 * Math.PI);
+//     }
+
+//     let normalizedObjAngle = normalizeAngle(objAngle - playerAngle);
+//     let normalizedOrthoAngle = normalizeAngle(orthoAngle - playerAngle);
+
+//     if (DEBUG) {
+//         // Function to draw the orthogonal line for debugging
+//         function drawPlayerHalfDEBUG(orthoLineX, orthoLineY) {
+//             // Implement your drawing logic here
+//             console.log(`Drawing line to (${orthoLineX}, ${orthoLineY})`);
+//         }
+
+//         // Calculate orthogonal line endpoint for debugging
+//         let orthoLineX = player.x + distanceToCenter * Math.cos(orthoAngle);
+//         let orthoLineY = player.y + distanceToCenter * Math.sin(orthoAngle);
+
+//         drawPlayerHalfDEBUG(orthoLineX, orthoLineY);
+//     }
+
+//     // Check if object is in the player's allotted pi region
+//     return normalizedObjAngle < normalizedOrthoAngle;
+// }
+
+function splitGameHalf(obj) {
+    // Center of the game view
+    const center = { x: canvas.width / 2, y: canvas.height / 2 };
+
+    // Calculate the angle between the player and the center
+    let playerAngle = Math.atan2(center.y - player.y, center.x - player.x);
+
+    // Calculate the orthogonal angle (90 degrees or PI/2 radians)
+    let orthoAngle = playerAngle + Math.PI / 2;
+
+    // Calculate the angle between the object and the center
+    let objAngle = Math.atan2(obj.y - center.y, obj.x - center.x);
+
+    // Normalize angles to range [0, 2*PI)
+    function normalizeAngle(angle) {
+        return (angle + 2 * Math.PI) % (2 * Math.PI);
+    }
+
+    let normalizedObjAngle = normalizeAngle(objAngle);
+    let normalizedPlayerAngle = normalizeAngle(playerAngle);
+    let normalizedOrthoAngle = normalizeAngle(orthoAngle);
+
+    // Check if object is in the player's allotted pi region
+    let angleDifference = Math.abs(normalizedObjAngle - normalizedPlayerAngle);
+
+    // Determine if the object is on the left or right side of the orthogonal line
+    let isInPlayerHalf = angleDifference < Math.PI / 2 || angleDifference > (3 * Math.PI) / 2;
+
+    // if (DEBUG) {
+    //     // Function to draw the orthogonal line for debugging
+    //     function drawPlayerHalfDEBUG() {
+    //         let orthoLineX = player.x + 100 * Math.cos(orthoAngle); // arbitrary length
+    //         let orthoLineY = player.y + 100 * Math.sin(orthoAngle); // arbitrary length
+    //         // Implement your drawing logic here
+    //         console.log(`Drawing orthogonal line to (${orthoLineX}, ${orthoLineY})`);
+    //     }
+
+    //     drawPlayerHalfDEBUG();
+    // }
+
+    return isInPlayerHalf;
+}
+
+
 // ***************************************** EVENT LISTENERS ***************************************** //
 let lastClickedObj = null;
 $(document).ready( function(){
@@ -2560,6 +2692,10 @@ $(document).ready( function(){
                     }
                 }
 
+                // **********************************************************************//
+                // ************************* ATTEMPT INTERCEPT ************************* //
+                // **********************************************************************//
+
                 playerStartX = ( player.x - center.x );
                 playerStartY = ( player.y - center.y );
 
@@ -2568,30 +2704,6 @@ $(document).ready( function(){
 
                 objectVelX = objects[i].vx * objects[i].speed;
                 objectVelY = objects[i].vy * objects[i].speed;
-
-                
-                
-                planDelayFrames = Math.floor(avgResponseTime);
-                // console.log("*** HALFWAY THROUGH THE GAME ***")
-                console.log("Plan Delay Frames", planDelayFrames)
-                
-
-                // num frames it took to make a choice 
-                if (player.targetObjID != null && player.targetObjID != objects[i].ID) {
-                    console.log("Number of Frames Player not Moving", numFramesPlayernotMoving)
-                    clickTimes.push(numFramesPlayernotMoving);
-                    // avgResponseTime = getRunningAverage();
-                    // avgResponseTime = getMovingAverage(5);
-                    avgResponseTime = getExponentialMovingAverage(5);
-                    console.log("Average Response Time", avgResponseTime); 
-                    // planDelay = avgResponseTime;
-                }        
-
-                // let willOverlap = willSquareAndCircleOverlap(player.x, player.y, player.dx, player.dy, player.width,
-                //     objects[i].x, objects[i].y, objectVelX, objectVelY, objects[i].size);
-
-                // console.log("Will overlap", willOverlap);
-                // highlight the object that will be overlapped. 
 
                 let circleRadius = 390;
 
@@ -2611,13 +2723,18 @@ $(document).ready( function(){
                     if (DEBUG) console.log('No interception possible');
                     objects[i].innerColor = 'red'
                 }
+
+                // **********************************************************************//
+                // ***************************** WRITE DATA *****************************//
+                // **********************************************************************//
                 
                 // Values for writing to dataframe
                 let objectData      = {ID: objects[i].ID, value: objects[i].value,
                                     x: objects[i].x, y: objects[i].y,
                                     dx: objects[i].dx, dy: objects[i].dy,
                                     vx: objects[i].vx, vy: objects[i].vy, speed: objects[i].speed,
-                                    clicked: objects[i].clicked, marked: objects[i].marked, AImarked: objects[i].AImarked};
+                                    clicked: objects[i].clicked, AIclicked: objects[i].AIclicked,
+                                    marked: objects[i].marked, AImarked: objects[i].AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -2636,10 +2753,6 @@ $(document).ready( function(){
                                     interceptData: interceptData, gameState: gameSnapshot};
 
                 eventStream.push(eventObject)
-
-                // if (DEBUG) console.log('Object Click eventObject:', eventObject);
-                
-                // break;
             }  
             // if click is around the center, then allow movement there
             if ( isClickOnCenter(clickX,clickY) ) {
