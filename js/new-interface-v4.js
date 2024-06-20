@@ -710,10 +710,10 @@ function gameLoop(timestamp) {
         firstRender = Date.now();
     }
 
-    if (totalScore > 500){
-        endGame();
-        return;
-    }
+    // if (totalScore > 500){
+    //     endGame();
+    //     return;
+    // }
 
     if (frameCountGame >= maxFrames) {
         endGame();
