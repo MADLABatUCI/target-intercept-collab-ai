@@ -938,7 +938,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked, 
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -974,7 +975,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked, 
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -1025,7 +1027,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
 
                 let AIplayerData      = {x: AIplayer.x, y: AIplayer.y, speed: AIplayer.velocity, 
@@ -1064,7 +1067,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
                 let AIplayerData      = {x: AIplayer_offline.x, y: AIplayer_offline.y, speed: AIplayer_offline.velocity, 
                                     targetX: AIplayer_offline.targetX, targetY: AIplayer_offline.targetY,
@@ -1125,7 +1129,10 @@ function updateObjects(settings) {
         objects.forEach((obj, index) => {
             if (obj.ID == AIplayer.ID){
                 obj.AImarked = true;
-                if (settings.AICollab==1) planDelay = true;
+                obj.AIclicked = true
+
+                // pause before a new object is clicked
+                if (settings.AICollab == 1) planDelay = true;
             } 
             if (obj.ID == prevFirstStepCollab.ID){
                 obj.AImarked = false;
@@ -1248,7 +1255,8 @@ function spawnObject(settings){
                             x: newObject.x, y: newObject.y,
                             dx: newObject.dx, dy: newObject.dy,
                             vx: newObject.vx, vy: newObject.vy, speed: newObject.speed,
-                            clicked: newObject.clicked, marked: newObject.marked, AImarked: newObject.AImarked};
+                            clicked: newObject.clicked, AIclicked: newObject.AIclicked,
+                            marked: newObject.marked, AImarked: newObject.AImarked};
 
         let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                             dx: player.dx, dy: player.dy,
@@ -1345,6 +1353,7 @@ function createComposite(settings) {
         spawnX: 0,
         spawnY: 0,
         clicked: false,
+        AIclicked: false,
         marked: false,
         AImarked: false,
         willOverlap: false,
