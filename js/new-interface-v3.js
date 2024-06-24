@@ -1144,7 +1144,7 @@ function updateObjects(settings) {
     if ((prevFirstStepCollab != null) && (bestSolCollab.ID != prevBestSolCollab.ID)) {
         // push AI intention array
         // aiIntention.push();
-        let aiIntention = {frame: frameCountGame, x: AIplayer.targetX, y: AIplayer.targetY, id: bestSolCollab.ID};
+        let aiIntention = {frame: frameCountGame, x: AIplayer.targetX, y: AIplayer.targetY, id: bestSolCollab.ID, planDelay: planDelay};
         aiClicks.push(aiIntention);
         // aiClicks_adjusted.push(aiIntention);
         numAIChanges++;
