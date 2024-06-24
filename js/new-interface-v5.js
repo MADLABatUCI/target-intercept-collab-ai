@@ -66,9 +66,9 @@ var STATICOBJDEBUG = false; // Set to true to use static object locations for de
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab-Delay-debug";
+   studyId    = "uci-hri-experiment-collab-DaC-debug";
 } else {
-    studyId   = "uci-hri-experiment-collab-Delay";
+    studyId   = "uci-hri-experiment-collab-DaC";
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
@@ -429,18 +429,15 @@ function lcg(seed) {
 function generateRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+
 let randomGenerator;
-
-// intial varaiables for movingaverage to delay clicks
-let ema;
-let period = 50;
-let smoothingFactor = 2 / (1 + period);
-
 // MS4: ********************************************** AI PLANNER ****************************************************//
 
 //let sol; // MS7
 let firstStep, bestSol, allSol; // MS7  Global variable that holds the solutions of the planner 
 let firstStepOffline, bestSolOffline, allSolOffline; // MS7  Global variable that holds the solutions of the planner 
+let firstStepOffline2, bestSolOffline2, allSolOffline2; // MS7  Global variable that holds the solutions of the planner
 let firstStepCollab, bestSolCollab, allSolCollab; // MS7  Global variable that holds the solutions of the planner for the online collaborative AI
 
 // let sol; // MS4: global variable that contains planned path for current frame
@@ -477,6 +474,21 @@ const AIplayer_offline = {
     color: 'rgba(128, 128, 128, 0.5)',//'rgba(255, 0, 0, 0.5)', // grey color for the offline player
     x: canvas.width/2 + 150, //center the x,y in the center of the player.
     y: canvas.height/2 + 150,
+    moving:false,
+    targetX:0,
+    targetY:0,
+    velocity: 1.5,
+    angle:0,
+    speed: 1.5, 
+    width:50, 
+    height:50,
+    score:0
+};
+
+const AIplayer_offline2 = {
+    color: 'rgba(255, 0, 0, 0.5)', // grey color for the offline player
+    x: canvas.width/2 - 150, //center the x,y in the center of the player.
+    y: canvas.height/2 - 150,
     moving:false,
     targetX:0,
     targetY:0,
@@ -696,6 +708,7 @@ async function resetGame(){
     AIplayer_offline.score          = 0
     // aiClicks_adjusted_offline       = [];
     AIcaughtTargets_offline         = [];
+    totalScore                      = 0;
     // AIplayerLocation_offline        = [];
     
     player.x        = canvas.width/2;
@@ -713,10 +726,10 @@ function gameLoop(timestamp) {
         firstRender = Date.now();
     }
 
-    if (totalScore > 500){
-        endGame();
-        return;
-    }
+    // if (totalScore > 500){
+    //     endGame();
+    //     return;
+    // }
 
     if (frameCountGame >= maxFrames) {
         endGame();
@@ -845,6 +858,7 @@ function updateObjects(settings) {
     // MS5: Update AI player position if it is moving
     AIplayer.velocity       = settings.playerSpeed;
     AIplayer_offline.velocity = settings.playerSpeed;
+    AIplayer_offline2.velocity = settings.playerSpeed;
 
     const deltaX            = AIplayer.targetX - AIplayer.x;
     const deltaY            = AIplayer.targetY - AIplayer.y;
@@ -889,6 +903,24 @@ function updateObjects(settings) {
         // AIplayerLocation.push({time: frameCountGame, x: AIplayer.x, y: AIplayer.y});
     }
 
+    const deltaX_offline2              = AIplayer_offline2.targetX - AIplayer_offline2.x;
+    const deltaY_offline2             = AIplayer_offline2.targetY - AIplayer_offline2.y;
+    const distanceToTarget_offline2    = Math.sqrt(deltaX_offline2 * deltaX_offline2 + deltaY_offline2 * deltaY_offline2);
+
+    if (distanceToTarget_offline < AIplayer_offline2.velocity) {
+        // AI Player has arrived at the target location
+        AIplayer_offline2.x         = AIplayer_offline2.targetX;
+        AIplayer_offline2.y         = AIplayer_offline2.targetY;
+        AIplayer_offline2.moving    = false;
+    } else {
+        // Move player towards the target
+        AIplayer_offline2.angle      = Math.atan2(deltaY_offline, deltaX_offline);
+        AIplayer_offline2.x         += AIplayer_offline2.velocity * Math.cos(AIplayer_offline2.angle);
+        AIplayer_offline2.y         += AIplayer_offline2.velocity * Math.sin(AIplayer_offline2.angle);
+        AIplayer_offline2.moving     = true;
+        // AIplayerLocation.push({time: frameCountGame, x: AIplayer.x, y: AIplayer.y});
+    }
+
     // MS: and inserted the following code
     if (frameCountGame % settings.spawnInterval === 0) {
         spawnObject(settings);    
@@ -913,12 +945,20 @@ function updateObjects(settings) {
             let willOverlap = willSquareAndCircleOverlap(player.x, player.y, player.dx, player.dy, player.width,
                 obj.x, obj.y, obj.dx, obj.dy, obj.size, player.timeToIntercept);
             
-            if (willOverlap){
-                obj.willOverlap = willOverlap;
-            } else {
-                obj.willOverlap = false;
-            }
+            obj.willOverlap = willOverlap;
 
+            let inRegion = splitGameHalf(obj);
+            obj.inPlayerRegion = inRegion;
+
+            // console.log("In Region", inRegion);
+
+          
+            
+            // if (willOverlap){
+            //     obj.willOverlap = willOverlap;
+            // } else {
+            //     obj.willOverlap = false;
+            // }
 
             // console.log("Will overlap", willOverlap);
 
@@ -938,7 +978,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -974,7 +1015,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -1025,7 +1067,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
 
                 let AIplayerData      = {x: AIplayer.x, y: AIplayer.y, speed: AIplayer.velocity, 
@@ -1064,7 +1107,8 @@ function updateObjects(settings) {
                                     x: obj.x, y: obj.y,
                                     dx: obj.dx, dy: obj.dy,
                                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
-                                    clicked: obj.clicked, marked: obj.marked, AImarked: obj.AImarked};
+                                    clicked: obj.clicked, AIclicked: obj.AIclicked,
+                                    marked: obj.marked, AImarked: obj.AImarked};
 
                 let AIplayerData      = {x: AIplayer_offline.x, y: AIplayer_offline.y, speed: AIplayer_offline.velocity, 
                                     targetX: AIplayer_offline.targetX, targetY: AIplayer_offline.targetY,
@@ -1082,6 +1126,45 @@ function updateObjects(settings) {
 
                 AIeventStream_offline.push(eventObject)
             }
+        }
+
+         // ********************************** 2nd AI OFFLINE CAUGHT TARGET ************************************//
+
+         if (!obj.AIintercepted && checkCollision(AIplayer_offline2, obj)) { // MS5: added a condition
+            // Collision detected
+            obj.AIintercepted = true; // MS2: added this flag             
+            let caughtObj     = {frame: frameCountGame, target: obj}   
+            // AIcaughtTargets_offline.push(caughtObj);
+
+            // aiScore_offline           += obj.value;
+            AIplayer_offline2.score    += obj.value;
+            if (DEBUG) console.log("AI Offline2 Score: ", AIplayer_offline2.score);
+
+            // *************************** Data Writing *********************************//
+
+            // let gameState = extractGameState(objects);
+            // let objectData      = {ID: obj.ID, value: obj.value,
+            //                     x: obj.x, y: obj.y,
+            //                     dx: obj.dx, dy: obj.dy,
+            //                     vx: obj.vx, vy: obj.vy, speed: obj.speed,
+            //                     clicked: obj.clicked, AIclicked: obj.AIclicked,
+            //                     marked: obj.marked, AImarked: obj.AImarked};
+
+            // let AIplayerData      = {x: AIplayer_offline2.x, y: AIplayer_offline2.y, speed: AIplayer_offline2.velocity, 
+            //                     targetX: AIplayer_offline2.targetX, targetY: AIplayer_offline2.targetY,
+            //                     angle: AIplayer_offline2.angle, moving: AIplayer_offline2.moving,
+            //                     score: AIplayer_offline2.score};
+
+            // let interceptData   = {x: AIplayer_offline2.targetX, y: AIplayer_offline2.targetY, time: 0, distance: 0, intendedTarget: AIplayer_offline2.ID};
+            // // let drtStatus       = {isOn: isLightOn, duration: drtCount, initFrame:drtInitFrame, location:drtLightChoice}; // consider adding more to this
+            // let eventType       = 'catch';
+            // let eventObject     = {time: frameCountGame, eventType: eventType, 
+            //                     objectData: objectData, playerData: AIplayerData, 
+            //                     interceptData: interceptData, gameState: gameState};
+
+            // // if (DEBUG) console.log("Caught Target Event Object", eventObject);
+
+            // AIeventStream_offline.push(eventObject)
         }
     });
 
@@ -1101,9 +1184,9 @@ function updateObjects(settings) {
     let objectsRemoved;
 
     // Apply the AI settings
-    // if (settings.AICollab == 1) objectsRemoved = objects.filter(obj => !obj.willOverlap);
-    // if (settings.AICollab == 0) objectsRemoved = objects;
-    objectsRemoved = objects;
+    if (settings.AICollab == 1) objectsRemoved = objects.filter(obj => obj.inPlayerRegion);
+    if (settings.AICollab == 0) objectsRemoved = objects;
+    // objectsRemoved = objects;
     
     // SK1 Online AI player
     [ firstStepCollab, bestSolCollab, allSolCollab ] = runAIPlanner(objectsRemoved, AIplayer , observableRadius , center, 'collab', 
@@ -1125,7 +1208,7 @@ function updateObjects(settings) {
         objects.forEach((obj, index) => {
             if (obj.ID == AIplayer.ID){
                 obj.AImarked = true;
-                if (settings.AICollab==1) planDelay = true;
+                obj.AIclicked = true;
             } 
             if (obj.ID == prevFirstStepCollab.ID){
                 obj.AImarked = false;
@@ -1173,6 +1256,31 @@ function updateObjects(settings) {
         aiClicks_offline.push(aiIntention_offline);
         numAIChanges++;
     }
+     // **************************************** Run the Offline AI Planner ****************************************//
+
+     let prevBestSolOffline2 = bestSolOffline2;
+     let prevFirstStepOffline2 = firstStepOffline2;
+ 
+     [ firstStepOffline2, bestSolOffline2, allSolOffline2 ] = runAIPlanner(objects, AIplayer_offline2 , observableRadius , center, 'AI2', 
+         settings.AIStabilityThreshold, prevBestSolOffline2, allSolOffline2, frameCountGame, settings.alpha );
+     
+     AIplayer_offline2.targetX = firstStepOffline2.x; // MS7 -- just save the firstStepOffline object to firebase
+     AIplayer_offline2.targetY = firstStepOffline2.y; 
+     AIplayer_offline2.ID      = firstStepOffline2.ID; // MS8 // ID of the object to intercept
+ 
+     // we need to save the decisions from the offline agent
+     if ((prevFirstStepOffline2 != null) && (bestSolOffline2.ID != prevBestSolOffline2.ID)) { // all other decisions
+         // push AI intention array
+         // aiIntention.push();
+         let aiIntention_offline = {frame: frameCountGame, x: AIplayer_offline2.targetX, y: AIplayer_offline2.targetY, id: bestSolOffline.ID};
+         aiClicks_offline.push(aiIntention_offline);
+         numAIChanges++;
+     } else if (prevBestSolCollab == null) { // first decision
+         // aiIntention.push
+         let aiIntention_offline = {frame: frameCountGame, x: AIplayer_offline2.targetX, y: AIplayer_offline2.targetY, id: bestSolOffline.ID};
+         aiClicks_offline.push(aiIntention_offline);
+         numAIChanges++;
+     }
 
      // ************************************* Run the Human Assistive AI Planner ***********************************//
 
@@ -1248,7 +1356,8 @@ function spawnObject(settings){
                             x: newObject.x, y: newObject.y,
                             dx: newObject.dx, dy: newObject.dy,
                             vx: newObject.vx, vy: newObject.vy, speed: newObject.speed,
-                            clicked: newObject.clicked, marked: newObject.marked, AImarked: newObject.AImarked};
+                            clicked: newObject.clicked, AIclicked: newObject.AIclicked,
+                            marked: newObject.marked, AImarked: newObject.AImarked};
 
         let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                             dx: player.dx, dy: player.dy,
@@ -1302,20 +1411,6 @@ function createComposite(settings) {
     let cumulative      = cumulativeProbabilities(probabilities);
     let fillRadius      = parseInt(sampleFromDistribution(cumulative, 1));
 
-    // let fillRadius = values[valueCounter];
-    // valueCounter++;
-    // if (DEBUG){
-    //     console.log("Value Sampled", fillRadius);
-    //     console.log("Data Type of Value", typeof fillRadius);
-    //     // console.log("Sampled Value base datatype", typeof fillRadius);
-    //     // console.log("Sampled Value changed dtype", typeof parseInt(fillRadius));
-    // } 
-
-    // Eta controls the skewness of the value distribution
-    // let eta = settings.valueSkew || 1; // Default to 1 if not provided
-    // Apply the non-linear transformation
-    // let fillRadius = Math.pow(u, eta) * shapeSize;
-
     // sample from a distribution of speeds
     let speedRange = settings.speedHigh - settings.speedLow
     let speedSample = randomGenerator()  * speedRange + settings.speedLow;
@@ -1342,12 +1437,15 @@ function createComposite(settings) {
         active: true,
         intercepted: false, // MS2: Added this flag
         AIintercepted: false, // MS5: Added this flag
+        AIintercepted2:false,
         spawnX: 0,
         spawnY: 0,
         clicked: false,
+        AIclicked: false,
         marked: false,
         AImarked: false,
         willOverlap: false,
+        inPlayerRegion: false,
     };
     // console.log(newObj.speed);
  
@@ -1490,6 +1588,9 @@ function getMovingAverage(n) {
     return sum / lastNClicks.length;
 }
 
+let ema;
+let period = 10; // Set the period as per your requirement
+let smoothingFactor = 2 / (1 + period);
 
 function getExponentialMovingAverage(n) {
     let lastNClicks = clickTimes.slice(Math.max(clickTimes.length - n, 0)); // Get the last n clicks
@@ -2338,6 +2439,13 @@ function drawLight(randChoice) {
     ctx.fill();
 }
 
+function drawPlayerHalfDEBUG( orthoLineX, orthoLineY) {
+    ctx.beginPath();
+    ctx.moveTo(player.x, player.y); // Set the starting point of the line
+    ctx.lineTo(orthoLineX, orthoLineY); // Set the end point of the line
+    ctx.stroke(); // Draw the line
+}
+
 function showTargetMessage(isCaught) {
     var messageBox = document.getElementById('messageBox');
     var gameMessage = document.getElementById('gameMessage');
@@ -2516,6 +2624,128 @@ function willSquareAndCircleOverlap(x1, y1, vx1, vy1, r1, x2, y2, vx2, vy2, r2, 
     return checkOverlap(t1) || checkOverlap(t2) || checkOverlap(0);
 }
 
+// function splitGameHalf(obj){
+//     // radial distance to center
+//     let distanceToCenter = Math.sqrt((player.x - center.x) ** 2 + (player.y - center.y) ** 2);
+
+//     console.log(distanceToCenter);
+
+//     let orthoAngle = player.angle + Math.PI / 2;
+
+//     // Calculate the angle between the center and the object
+//     let objAngle = Math.atan2(obj.y - center.y, obj.x - center.x);
+
+//     let playerAngle = Math.atan2(player.y - center.y, player.x - center.x);
+
+//     function calculateOrthogonalLine(player, center, distanceToCenter){
+//         let orthoAngle = playerAngle + Math.PI / 2;
+
+//         let orthoLineX = player.x + distanceToCenter * Math.cos(orthoAngle);
+//         let orthoLineY = player.y + distanceToCenter * Math.sin(orthoAngle);
+
+//         return [orthoLineX, orthoLineY];
+//     }
+
+//     let [orthoLineX, orthoLineY] = calculateOrthogonalLine(player, center, distanceToCenter);   
+
+//     if (DEBUG){
+//         // call the draw function 
+//         drawPlayerHalfDEBUG( orthoLineX, orthoLineY);
+//     }
+//     // check if object is in the player's alotted pi region
+//     let normalizedObjAngle = (objAngle - playerAngle + Math.PI) % (2 * Math.PI);
+//     let normalizedOrthoAngle = (orthoAngle - playerAngle + Math.PI) % (2 * Math.PI);
+
+//     // The object is in the interception region if its angle is greater than the orthogonal angle
+//     // return [normalizedObjAngle > normalizedOrthoAngle, normalizedObjAngle, normalizedOrthoAngle];
+
+//     return normalizedObjAngle > normalizedOrthoAngle;
+// }
+
+// function splitGameHalf(obj) {
+//     // Calculate the distance from the player to the center
+//     let distanceToCenter = Math.sqrt((player.x - center.x) ** 2 + (player.y - center.y) ** 2);
+//     console.log(distanceToCenter);
+
+//     // Calculate the angle between the player and the center
+//     let playerAngle = Math.atan2(player.y - center.y, player.x - center.x);
+ 
+//     // Calculate the orthogonal angle (90 degrees or PI/2 radians)
+//     let orthoAngle = playerAngle + Math.PI / 2;
+
+//     // Calculate the angle between the object and the center
+//     let objAngle = Math.atan2(obj.y - center.y, obj.x - center.x);
+
+//     // Normalize angles to range [0, 2*PI)
+//     function normalizeAngle(angle) {
+//         return (angle + 2 * Math.PI) % (2 * Math.PI);
+//     }
+
+//     let normalizedObjAngle = normalizeAngle(objAngle - playerAngle);
+//     let normalizedOrthoAngle = normalizeAngle(orthoAngle - playerAngle);
+
+//     if (DEBUG) {
+//         // Function to draw the orthogonal line for debugging
+//         function drawPlayerHalfDEBUG(orthoLineX, orthoLineY) {
+//             // Implement your drawing logic here
+//             console.log(`Drawing line to (${orthoLineX}, ${orthoLineY})`);
+//         }
+
+//         // Calculate orthogonal line endpoint for debugging
+//         let orthoLineX = player.x + distanceToCenter * Math.cos(orthoAngle);
+//         let orthoLineY = player.y + distanceToCenter * Math.sin(orthoAngle);
+
+//         drawPlayerHalfDEBUG(orthoLineX, orthoLineY);
+//     }
+
+//     // Check if object is in the player's allotted pi region
+//     return normalizedObjAngle < normalizedOrthoAngle;
+// }
+
+function splitGameHalf(obj) {
+    // Center of the game view
+    const center = { x: canvas.width / 2, y: canvas.height / 2 };
+
+    // Calculate the angle between the player and the center
+    let playerAngle = Math.atan2(center.y - player.y, center.x - player.x);
+
+    // Calculate the orthogonal angle (90 degrees or PI/2 radians)
+    let orthoAngle = playerAngle + Math.PI / 2;
+
+    // Calculate the angle between the object and the center
+    let objAngle = Math.atan2(obj.y - center.y, obj.x - center.x);
+
+    // Normalize angles to range [0, 2*PI)
+    function normalizeAngle(angle) {
+        return (angle + 2 * Math.PI) % (2 * Math.PI);
+    }
+
+    let normalizedObjAngle = normalizeAngle(objAngle);
+    let normalizedPlayerAngle = normalizeAngle(playerAngle);
+    let normalizedOrthoAngle = normalizeAngle(orthoAngle);
+
+    // Check if object is in the player's allotted pi region
+    let angleDifference = Math.abs(normalizedObjAngle - normalizedPlayerAngle);
+
+    // Determine if the object is on the left or right side of the orthogonal line
+    let isInPlayerHalf = angleDifference < Math.PI / 2 || angleDifference > (3 * Math.PI) / 2;
+
+    // if (DEBUG) {
+    //     // Function to draw the orthogonal line for debugging
+    //     function drawPlayerHalfDEBUG() {
+    //         let orthoLineX = player.x + 100 * Math.cos(orthoAngle); // arbitrary length
+    //         let orthoLineY = player.y + 100 * Math.sin(orthoAngle); // arbitrary length
+    //         // Implement your drawing logic here
+    //         console.log(`Drawing orthogonal line to (${orthoLineX}, ${orthoLineY})`);
+    //     }
+
+    //     drawPlayerHalfDEBUG();
+    // }
+
+    return isInPlayerHalf;
+}
+
+
 // ***************************************** EVENT LISTENERS ***************************************** //
 let lastClickedObj = null;
 $(document).ready( function(){
@@ -2562,6 +2792,10 @@ $(document).ready( function(){
                     }
                 }
 
+                // **********************************************************************//
+                // ************************* ATTEMPT INTERCEPT ************************* //
+                // **********************************************************************//
+
                 playerStartX = ( player.x - center.x );
                 playerStartY = ( player.y - center.y );
 
@@ -2570,31 +2804,6 @@ $(document).ready( function(){
 
                 objectVelX = objects[i].vx * objects[i].speed;
                 objectVelY = objects[i].vy * objects[i].speed;
-
-                
-                
-                planDelayFrames = Math.floor(avgResponseTime);
-                // console.log("*** HALFWAY THROUGH THE GAME ***")
-                console.log("Plan Delay Frames", planDelayFrames)
-                
-
-                // num frames it took to make a choice 
-                if (player.targetObjID != null && player.targetObjID != objects[i].ID) {
-                    console.log("Number of Frames Player not Moving", numFramesPlayernotMoving)
-                    clickTimes.push(numFramesPlayernotMoving);
-                    // avgResponseTime = getRunningAverage();
-                    // avgResponseTime = getMovingAverage(5);
-                    let lastNumClicks = 5;  
-                    avgResponseTime = getExponentialMovingAverage(lastNumClicks);
-                    console.log("Average Response Time", avgResponseTime); 
-                    // planDelay = avgResponseTime;
-                }        
-
-                // let willOverlap = willSquareAndCircleOverlap(player.x, player.y, player.dx, player.dy, player.width,
-                //     objects[i].x, objects[i].y, objectVelX, objectVelY, objects[i].size);
-
-                // console.log("Will overlap", willOverlap);
-                // highlight the object that will be overlapped. 
 
                 let circleRadius = 390;
 
@@ -2614,13 +2823,18 @@ $(document).ready( function(){
                     if (DEBUG) console.log('No interception possible');
                     objects[i].innerColor = 'red'
                 }
+
+                // **********************************************************************//
+                // ***************************** WRITE DATA *****************************//
+                // **********************************************************************//
                 
                 // Values for writing to dataframe
                 let objectData      = {ID: objects[i].ID, value: objects[i].value,
                                     x: objects[i].x, y: objects[i].y,
                                     dx: objects[i].dx, dy: objects[i].dy,
                                     vx: objects[i].vx, vy: objects[i].vy, speed: objects[i].speed,
-                                    clicked: objects[i].clicked, marked: objects[i].marked, AImarked: objects[i].AImarked};
+                                    clicked: objects[i].clicked, AIclicked: objects[i].AIclicked,
+                                    marked: objects[i].marked, AImarked: objects[i].AImarked};
 
                 let playerData      = {x: player.x, y: player.y, speed: player.velocity, 
                                     dx: player.dx, dy: player.dy,
@@ -2639,10 +2853,6 @@ $(document).ready( function(){
                                     interceptData: interceptData, gameState: gameSnapshot};
 
                 eventStream.push(eventObject)
-
-                // if (DEBUG) console.log('Object Click eventObject:', eventObject);
-                
-                // break;
             }  
             // if click is around the center, then allow movement there
             if ( isClickOnCenter(clickX,clickY) ) {
