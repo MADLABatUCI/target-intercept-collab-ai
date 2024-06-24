@@ -357,7 +357,7 @@ let aiClicks_adjusted_offline = [];
 // Delay for the collaborative agent between plans
 let planDelayCounter = 0;
 let planDelay = false;
-let planDelayFrames = 8; // 0.5 seconds in frames
+let planDelayFrames = 10; // 0.5 seconds in frames
 
 // const eventStreamSize = 720; // 2 minutes of 60 fps updates
 // let eventStream = Array.from({ length: eventStreamSize }, () => ({}));// preallocate the array
