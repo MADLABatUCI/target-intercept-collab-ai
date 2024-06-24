@@ -66,9 +66,9 @@ var STATICOBJDEBUG = false; // Set to true to use static object locations for de
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab-Delay-debug";
+   studyId    = "uci-hri-experiment-collab-Delay2-debug";
 } else {
-    studyId   = "uci-hri-experiment-collab-Delay";
+    studyId   = "uci-hri-experiment-collab-Delay2";
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
@@ -713,10 +713,10 @@ function gameLoop(timestamp) {
         firstRender = Date.now();
     }
 
-    if (totalScore > 500){
-        endGame();
-        return;
-    }
+    // if (totalScore > 500){
+    //     endGame();
+    //     return;
+    // }
 
     if (frameCountGame >= maxFrames) {
         endGame();
