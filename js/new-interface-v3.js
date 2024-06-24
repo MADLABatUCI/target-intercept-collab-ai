@@ -686,6 +686,7 @@ async function resetGame(){
     aiScore                 = 0;
     player.score            = 0;
     AIplayer.score          = 0
+    totalScore              = 0;
     aiClicks                = [];
     aiClicks_offline        = [];
     AIcaughtTargets         = [];
