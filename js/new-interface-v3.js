@@ -433,7 +433,7 @@ let randomGenerator;
 
 // intial varaiables for movingaverage to delay clicks
 let ema;
-let period = 50;
+let period = 10;
 let smoothingFactor = 2 / (1 + period);
 
 // MS4: ********************************************** AI PLANNER ****************************************************//
@@ -713,11 +713,6 @@ function gameLoop(timestamp) {
     if (frameCountGame==0){
         firstRender = Date.now();
     }
-
-    // if (totalScore > 500){
-    //     endGame();
-    //     return;
-    // }
 
     if (frameCountGame >= maxFrames) {
         endGame();
