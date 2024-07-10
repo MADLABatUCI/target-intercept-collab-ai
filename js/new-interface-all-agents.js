@@ -589,8 +589,8 @@ async function startGame(round, condition, block, seeds) {
     }
     // Initialize with a seed
     randomGenerator = lcg(settings.randSeed);
-    // randDRTinterval = Math.floor(randomGenerator() * 3 + 3) * fps; // random interval between 3 and 5 seconds
-    // isLightOn = false;
+    // Start the exponential moving average with a fixed response time of 1/3 of a second -- 10 frames
+    clickTimes.push(10);
 
     // Reset game canvas visibility
     const gameCanvas = document.getElementById('gameCanvas');
@@ -2592,21 +2592,27 @@ $(document).ready( function(){
                 objectVelX = objects[i].vx * objects[i].speed;
                 objectVelY = objects[i].vy * objects[i].speed;
 
-                
 
-                // num frames it took to make a choice 
-                if (player.targetObjID != null && player.targetObjID != objects[i].ID) {
+                // ********* CALCULATE THE DELAY IN PLANNING ********* //
+
+                // num frames it took to make a new target choice 
+                // if (player.targetObjID != null && player.targetObjID != objects[i].ID) { // add a delay variable when a new object is clicked
+                if (!player.moving){ // only clicks that happen when the player is not moving
                     console.log("number delays", clickTimes.length);
                     console.log("Number of Frames Player not Moving", numFramesPlayernotMoving)
                     clickTimes.push(numFramesPlayernotMoving);
+                 
+                    let lastNumClicks = 5;  
+                    avgResponseTime = getExponentialMovingAverage(lastNumClicks);
+                    console.log("Average Response Time", avgResponseTime); 
 
-                    if (clickTimes.length < 1) {
-                        avgResponseTime = 10;
-                    } else {
-                        let lastNumClicks = 5;  
-                        avgResponseTime = getExponentialMovingAverage(lastNumClicks);
-                        console.log("Average Response Time", avgResponseTime); 
-                    }
+                    // if (!clickTimes.length < 1) {
+                    //     avgResponseTime = 10;
+                    // } else {
+                    //     let lastNumClicks = 5;  
+                    //     avgResponseTime = getExponentialMovingAverage(lastNumClicks);
+                    //     console.log("Average Response Time", avgResponseTime); 
+                    // }
                 }        
 
                 planDelayFrames = Math.floor(avgResponseTime);
