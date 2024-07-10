@@ -60,8 +60,16 @@ function getDebugParams(){
     return debugBoolean;
 }
 
-var DEBUG  = getDebugParams();   // Always start coding in DEBUG mode
-var STATICOBJDEBUG = false; // Set to true to use static object locations for debugging
+function getCollabTypeParams(){
+    const urlParams = new URLSearchParams(window.location.search);
+    let collabType = parseInt(urlParams.get('collab'), 5) || 0;
+    
+    return collabType
+}
+
+var DEBUG  = getDebugParams();      // Always start coding in DEBUG mode
+var COLLAB = getCollabTypeParams(); // 0=ignorant; 1=omit; 2=divide; 3=delay
+console.log("colab: ", COLLAB);
 
 let studyId = 'placeHolder';
 
@@ -516,14 +524,10 @@ async function initExperimentSettings() {
 
     currentCondition = assignedCondition[0]+1;
     curSeeds = randomValues;
-    // if(DEBUG){
-    //     console.log("seed condition num:", assignedSeed);
-    // }
 }
 
+// Assign a condition to each new participant.
 if (noAssignment){
-
-    // await the asynchroneous function to complete and retrieve the curret
     if (DEBUG){ // adjust value as needed for debuggin default is the same as the main experiment
         await initExperimentSettings();
         // curSeeds = [12,123,12345,123456];
@@ -760,13 +764,11 @@ function render() {
     drawPlayer();                                     
     if (settings.visualizeAIPlayer==1) drawAIPlayer();
     // if (settings.visualizeAIPlayerOffline==1) drawAIPlayerOffline();
-    // if (player.moving) drawArrowDirection();          // Draw arrow to show player direction
     displayAIStatus();                                // Display which ai
     drawAISolution();                                  // Draw AI solution of type specified in settings
     // drawFullAISolutionDEBUG();                     // Draw the full AI solution
     // drawTargetLocation();                             // Draw the X where the player is moving towards
     drawObjects();         
-
     drawLight(drtLightChoice);
     ctx.restore();
     drawScore();                      
@@ -803,15 +805,6 @@ function updateObjects(settings) {
             player.y = player.targetY;
             player.moving = false;
         } else {
-            // Move player towards the target
-            // keeptrack of average response time:
-
-            // if (){
-            //     console.log("Number of Frames Player not Moving", numFramesPlayernotMoving)
-            //     clickTimes.push(numFramesPlayernotMoving);
-            //     let avgResponseTime = getRunningAverage();
-            //     console.log("Average Response Time", avgResponseTime); 
-            // }
 
             numFramesPlayernotMoving = 0; // MS6
             player.angle = Math.atan2(deltaY, deltaX);
@@ -1100,7 +1093,7 @@ function updateObjects(settings) {
 
     let objectsRemoved;
 
-    // Apply the AI settings
+    // Apply the AI Collab type to remove certain objects (this is only for some rule-based agents)
     // if (settings.AICollab == 1) objectsRemoved = objects.filter(obj => !obj.willOverlap);
     // if (settings.AICollab == 0) objectsRemoved = objects;
     objectsRemoved = objects;
@@ -1292,33 +1285,11 @@ function createComposite(settings) {
     var valueLow = settings.valueLow;
     var valueHigh = settings.valueHigh;
     var range = valueHigh - valueLow;
-    
-    //let u = Math.random() * range + valueLow;
-    // let u = randomGenerator() * range + valueLow;
 
-    // let u1 = randomGenerator();
-    // let u2 = randomGenerator();
-
-    // // Convert to Beta(1, 2) using the transformation technique
-    // let fillRadius = u1 / (u1 + Math.pow(u2, 1 / 2))  * shapeSize;
-
+    // use the a-b distribution to get a fillRadius
     let probabilities   = binProbabilities(a, b, bins);
     let cumulative      = cumulativeProbabilities(probabilities);
     let fillRadius      = parseInt(sampleFromDistribution(cumulative, 1));
-
-    // let fillRadius = values[valueCounter];
-    // valueCounter++;
-    // if (DEBUG){
-    //     console.log("Value Sampled", fillRadius);
-    //     console.log("Data Type of Value", typeof fillRadius);
-    //     // console.log("Sampled Value base datatype", typeof fillRadius);
-    //     // console.log("Sampled Value changed dtype", typeof parseInt(fillRadius));
-    // } 
-
-    // Eta controls the skewness of the value distribution
-    // let eta = settings.valueSkew || 1; // Default to 1 if not provided
-    // Apply the non-linear transformation
-    // let fillRadius = Math.pow(u, eta) * shapeSize;
 
     // sample from a distribution of speeds
     let speedRange = settings.speedHigh - settings.speedLow
