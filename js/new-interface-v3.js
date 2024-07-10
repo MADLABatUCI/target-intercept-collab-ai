@@ -507,14 +507,6 @@ async function initExperimentSettings() {
     let numDraws = 1; // number of draws
     let assignedCondition = await blockRandomization(db1, studyId, aiBlockCondition, numConditions, maxCompletionTimeMinutes, numDraws);
 
-    if (!DEBUG){
-        // random seeds should be randomly grabbed outside of permutation (generate four totally random integer values between 1 and 1000000)
-        // const seedCondition = 'seedCondition'; // a string we use to represent the condition name   
-        // numConditions = 8; // number of conditions
-        // numDraws = 1; // number of draws
-        // let assignedSeed = await blockRandomization(db1, studyId, seedCondition, numConditions, maxCompletionTimeMinutes, numDraws);
-    }
-
     var randomValues = [];
     for (var i = 0; i < 6; i++) {
         randomValues.push(generateRandomInt(1, 1000000));
@@ -524,6 +516,10 @@ async function initExperimentSettings() {
 
     currentCondition = assignedCondition[0]+1;
     curSeeds = randomValues;
+
+    if (DEBUG){
+        currentCondition = 8;
+    }
 }
 
 // Assign a condition to each new participant.
