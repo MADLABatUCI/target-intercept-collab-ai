@@ -62,7 +62,7 @@ function getDebugParams(){
 
 function getCollabTypeParams(){
     const urlParams = new URLSearchParams(window.location.search);
-    let collabType = parseInt(urlParams.get('collab'), 5) || 0;
+    let collabType = parseInt(urlParams.get('collab'), 5) || 1;
     
     return collabType
 }
