@@ -366,7 +366,7 @@ let aiClicks_adjusted_offline = [];
 // Delay for the collaborative agent between plans
 let planDelayCounter = 0;
 let planDelay = false;
-let planDelayFrames = 10; // 0.5 seconds in frames
+let planDelayFrames = 10; // 0.3 seconds in frames
 
 // const eventStreamSize = 720; // 2 minutes of 60 fps updates
 // let eventStream = Array.from({ length: eventStreamSize }, () => ({}));// preallocate the array
@@ -2593,23 +2593,25 @@ $(document).ready( function(){
                 objectVelY = objects[i].vy * objects[i].speed;
 
                 
-                
-                planDelayFrames = Math.floor(avgResponseTime);
-                // console.log("*** HALFWAY THROUGH THE GAME ***")
-                console.log("Plan Delay Frames", planDelayFrames)
-                
 
                 // num frames it took to make a choice 
                 if (player.targetObjID != null && player.targetObjID != objects[i].ID) {
+                    console.log("number delays", clickTimes.length);
                     console.log("Number of Frames Player not Moving", numFramesPlayernotMoving)
                     clickTimes.push(numFramesPlayernotMoving);
-                    // avgResponseTime = getRunningAverage();
-                    // avgResponseTime = getMovingAverage(5);
-                    let lastNumClicks = 5;  
-                    avgResponseTime = getExponentialMovingAverage(lastNumClicks);
-                    console.log("Average Response Time", avgResponseTime); 
-                    // planDelay = avgResponseTime;
+
+                    if (clickTimes.length < 1) {
+                        avgResponseTime = 10;
+                    } else {
+                        let lastNumClicks = 5;  
+                        avgResponseTime = getExponentialMovingAverage(lastNumClicks);
+                        console.log("Average Response Time", avgResponseTime); 
+                    }
                 }        
+
+                planDelayFrames = Math.floor(avgResponseTime);
+                // console.log("*** HALFWAY THROUGH THE GAME ***")
+                console.log("Plan Delay Frames", planDelayFrames)
 
                 // let willOverlap = willSquareAndCircleOverlap(player.x, player.y, player.dx, player.dy, player.width,
                 //     objects[i].x, objects[i].y, objectVelX, objectVelY, objects[i].size);
