@@ -21,7 +21,7 @@ There are a range of different game components one can initialize in this game. 
 
 _'instructions.html'_ --> _'instructions-gameplay-pg1.html'_ --> _'instructions-gameplay-pg2.html'_ --> _'instructions-gameplay-pg3.html'_ --> _'instructions-gameplay-pg4.html'_ --> _'instructions-AI.html'_.
 
-After _'instructions-AI.html'_, which informs the player about the presence of an AI collaborator, the participant is sent is sent to _'integrity-pledge.html'_ where all participants sign an integrity pledge. After signing this, the player is sent to the main experiment, _'game-main-exp.html'_.
+After _'instructions-AI.html'_, which informs the player about the presence of an AI collaborator, the participant is sent is sent to _'integrity-pledge.html'_ where all participants sign an integrity pledge. After signing this, the player is sent to the main experiment, _'game-main-exp.html'_. Once the particpant has completed the experiment, they are redirected to _'complete.html'_ where there is a redirect code back to Prolific.
 
 <h3>
 The JavaScript children of each of the fornamed HTML pages:
@@ -35,6 +35,7 @@ The JavaScript children of each of the fornamed HTML pages:
 * _'instructions-AI.html'_ -- _'instructions-AI.js'_
 * _'integrity-pledge.html'_ -- '_integrity-pledge.js'_
 * _'game-main-exp.html'_ -- _'new-interface-all-agents.js'_
+* _'complete.html'_ -- _'complete.js'_
 
 
 <h2>
