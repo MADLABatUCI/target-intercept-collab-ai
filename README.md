@@ -17,7 +17,8 @@ _'index.html'_ initializes the web interface for the code.
 Instruction section flow.
 </h2>
 
-There are a range of different game components one can initialize in this game. To begin with, there is an interactive instruction section that involves 4 gameplay sections that teach, successivelly, how to play the game. Instructions begin with 'instructions.html' which points to the these successive pages: _'instructions-gameplay-pg1.html'_ --> _'instructions-gameplay-pg2.html'_ --> _'instructions-gameplay-pg3.html'_ --> _'instructions-gameplay-pg4.html'_ --> _'instructions-AI.html'_.
+There are a range of different game components one can initialize in this game. To begin with, there is an interactive instruction section that involves 4 gameplay sections that teach, successivelly, how to play the game. Instructions begin with 'instructions.html' which points to the these successive pages: 
+_'instructions-gameplay-pg1.html'_ --> _'instructions-gameplay-pg2.html'_ --> _'instructions-gameplay-pg3.html'_ --> _'instructions-gameplay-pg4.html'_ --> _'instructions-AI.html'_.
 
 After this last intruction page, 'instructions-AI.html', which informs the player about the presence of an AI collaborator, the participant is sent is sent to 'integrity-pledge.html' where all participants sign an integrity pledge. After signing this, the player is sent to the main experiment.
 
