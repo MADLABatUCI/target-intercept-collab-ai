@@ -23,7 +23,7 @@ _'instructions.html'_ --> _'instructions-gameplay-pg1.html'_ --> _'instructions-
 
 After _'instructions-AI.html'_, which informs the player about the presence of an AI collaborator, the participant is sent is sent to _'integrity-pledge.html'_ where all participants sign an integrity pledge. After signing this, the player is sent to the main experiment, _'game-main-exp.html'_. Once the particpant has completed the experiment, they are redirected to _'complete.html'_ where there is a redirect code back to Prolific.
 
-Thus, the final flow looks like this:
+__Thus, the final flow looks like this:__
 
 _'instructions.html'_ --> _'instructions-gameplay-pg1.html'_ --> _'instructions-gameplay-pg2.html'_ --> _'instructions-gameplay-pg3.html'_ --> _'instructions-gameplay-pg4.html'_ --> _'instructions-AI.html'_ --> _'game-main-exp.html'_ --> _'complete.html'_ 
 
