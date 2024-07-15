@@ -56,7 +56,7 @@ _'new-interface-all-agents.js'_ could be broken down into a few main sections:
 2. Experiment set-up.
 3. Rendering and drawing.
 4. Game updates.
-4. Canvas event handling.
+4. Event handling.
 5. Surveys.
 
 <h2>
