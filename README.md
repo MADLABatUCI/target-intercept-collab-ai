@@ -14,7 +14,7 @@ __'index.html'__ initializes the web interface for the code.
 
 
 <h2>
-Overview of the game components.
+Instruction section of this game.
 </h2>
 
 There are a range of different game components one can initialize in this game. To begin with, there is an interactive instruction section that involves 4 gameplay sections that teach, successivelly, how to play the game. Instructions begin with 'instructions.html' which points to the these successive pages: __'instructions-gameplay-pg1.html'__ --> __'instructions-gameplay-pg2.html'__ --> __'instructions-gameplay-pg3.html'__ --> __'instructions-gameplay-pg4.html'__ --> __'instructions-AI.html'__.
