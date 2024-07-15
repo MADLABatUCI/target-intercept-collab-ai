@@ -34,8 +34,10 @@ The JavaScript children of each of the fornamed HTML pages:
 * _'integrity-pledge.html'_ - '_integrity-pledge.js'_
 
 
-
+<h4>
 Loading the relveant html attributes inside _'index.html'_:
+</h4>
+
 Starting at line 93 (in the DEBUG conditional), you can manipulate which of the gameplay components to individually open. The default is loading the 'consent.html' page which is the first page all actual participants will encounter. However, you can skip into 1. the main experiment, & 2. the interactive instruction section pages. To do this, you need only intialize the correct HTML attribute that accompanies that page. The code that does this is there for you to uncomment and skip into each of those pages. 
 
 <h2>
