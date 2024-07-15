@@ -46,6 +46,17 @@ Overview of the main experiment.
 
 There are three important files that control the final experimental function and interface: _'game-main-exp.html'_ , _'new-interface-all-agents.js'_, _'AIplannerv1.5'_. Together, these control the important flow of the experiment. _'game-main-exp.html'_ controls all the HTML elements and intializes the game engine _'new-interface-all-agents.js'_. The underlying path planning algorithm for each of the collaborative AI agents is in _'AIplannerv1.5'_.
 
+<h3>
+Understanding the game engine: 'new-interface-all-agents.js'
+</h3>
+_'new-interface-all-agents.js'_ could be broken down into a few main sections: 
+
+1. World intialization.
+2. Experiment set-up.
+3. Rendering and drawing.
+4. Game updates.
+4. Canvas event handling.
+5. Surveys.
 
 <h2>
 More important details:
