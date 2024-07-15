@@ -27,13 +27,14 @@ After _'instructions-AI.html'_, which informs the player about the presence of a
 The JavaScript children of each of the fornamed HTML pages:
 </h3>
 
-* _'instructions.html'_ - _'instructions.js'_
-* _'instructions-gameplay-pg1.html'_ - _'instructions-gameplay-pg1.js'_
-* _'instructions-gameplay-pg2.html'_ - _'instructions-gameplay-pg2.js'_
-* _'instructions-gameplay-pg3.html'_ - _'instructions-gameplay-pg3.js'_
-* _'instructions-gameplay-pg4.html'_ - _'instructions-gameplay-pg4.js'_
-* _'instructions-AI.html'_ - _'instructions-AI.js'_
-* _'integrity-pledge.html'_ - '_integrity-pledge.js'_
+* _'instructions.html'_ -- _'instructions.js'_
+* _'instructions-gameplay-pg1.html'_ --_'instructions-gameplay-pg1.js'_
+* _'instructions-gameplay-pg2.html'_ -- _'instructions-gameplay-pg2.js'_
+* _'instructions-gameplay-pg3.html'_ -- _'instructions-gameplay-pg3.js'_
+* _'instructions-gameplay-pg4.html'_ -- _'instructions-gameplay-pg4.js'_
+* _'instructions-AI.html'_ -- _'instructions-AI.js'_
+* _'integrity-pledge.html'_ -- '_integrity-pledge.js'_
+* _'game-main-exp.html'_ -- _'new-interface-all-agents.js'_
 
 
 <h2>
