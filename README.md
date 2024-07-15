@@ -52,7 +52,7 @@ Understanding the game engine: 'new-interface-all-agents.js'
 
 _'new-interface-all-agents.js'_ could be broken down into a few main sections: 
 
-1. World intialization.
+1. Database intialization.
 2. Experiment set-up.
 3. Rendering and drawing.
 4. Game updates.
