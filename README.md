@@ -49,6 +49,7 @@ There are three important files that control the final experimental function and
 <h3>
 Understanding the game engine: 'new-interface-all-agents.js'
 </h3>
+
 _'new-interface-all-agents.js'_ could be broken down into a few main sections: 
 
 1. World intialization.
