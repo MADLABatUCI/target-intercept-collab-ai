@@ -83,7 +83,7 @@ console.log("collab: ", COLLAB);
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab-Delay2-debug";
+   studyId    = "uci-hri-experiment-collab-Delay2-debug_delayCheck";
 } else {
     studyId   = "uci-hri-experiment-collab-Delay2";
 }
