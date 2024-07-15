@@ -37,14 +37,14 @@ The JavaScript children of each of the fornamed HTML pages:
 
 
 <h2>
-Game and AI code.
+Main experiment game and AI code.
 </h2>
 
 <h3>
-Overview: The following breaks down the long and complicated code for running the game as well as the AI planner/collaborator.
+Overview of the main experiment.
 </h3>
 
-
+There are three important files that control the final experimental function and interface: _'game-main-exp.html'_ , _'new-interface-all-agents.js'_, _'AIplannerv1.5'_. Together, these control the important flow of the experiment. _'game-main-exp.html'_ controls all the HTML elements and intializes the game engine _'new-interface-all-agents.js'_. The underlying path planning algorithm for each of the collaborative AI agents is in _'AIplannerv1.5'_.
 
 
 <h2>
