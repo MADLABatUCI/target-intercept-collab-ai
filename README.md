@@ -2,7 +2,7 @@
 Target Intercept Collaborative AI Game
 </h1>
 
-This is a collaborative AI game. Feel free to take inspiration as long as you cite this as inspiration. Email Sheer Karny (skarny@uci.edu) for citation instructions
+This is a collaborative AI game written in JavaScript. Feel free to take inspiration as long as you cite this as inspiration. Email Sheer Karny (skarny@uci.edu) for citation instructions
 
 <h2>
 Basic overview of the code.
