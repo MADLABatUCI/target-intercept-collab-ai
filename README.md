@@ -41,9 +41,9 @@ Game and AI code.
 </h2>
 
 <h3>
-Overview:
+Overview: The following breaks down the long and complicated code for running the game as well as the AI planner/collaborator.
 </h3>
-The following breaks down the long and complicated code for running the game as well as the AI planner.
+
 
 
 
