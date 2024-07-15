@@ -8,7 +8,7 @@ This is a collaborative AI game written in JavaScript. Feel free to take inspira
 Basic overview of the code.
 </h2>
 
-Before diving into the details, we need to go into the general way these pages work. Specifically, unique HTML pages have accompanying JavaScript to run the individual game components. The exeperiment is broken down into three main sections: 1. Consent, 2. Interactive game \& experiment instructions, 3. The full experiment.
+Before diving into the details, we need to go into the general way these pages work. Specifically, unique HTML pages have accompanying JavaScript to run the individual game components. The experiment is broken down into three main sections: 1. Consent, 2. Interactive game \& experiment instructions, 3. The full experiment.
 
 _'index.html'_ initializes the web interface for the code. 
 
