@@ -4,6 +4,8 @@ Target Intercept Collaborative AI Game
 
 This is a collaborative AI game written in JavaScript. Feel free to take inspiration as long as you cite this as inspiration. Email Sheer Karny (skarny@uci.edu) for citation instructions.
 
+The premise of this game is to work with a collaborative AI agent to gain the highest possible score. Here is what gameplay looks like.
+
 ![Game Preview](images/game-preview.gif)
 
 <h2>
