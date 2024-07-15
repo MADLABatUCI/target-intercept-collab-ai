@@ -37,6 +37,17 @@ The JavaScript children of each of the fornamed HTML pages:
 
 
 <h2>
+Game and AI code.
+</h2>
+
+<h3>
+Overview:
+</h3>
+The following breaks down the long and complicated code for running the game as well as the AI planner.
+
+
+
+<h2>
 More important details:
 </h2>
 
