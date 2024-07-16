@@ -229,11 +229,11 @@ let difficultySettings = {
     // 5 targets first
     1: {0: {1: {AICollab: 0,   // Pair A
                 maxTargets: 5},  
-            2: {AICollab: COLLAB,
+            2: {AICollab: 3,
                 maxTargets: 5}},
         1: {1: {AICollab: 0,     // Pair A
                 maxTargets: 15},
-            2: {AICollab: COLLAB,
+            2: {AICollab: 3,
                 maxTargets: 15}}},
 
     2: {0: {1: {AICollab: COLLAB,   // Pair B
@@ -291,11 +291,11 @@ let difficultySettings = {
             2: {AICollab: 0,
                 maxTargets: 5}}},
 
-    8: {0: {1: {AICollab: COLLAB,    // Pair B
+    8: {0: {1: {AICollab: 3,    // Pair B
                 maxTargets: 15}, 
             2: {AICollab: 0,
                 maxTargets: 15}},
-        1: {1: {AICollab: COLLAB,    // Pair B
+        1: {1: {AICollab: 3,    // Pair B
                 maxTargets: 5},
             2: {AICollab: 0,
                 maxTargets: 5}}},
@@ -347,12 +347,12 @@ let drtLightChoice      = 0; // random choice of light to display
 
 let maxFrames = null;
 if (DEBUG){
-    maxFrames         = 30 * fps;// settings.maxSeconds * fps;
+    maxFrames         = 180 * fps;// settings.maxSeconds * fps;
 } else{ // set it to whatever you want
     maxFrames         = settings.maxSeconds * fps; //120 * 60; // Two minutes in frames
 }
 
-let halfwayGame = Math.floor(maxFrames/2);
+// let halfwayGame = Math.floor(maxFrames/2);
 
 const updateInterval    = 1000 / fps; // How many milliseconds per logic update
 let firstRender         = 0;
@@ -966,6 +966,8 @@ function updateObjects(settings) {
                 caughtAnything    = true;    //MS6
                 score             += obj.value;
                 player.score      += obj.value;
+
+                if (obj.ID == player.targetObjID) player.moving = false; // stop player after catching intended target
 
                 // *************************** Data Writing *********************************//
                 let gameState = extractGameState(objects);
@@ -1698,7 +1700,7 @@ function drawCircle(centerX, centerY, radius, color) {
 function drawCenterMarker(centerX=400, centerY=400, radius=10, color = "rgba(128, 128, 128, 0.5)"){
     if (player.toCenter) drawCircle(centerX, centerY, 
                                     radius + 5,'red');
-    if (AIplayer.toCenter) drawCircle(centerX, centerY,
+    if (AIplayer.toCenter && !planDelay) drawCircle(centerX, centerY,
                                     radius + 5, AIplayer.color);
     drawCircle(centerX, centerY, radius, color);
 }
@@ -2652,6 +2654,9 @@ $(document).ready( function(){
                     objects[i].innerColor = 'red'
                 }
                 
+                if (DEBUG) console.log("frames player not moving", numFramesPlayernotMoving);
+                if (DEBUG) console.log("ai frame delay relative to human :", planDelayFrames);
+
                 // Values for writing to dataframe
                 let objectData      = {ID: objects[i].ID, value: objects[i].value,
                                     x: objects[i].x, y: objects[i].y,
@@ -2663,7 +2668,8 @@ $(document).ready( function(){
                                     dx: player.dx, dy: player.dy,
                                     targetX: player.targetX, targetY: player.targetY,
                                     angle: player.angle, moving: player.moving,
-                                    score:player.score, AIscore: AIplayer.score};
+                                    score:player.score, AIscore: AIplayer.score, 
+                                    playerDelay: numFramesPlayernotMoving, AIplayerDelay: planDelayFrames};
 
                 let interceptData   = {x: interceptPosX, y: interceptPosY, time: travelTime, distance: totalDistanceTraveled,  
                                         intendedTarget: player.targetObjID, AIintendedTarget: AIplayer.ID};
