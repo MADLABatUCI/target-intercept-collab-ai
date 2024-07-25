@@ -64,7 +64,7 @@ function getCollabTypeParams(){
     const urlParams = new URLSearchParams(window.location.search);
     let collabType = parseInt(urlParams.get('collab'), 5);
 
-    console.log("collabType: ", collabType);
+    // console.log("collabType: ", collabType);
 
     if (collabType == 0){
         collabType = 0
@@ -78,14 +78,14 @@ function getCollabTypeParams(){
 var DEBUG  = getDebugParams();      // Always start coding in DEBUG mode
 var COLLAB = getCollabTypeParams(); // 0=ignorant; 1=omit; 2=divide; 3=delay
 
-console.log("collab: ", COLLAB);
+// console.log("collab: ", COLLAB);
 
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab-Delay2-debug_delayCheck";
+   studyId    = "uci-hri-experiment-collab-Full-DEBUG";
 } else {
-    studyId   = "uci-hri-experiment-collab-Delay2";
+    studyId   = "uci-hri-experiment-collab-Full";
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
@@ -225,82 +225,154 @@ let settings = {
     speedHigh: 2.99,               // highest end of object speed distribution
 };
 
+
+let AICollab1;
+let AICollab2;
+// let collab1, collab2;   
+let collabPlayer1 = 0;
+let collabPlayer2 = 1;
+
+let agent1Name;
+let agent2Name;
+
+let agentNames = {
+    0: "Ignorant",
+    1: "Omit",
+    2: "Divide",
+    3: "Delay",
+    4: "Bottom-Feeder"
+}
+
+let teamingSettings = {
+    1: {AICollab1 : 0,          // ignorant
+        AICollab2 : 3},         // delay
+        
+    2: {AICollab1 : 0,          // ignorant
+        AICollab2 : 1},         // omit
+
+    3: {AICollab1 : 0,          // ignorant
+        AICollab2 : 4},         // bottom-feeder
+
+    4: {AICollab1 : 0,          // ignorant
+        AICollab2 : 2},         // divide
+
+    5: {AICollab1 : 3,          // delay
+        AICollab2 : 1},         // omit
+
+    6: {AICollab1 : 3,          // delay
+        AICollab2 : 4},         // bottom-feeder
+
+    7: {AICollab1 : 3,          // delay
+        AICollab2 : 2},         // divide
+
+    8: {AICollab1 : 1,          // omit
+        AICollab2 : 4},         // bottom-feeder
+
+    9: {AICollab1 : 1,          // omit
+        AICollab2 : 2},         // divide
+
+    10:{AICollab1 : 4,          // bottom-feeder    
+        AICollab2 : 2}          // divide,
+};
+
 let difficultySettings = {
     // 5 targets first
-    1: {0: {1: {AICollab: 0,   // Pair A
+    1: {0: {1: {AICollab: collabPlayer1,   // Pair A
                 maxTargets: 5},  
-            2: {AICollab: 3,
+            2: {AICollab: collabPlayer2,
                 maxTargets: 5}},
-        1: {1: {AICollab: 0,     // Pair A
+        1: {1: {AICollab: collabPlayer1,     // Pair A
                 maxTargets: 15},
-            2: {AICollab: 3,
+            2: {AICollab: collabPlayer2,
                 maxTargets: 15}}},
 
-    2: {0: {1: {AICollab: COLLAB,   // Pair B
+    2: {0: {1: {AICollab: collabPlayer2,   // Pair B
                 maxTargets: 5},  
-            2: {AICollab: 0,
+            2: {AICollab: collabPlayer1,
                 maxTargets: 5}},
-        1: {1: {AICollab: 0,    // Pair A
+        1: {1: {AICollab: collabPlayer1,    // Pair A
                 maxTargets: 15},
-            2: {AICollab: COLLAB,
+            2: {AICollab: collabPlayer2,
                 maxTargets: 15}}},
     
-    3: {0: {1: {AICollab: 0,    // Pair A
+    3: {0: {1: {AICollab:collabPlayer1,    // Pair A
                 maxTargets: 5},
-            2: {AICollab: COLLAB,
+            2: {AICollab: collabPlayer2,
                 maxTargets: 5}},
-        1: {1: {AICollab: COLLAB,   // Pair B
+        1: {1: {AICollab: collabPlayer2,   // Pair B
                 maxTargets: 15},
-            2: {AICollab: 0,
+            2: {AICollab: collabPlayer1,
                 maxTargets: 15}}},
 
-    4: {0: {1: {AICollab: COLLAB,    // Pair B
+    4: {0: {1: {AICollab: collabPlayer2,    // Pair B
                 maxTargets: 5}, 
-            2: {AICollab: 0,
+            2: {AICollab: collabPlayer1,
                 maxTargets: 5}},
-        1: {1: {AICollab: COLLAB,    // Pair B
+        1: {1: {AICollab: collabPlayer2,    // Pair B
                 maxTargets: 15},
-            2: {AICollab: 0,
+            2: {AICollab: collabPlayer1,
                 maxTargets: 15}}},
 
      // 15 Targets first
-    5: {0: {1: {AICollab: 0,   // Pair A
+    5: {0: {1: {AICollab: collabPlayer1,   // Pair A
                 maxTargets: 15},  
-            2: {AICollab: COLLAB,
+            2: {AICollab: collabPlayer2,
                 maxTargets: 15}},
-        1: {1: {AICollab: 0,     // Pair A
+        1: {1: {AICollab: collabPlayer1,     // Pair A
                 maxTargets: 5},
-            2: {AICollab: COLLAB,
+            2: {AICollab: collabPlayer2,
                 maxTargets: 5}}},
 
-    6: {0: {1: {AICollab: COLLAB,   // Pair B
+    6: {0: {1: {AICollab: collabPlayer2,   // Pair B
                 maxTargets: 15},  
-            2: {AICollab: 0,
+            2: {AICollab: collabPlayer1,
                 maxTargets: 15}},
-        1: {1: {AICollab: 0,    // Pair A
+        1: {1: {AICollab: collabPlayer1,    // Pair A
                 maxTargets: 5},
-            2: {AICollab: COLLAB,
+            2: {AICollab: collabPlayer2,
                 maxTargets: 5}}},
     
-    7: {0: {1: {AICollab: 0,    // Pair A
+    7: {0: {1: {AICollab: collabPlayer1,    // Pair A
                 maxTargets: 15},
-            2: {AICollab: COLLAB,
+            2: {AICollab: collabPlayer2,
                 maxTargets: 15}},
-        1: {1: {AICollab: COLLAB,   // Pair B
+        1: {1: {AICollab: collabPlayer2,   // Pair B
                 maxTargets: 5},
-            2: {AICollab: 0,
+            2: {AICollab: collabPlayer1,
                 maxTargets: 5}}},
 
-    8: {0: {1: {AICollab: 3,    // Pair B
+    8: {0: {1: {AICollab: collabPlayer2,    // Pair B
                 maxTargets: 15}, 
-            2: {AICollab: 0,
+            2: {AICollab: collabPlayer1,
                 maxTargets: 15}},
-        1: {1: {AICollab: 3,    // Pair B
+        1: {1: {AICollab: collabPlayer2,    // Pair B
                 maxTargets: 5},
-            2: {AICollab: 0,
+            2: {AICollab: collabPlayer1,
                 maxTargets: 5}}},
 
 };
+
+// function assigns the condition's agent types to the difficulty settings
+function updateDifficultySettings() {
+    let newDifficultySettings = JSON.parse(JSON.stringify(difficultySettings)); // Create a deep copy
+
+    for (let condition in newDifficultySettings) {
+        for (let block in newDifficultySettings[condition]) {
+            for (let round in newDifficultySettings[condition][block]) {
+                if (newDifficultySettings[condition][block][round].AICollab === 0) {
+                    newDifficultySettings[condition][block][round].AICollab = teamingSettings[currentTeamingCondition].AICollab1;
+                } else if (newDifficultySettings[condition][block][round].AICollab === 1) {
+                    newDifficultySettings[condition][block][round].AICollab = teamingSettings[currentTeamingCondition].AICollab2;
+                }
+            }
+        }
+    }
+
+    // console.log("Updated DifficultySettings:", newDifficultySettings);
+    return newDifficultySettings;
+}
+
+// *********************************************** GAME INITIALIZATION ***********************************************//
 
 function getPermutations(array) {
     // Base case: if array is empty, there is only one permutation: an empty array
@@ -329,6 +401,7 @@ const maxTargetSet = [5, 10, 15];
 let currentRound = 1;
 let currentBlock = 0;
 let currentCondition = null;
+let currentTeamingCondition = null;
 let curSeeds = null;   
 let noAssignment = true;
 
@@ -347,7 +420,7 @@ let drtLightChoice      = 0; // random choice of light to display
 
 let maxFrames = null;
 if (DEBUG){
-    maxFrames         = 180 * fps;// settings.maxSeconds * fps;
+    maxFrames         = 15 * fps;// settings.maxSeconds * fps;
 } else{ // set it to whatever you want
     maxFrames         = settings.maxSeconds * fps; //120 * 60; // Two minutes in frames
 }
@@ -371,10 +444,18 @@ let aiClicks_adjusted       = [];
 let aiClicks_offline = [];
 let aiClicks_adjusted_offline = [];
 
+
+// ****** PLAN DELAY VARIABLES ****** //
+
 // Delay for the collaborative agent between plans
 let planDelayCounter = 0;
-let planDelay = false;
-let planDelayFrames = 10; // 0.3 seconds in frames
+let planDelay = false; 
+let planDelayFrames = Math.floor(0.7 * 30); // 700 ms in frames (based on pilot data)
+
+let avgResponseTime;
+let clickTimes = [];
+
+// ********************************* //
 
 // const eventStreamSize = 720; // 2 minutes of 60 fps updates
 // let eventStream = Array.from({ length: eventStreamSize }, () => ({}));// preallocate the array
@@ -415,10 +496,6 @@ const player = {
     height:50,
     score:0
 };
-let clickTimes = [];
-let lastClickTime = null;
-let playerPrevTarget = null;
-let avgResponseTime;
 
 let humanImg = new Image();
 humanImg.src = './images/human-head-small.png'; // Path to your robot head image
@@ -448,7 +525,7 @@ function generateRandomInt(min, max) {
 }
 let randomGenerator;
 
-// intial varaiables for movingaverage to delay clicks
+// intial varaiables for moving average to delay clicks
 let ema;
 let period = 10;
 let smoothingFactor = 2 / (1 + period);
@@ -475,14 +552,15 @@ const AIplayer = {
     speed: 1.5, 
     width:50, 
     height:50,
-    score:0
+    score:0,
+    collabOrder: 0,
+    collabType: 0,
 };
 let AIcaughtTargets = [];
 let AIplayerLocation = [];
 
 let robotHeadImg = new Image();
 robotHeadImg.src = './images/simple-robot-250px.png'; // Path to your robot head image
-
 
 let AIcaughtTargets_offline = [];
 let AIplayerLocation_offline = [];
@@ -504,17 +582,36 @@ const AIplayer_offline = {
     height:50,
     score:0
 };
+
 //**************************************************** BLOCK RANDOMIZATION ******************************************************//
 
 async function initExperimentSettings() {
     const maxCompletionTimeMinutes = 60;
 
-    // Assign random condition (AI Adapt or AI Naive)
-    // assignedCondition === 0 means that participant is in the AI Naive condition
     const aiBlockCondition = 'aiCondition'; // a string we use to represent the condition name
     let numConditions = 8; // number of conditions
     let numDraws = 1; // number of draws
     let assignedCondition = await blockRandomization(db1, studyId, aiBlockCondition, numConditions, maxCompletionTimeMinutes, numDraws);
+    currentCondition = assignedCondition[0]+1;
+
+    const teamingBlockCondition = 'teamingCondition'; // a string we use to represent the condition name
+    let numTeamingConditions = 10; // number of conditions
+    let assignedTeamingCondition;
+
+    if (!DEBUG){
+        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
+    } else {
+        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
+        // assignedTeamingCondition = [2]; // 3 == ignorant and divide
+    }
+
+    currentTeamingCondition = assignedTeamingCondition[0]+1;
+    collabPlayer1 = teamingSettings[currentTeamingCondition].AICollab1;
+    collabPlayer2 = teamingSettings[currentTeamingCondition].AICollab2;
+
+    difficultySettings = updateDifficultySettings();
+
+    if (DEBUG) console.log("Assigned AI Teams", collabPlayer1, collabPlayer2);
 
     var randomValues = [];
     for (var i = 0; i < 6; i++) {
@@ -523,12 +620,11 @@ async function initExperimentSettings() {
 
     noAssignment = false;
 
-    currentCondition = assignedCondition[0]+1;
     curSeeds = randomValues;
 
-    if (DEBUG){
-        currentCondition = 8;
-    }
+    // if (DEBUG){
+    //     currentCondition = 8;
+    // }
 }
 
 // Assign a condition to each new participant.
@@ -537,15 +633,17 @@ if (noAssignment){
         await initExperimentSettings();
         // curSeeds = [12,123,12345,123456];
         // settings.maxTargets=100;
-        currentCondition = 8;
+        // currentCondition = 1;
+        // currentTeamingCondition = 1;
         console.log('assignedCondition:', currentCondition); // Add this line
+        console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
         console.log('assignedSeed:', curSeeds); // Add this line
     } else {
         await initExperimentSettings();
         // console.log('assignedCondition:', currentCondition); // Add this line
         // console.log('assignedSeed:', curSeeds); // Add this line
     }
-    startGame(currentRound, currentCondition, currentBlock, curSeeds); // Start the next round
+    startGame(currentRound, currentCondition, currentBlock, curSeeds, currentTeamingCondition); // Start the next round
     noAssignment = false;
 }
 
@@ -557,6 +655,7 @@ let prevSetting;
 
 // Start Game function
 async function startGame(round, condition, block, seeds) {
+
     currentRound = round; // Start at the specified round, or the current round
 
     let blockSetting = difficultySettings[condition][block];
@@ -566,7 +665,10 @@ async function startGame(round, condition, block, seeds) {
     // settings.AIMode = roundSettings.AIMode;
     // settings.AIStabilityThreshold = roundSettings.AIStabilityThreshold;
     settings.AICollab = roundSettings.AICollab;
+    AIplayer.collabType = roundSettings.AICollab;
+
     settings.maxTargets = roundSettings.maxTargets;
+    
 
     // Debug setting for max targets
     // if (DEBUG) settings.maxTargets=8; // this was to get many targets for debuggin
@@ -574,17 +676,36 @@ async function startGame(round, condition, block, seeds) {
     // Change to the next seed
     if (currentBlock == 0) {
         settings.randSeed = seeds[currentRound - 1];
+        
+        // This is needed to handle coloring of the AI player and naming
+        if (currentRound == 1){
+            AIplayer.collabOrder = 1;
+            agent1Name = agentNames[AIplayer.collabType];
+        } else if (currentRound == 2){
+            AIplayer.collabOrder = 2;
+            agent2Name = agentNames[AIplayer.collabType];
+        }
+
     } else if (currentBlock == 1) {
         settings.randSeed = seeds[currentRound + 1];
+
+        // handle coloring of the AI player and the naming
+        if (currentRound == 1){
+            AIplayer.collabOrder = 1;
+            agent1Name = agentNames[AIplayer.collabType];
+        } else if (currentRound == 2){
+            AIplayer.collabOrder = 2;
+            agent2Name = agentNames[AIplayer.collabType];
+        }
     } 
 
    
-    if (settings.AICollab == 0  && settings.maxTargets == 5) AIplayer.color = 'rgba(0, 128, 0, 0.5)'; // green transparent
-    if (settings.AICollab >= 1 && settings.maxTargets == 5) AIplayer.color = 'rgba(128, 0, 128, 0.5)'; // purple transparent
+    if (AIplayer.collabOrder == 1  && settings.maxTargets == 5) AIplayer.color = 'rgba(0, 128, 0, 0.5)'; // green transparent
+    if (AIplayer.collabOrder == 2 && settings.maxTargets == 5) AIplayer.color = 'rgba(128, 0, 128, 0.5)'; // purple transparent
 
     // if (settings.AICollab == 0  && settings.maxTargets == 15) AIplayer.color = 'rgba(128, 128, 128, 0.7)'; // iron transparent
-    if (settings.AICollab == 0  && settings.maxTargets == 15) AIplayer.color = 'rgba(0, 0, 255, 0.5)'; // blue transparent
-    if (settings.AICollab >= 1 && settings.maxTargets == 15) AIplayer.color = 'rgba(184, 115, 51, 0.5)'; // copper transparent 
+    if (AIplayer.collabOrder == 1  && settings.maxTargets == 15) AIplayer.color = 'rgba(0, 0, 255, 0.5)'; // blue transparent
+    if (AIplayer.collabOrder == 2 && settings.maxTargets == 15) AIplayer.color = 'rgba(184, 115, 51, 0.5)'; // copper transparent 
 
     if (DEBUG){
         //console.log("Default Settings AI Mode", settings.AIMode);
@@ -642,8 +763,10 @@ async function endGame() {
 
         if (visitedBlocks == 1) {
             // prevSetting = settings
-            await loadAIComparison();
-            $("#ai-comparison-container").attr("hidden", false);
+            await loadFullSurvey();
+            $("#survey-full-container").attr("hidden", false);
+            // await loadAIComparison();
+            // $("#ai-comparison-container").attr("hidden", false);
             $("#full-game-container").attr("hidden", true);
         }
     
@@ -651,8 +774,10 @@ async function endGame() {
             startGame(currentRound, currentCondition,currentBlock,curSeeds); // Start the next round
         } else{
             console.log("End of Experiment");
-            loadAIComparison();
-            $("#ai-comparison-container").attr("hidden", false);
+            await loadFullSurvey();
+            $("#survey-full-container").attr("hidden", false);
+            // loadAIComparison();
+            // $("#ai-comparison-container").attr("hidden", false);
             $("#full-game-container").attr("hidden", true);
         
         }
@@ -830,6 +955,8 @@ function updateObjects(settings) {
         }
     } else {
         numFramesPlayernotMoving++; // MS6
+        player.dx = 0;
+        player.dy = 0;
     }
 
     // Prevent player from moving off-screen
@@ -905,7 +1032,7 @@ function updateObjects(settings) {
             let distanceFromCenter = Math.sqrt(dx * dx + dy * dy) - 10;
 
             let willOverlap = willSquareAndCircleOverlap(player.x, player.y, player.dx, player.dy, player.width,
-                obj.x, obj.y, obj.dx, obj.dy, obj.size, player.timeToIntercept);
+                obj.x, obj.y, obj.dx, obj.dy, obj.size, player.timeToIntercept, obj.marked);
             
             if (willOverlap){
                 obj.willOverlap = willOverlap;
@@ -920,7 +1047,7 @@ function updateObjects(settings) {
 
             // console.log("Will overlap", willOverlap);
 
-            if (willOverlap) drawDebugOverlap(obj, willOverlap);
+            if (obj.willOverlap) drawDebugOverlap(obj, willOverlap);
 
             if (distanceFromCenter > observableRadius) { // Object leaves observable area (EXIT EVENT)
                 // console.log("Object is outside observable area");
@@ -1102,17 +1229,21 @@ function updateObjects(settings) {
     let objectsRemoved;
 
     // Apply the AI Collab type to remove certain objects (this is only for some rule-based agents)
-    if (settings.AICollab == 1) {
-        objectsRemoved = objects.filter(obj => !obj.willOverlap);
+    if ((settings.AICollab > 0) && !(settings.AICollab == 2)) {
+        objectsRemoved = objects.filter(obj => !obj.willOverlap); // all agents remove overlapping objects
     } else if (settings.AICollab == 2) {
         objectsRemoved = objects.filter(obj => obj.inPlayerRegion);
+        objectsRemoved = objectsRemoved.filter(obj => !obj.willOverlap);
     } else {
-        objectsRemoved = objects;
+        objectsRemoved = objects; // ignorant agent
     } 
+
+    let isBottomFeeder = false;
+    if (settings.AICollab == 4) isBottomFeeder = true;
     
     // SK1 Online AI player
     [ firstStepCollab, bestSolCollab, allSolCollab ] = runAIPlanner(objectsRemoved, AIplayer , observableRadius , center, 'collab', 
-        settings.AIStabilityThreshold, prevBestSolCollab, allSolCollab, frameCountGame, settings.alpha );
+        settings.AIStabilityThreshold, prevBestSolCollab, allSolCollab, frameCountGame, settings.alpha, isBottomFeeder);
     
     // AI intention for click,target pair
     AIplayer.targetX = firstStepCollab.x; // MS7 -- just save the firstStepOffline object to firebase
@@ -1125,7 +1256,7 @@ function updateObjects(settings) {
         AIplayer.toCenter = false;
     }
 
-    // mark the object
+    // Mark the object as currently being targetted
     if ((prevFirstStepCollab!= null) && (prevFirstStepCollab.ID != AIplayer.ID)){
         objects.forEach((obj, index) => {
             if (obj.ID == AIplayer.ID){
@@ -1141,7 +1272,7 @@ function updateObjects(settings) {
         });
     } 
       
-    // keep track of collab agent decisions
+    // Keep track of collab agent decisions
     if ((prevFirstStepCollab != null) && (bestSolCollab.ID != prevBestSolCollab.ID)) {
         // push AI intention array
         // aiIntention.push();
@@ -1187,7 +1318,7 @@ function updateObjects(settings) {
 
     // Run the planner conditional on the human player
     // MS8
-    [ firstStep, bestSol, allSol ] = runAIPlanner( objects, player , observableRadius , center, 'human', settings.AIStabilityThreshold, bestSol, allSol, frameCountGame, settings.alpha );
+    // [ firstStep, bestSol, allSol ] = runAIPlanner( objects, player , observableRadius , center, 'human', settings.AIStabilityThreshold, bestSol, allSol, frameCountGame, settings.alpha );
     
     // if (settings.AIMode>0) {    
     //     // MS6
@@ -1304,8 +1435,8 @@ function createComposite(settings) {
     let fillRadius      = parseInt(sampleFromDistribution(cumulative, 1));
 
     // sample from a distribution of speeds
-    let speedRange = settings.speedHigh - settings.speedLow
-    let speedSample = randomGenerator()  * speedRange + settings.speedLow;
+    let speedRange  = settings.speedHigh - settings.speedLow
+    let speedSample = randomGenerator() * speedRange + settings.speedLow;
 
     let newObj = {
         ID: frameCountGame ,
@@ -1463,7 +1594,9 @@ function extractGameState(objects){
         clicked: obj.clicked,
         marked:obj.marked,
         AImarked:obj.AImarked,
-        value: obj.value
+        value: obj.value,
+        active: obj,
+        intercepted: obj.intercepted,
     }));
 }
 
@@ -1492,6 +1625,10 @@ function getExponentialMovingAverage(n) {
 }
 
 //***************************************************** BETA SAMPLING ****************************************************//
+let a = 1;
+let b = 2;
+let bins = 16;
+
 function gamma(z) {
     const g = 7;
     const C = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
@@ -1560,9 +1697,6 @@ function sampleFromDistribution(cumulative, totalSamples = 1) {
     }
     return samples;
 }
-let a = 1;
-let b = 2;
-let bins = 16;
 
 // let probabilities = binProbabilities(a, b, bins);
 // let cumulative = cumulativeProbabilities(probabilities);
@@ -1685,6 +1819,7 @@ function drawCompositeShape(obj) {
     // Then draw the inner circle on top
     drawCircle(obj.x, obj.y, obj.fill, obj.innerColor); // Inner circle, smaller radius
 
+    if (DEBUG && obj.willOverlap) drawDebugOverlap(obj, obj.willOverlap);
     
 }
 
@@ -1715,10 +1850,10 @@ function drawTargetMarker(centerX, centerY, radius1, radius2, triangleBase = 5, 
     if (type == 'player') ctx.fillStyle = 'red';
 
     // AI Players have their own marker colors by collab type and the game condition
-    if ((type == 'AI') && settings.AICollab == 0 && settings.maxTargets == 5) ctx.fillStyle = 'green';
-    if ((type == 'AI') && settings.AICollab >= 1 && settings.maxTargets == 5) ctx.fillStyle = 'purple';
-    if ((type == 'AI') && settings.AICollab == 0 && settings.maxTargets == 15) ctx.fillStyle = 'blue';
-    if ((type == 'AI') && settings.AICollab >= 1 && settings.maxTargets == 15) ctx.fillStyle = 'rgba(176, 97, 23)';// 'rgba(184, 115, 51)';
+    if ((type == 'AI') && AIplayer.collabOrder == 1 && settings.maxTargets == 5) ctx.fillStyle = 'green';
+    if ((type == 'AI') && AIplayer.collabOrder == 2 && settings.maxTargets == 5) ctx.fillStyle = 'purple';
+    if ((type == 'AI') && AIplayer.collabOrder == 1 && settings.maxTargets == 15) ctx.fillStyle = 'blue';
+    if ((type == 'AI') && AIplayer.collabOrder == 2 && settings.maxTargets == 15) ctx.fillStyle = 'rgba(176, 97, 23)';// 'rgba(184, 115, 51)';
 
     angles.forEach((angle) => {
         const tipX = centerX + radius1 * Math.cos(angle);
@@ -2264,28 +2399,28 @@ function displayAIStatus() {
 
     let curMaxTargets = settings.maxTargets;
 
-    if (settings.AICollab == 0 && curMaxTargets == 5) {
+    if (AIplayer.collabOrder == 1 && curMaxTargets == 5) {
         aiAssistRobot.src = "./images/simple-robot-line-removebg-preview.png";
         aiAssistRobot.style.backgroundColor = AIplayer.color;
         aiAssistRobotCaption.textContent = "Hi there! I'm Green-Bot. I'll be controlling the green square.";
         aiAssistRobotCaption.style.opacity = "1";
         aiAssistRobotCaption.style.backgroundColor = AIplayer.color;; // Semi-transparent green
         aiAssistRobotCaption.style.fontWeight = "bold";
-    } else if (settings.AICollab >= 1 && curMaxTargets == 5) {
+    } else if (AIplayer.collabOrder == 2 && curMaxTargets == 5) {
         aiAssistRobot.src = "./images/simple-robot-line-removebg-preview.png";
         aiAssistRobot.style.backgroundColor = AIplayer.color;
         aiAssistRobotCaption.textContent = "Howdy! I'm Purple-Bot. I'll be controlling the purple square.";
         aiAssistRobotCaption.style.opacity = "1";
         aiAssistRobotCaption.style.backgroundColor = "rgba(128, 0, 128, 0.5)"; // Semi-transparent purple
         aiAssistRobotCaption.style.fontWeight = "bold";
-    } else if (settings.AICollab == 0 && curMaxTargets == 15) {
+    } else if (AIplayer.collabOrder == 1 && curMaxTargets == 15) {
         aiAssistRobot.src = "./images/simple-robot-line-removebg-preview.png";
         aiAssistRobot.style.backgroundColor = AIplayer.color;
         aiAssistRobotCaption.textContent = "Ahoy! I'm Blue-Bot. I'll be controlling the blue square.";
         aiAssistRobotCaption.style.opacity = "1";
         aiAssistRobotCaption.style.backgroundColor = AIplayer.color;; // Semi-transparent brown
         aiAssistRobotCaption.style.fontWeight = "bold";
-    } else if (settings.AICollab >= 1 && curMaxTargets == 15) {
+    } else if (AIplayer.collabOrder == 2 && curMaxTargets == 15) {
         aiAssistRobot.src = "./images/simple-robot-line-removebg-preview.png";
         aiAssistRobot.style.backgroundColor = AIplayer.color;
         aiAssistRobotCaption.textContent = "G'day! I'm Copper-Bot. I'll be controlling the copper-colored square.";
@@ -2445,12 +2580,24 @@ function willSquareAndCircleOverlap(x1, y1, vx1, vy1, r1, x2, y2, vx2, vy2, r2, 
         };
     }
 
+    // Function to calculate distance from point to line segment
+    function pointToSegmentDistance(px, py, x1, y1, x2, y2) {
+        const lineLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        if (lineLength === 0) return Math.sqrt((px - x1) ** 2 + (py - y1) ** 2);
+
+        const t = Math.max(0, Math.min(1, ((px - x1) * (x2 - x1) + (py - y1) * (y2 - y1)) / (lineLength ** 2)));
+        const closestX = x1 + t * (x2 - x1);
+        const closestY = y1 + t * (y2 - y1);
+        return Math.sqrt((px - closestX) ** 2 + (py - closestY) ** 2);
+    }
+
     // Check overlap at time t
     function checkOverlap(t) {
         if (t < 0 || t > timeToIntercept) return false;
 
         const circle = getCircleCenter(x2, y2, t);
         const squareCorners = getSquareCorners(x1, y1, r1, t);
+        const halfR = r1 / 2;
 
         // Check distance to all corners
         for (const corner of squareCorners) {
@@ -2461,25 +2608,21 @@ function willSquareAndCircleOverlap(x1, y1, vx1, vy1, r1, x2, y2, vx2, vy2, r2, 
         }
 
         // Check distance to edges
-        const halfR = r1 / 2;
-        const squareEdges = [
-            { x: x1 - halfR, y: y1, vx: 0, vy: 1 },
-            { x: x1 + halfR, y: y1, vx: 0, vy: 1 },
-            { x: x1, y: y1 - halfR, vx: 1, vy: 0 },
-            { x: x1, y: y1 + halfR, vx: 1, vy: 0 }
+        const edges = [
+            { x1: x1 - halfR, y1: y1 - halfR, x2: x1 + halfR, y2: y1 - halfR },
+            { x1: x1 + halfR, y1: y1 - halfR, x2: x1 + halfR, y2: y1 + halfR },
+            { x1: x1 + halfR, y1: y1 + halfR, x2: x1 - halfR, y2: y1 + halfR },
+            { x1: x1 - halfR, y1: y1 + halfR, x2: x1 - halfR, y2: y1 - halfR }
         ].map(edge => ({
-            x: edge.x + vx1 * t,
-            y: edge.y + vy1 * t,
-            vx: edge.vx,
-            vy: edge.vy
+            x1: edge.x1 + vx1 * t,
+            y1: edge.y1 + vy1 * t,
+            x2: edge.x2 + vx1 * t,
+            y2: edge.y2 + vy1 * t
         }));
 
-        for (const edge of squareEdges) {
-            const t0 = ((circle.x - edge.x) * edge.vx + (circle.y - edge.y) * edge.vy) / (edge.vx * edge.vx + edge.vy * edge.vy);
-            const closestX = edge.x + t0 * edge.vx;
-            const closestY = edge.y + t0 * edge.vy;
-            const dist = Math.sqrt((circle.x - closestX) ** 2 + (circle.y - closestY) ** 2);
-            if (dist <= r2 && t0 >= -halfR && t0 <= halfR) {
+        for (const edge of edges) {
+            const dist = pointToSegmentDistance(circle.x, circle.y, edge.x1, edge.y1, edge.x2, edge.y2);
+            if (dist <= r2) {
                 return true;
             }
         }
@@ -2488,21 +2631,201 @@ function willSquareAndCircleOverlap(x1, y1, vx1, vy1, r1, x2, y2, vx2, vy2, r2, 
     }
 
     // Solve quadratic equation to find potential times of overlap
-    const a = (vx1 - vx2) * (vx1 - vx2) + (vy1 - vy2) * (vy1 - vy2);
+    const a = (vx1 - vx2) ** 2 + (vy1 - vy2) ** 2;
     const b = 2 * ((x1 - x2) * (vx1 - vx2) + (y1 - y2) * (vy1 - vy2));
-    const c = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) - (r1 / 2 + r2) * (r1 / 2 + r2);
+    const c = (x1 - x2) ** 2 + (y1 - y2) ** 2 - (r1 / 2 + r2) ** 2;
 
     const discriminant = b * b - 4 * a * c;
     if (discriminant < 0) {
         return false;
     }
 
-    const t1 = (-b - Math.sqrt(discriminant)) / (2 * a);
-    const t2 = (-b + Math.sqrt(discriminant)) / (2 * a);
+    const sqrtDiscriminant = Math.sqrt(discriminant);
+    const t1 = (-b - sqrtDiscriminant) / (2 * a);
+    const t2 = (-b + sqrtDiscriminant) / (2 * a);
 
     // Check if overlap occurs at any potential time points within the stopping time
     return checkOverlap(t1) || checkOverlap(t2) || checkOverlap(0);
 }
+
+// function willSquareAndCircleOverlap(x1, y1, vx1, vy1, r1, x2, y2, vx2, vy2, r2, timeToIntercept) {
+//     // Function to calculate the square's corners at time t
+//     function getSquareCorners(x, y, r, t) {
+//         const halfR = r / 2;
+//         return [
+//             { x: x + halfR, y: y + halfR },
+//             { x: x + halfR, y: y - halfR },
+//             { x: x - halfR, y: y + halfR },
+//             { x: x - halfR, y: y - halfR }
+//         ].map(corner => ({
+//             x: corner.x + vx1 * t,
+//             y: corner.y + vy1 * t
+//         }));
+//     }
+
+//     // Function to calculate the circle's center at time t
+//     function getCircleCenter(x, y, t) {
+//         return {
+//             x: x + vx2 * t,
+//             y: y + vy2 * t
+//         };
+//     }
+
+//     // Check overlap at time t
+//     function checkOverlap(t) {
+//         if (t < 0 || t > timeToIntercept) return false;
+
+//         const circle = getCircleCenter(x2, y2, t);
+//         const squareCorners = getSquareCorners(x1, y1, r1, t);
+
+//         // Check distance to all corners
+//         for (const corner of squareCorners) {
+//             const dist = Math.sqrt((circle.x - corner.x) ** 2 + (circle.y - corner.y) ** 2);
+//             if (dist <= r2) {
+//                 return true;
+//             }
+//         }
+
+//         // Check distance to edges
+//         const halfR = r1 / 2;
+//         const squareEdges = [
+//             { x: x1 - halfR, y: y1, vx: 0, vy: 1 },
+//             { x: x1 + halfR, y: y1, vx: 0, vy: 1 },
+//             { x: x1, y: y1 - halfR, vx: 1, vy: 0 },
+//             { x: x1, y: y1 + halfR, vx: 1, vy: 0 }
+//         ].map(edge => ({
+//             x: edge.x + vx1 * t,
+//             y: edge.y + vy1 * t,
+//             vx: edge.vx,
+//             vy: edge.vy
+//         }));
+
+//         for (const edge of squareEdges) {
+//             const t0 = ((circle.x - edge.x) * edge.vx + (circle.y - edge.y) * edge.vy) / (edge.vx * edge.vx + edge.vy * edge.vy);
+//             const closestX = edge.x + t0 * edge.vx;
+//             const closestY = edge.y + t0 * edge.vy;
+//             const dist = Math.sqrt((circle.x - closestX) ** 2 + (circle.y - closestY) ** 2);
+//             if (dist <= r2 && t0 >= -halfR && t0 <= halfR) {
+//                 return true;
+//             }
+//         }
+
+//         return false;
+//     }
+
+//     // Solve quadratic equation to find potential times of overlap
+//     const a = (vx1 - vx2) * (vx1 - vx2) + (vy1 - vy2) * (vy1 - vy2);
+//     const b = 2 * ((x1 - x2) * (vx1 - vx2) + (y1 - y2) * (vy1 - vy2));
+//     const c = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) - (r1 / 2 + r2) * (r1 / 2 + r2);
+
+//     const discriminant = b * b - 4 * a * c;
+//     if (discriminant < 0) {
+//         return false;
+//     }
+
+//     const t1 = (-b - Math.sqrt(discriminant)) / (2 * a);
+//     const t2 = (-b + Math.sqrt(discriminant)) / (2 * a);
+
+//     // Check if overlap occurs at any potential time points within the stopping time
+//     return checkOverlap(t1) || checkOverlap(t2) || checkOverlap(0);
+// }
+
+// function willSquareAndCircleOverlap(x1, y1, vx1, vy1, r1, x2, y2, vx2, vy2, r2, marked) {
+
+//     // Function to calculate the square's corners at time t
+//     function getSquareCorners(x, y, r, t) {
+//         const halfR = r / 2;
+//         return [
+//             { x: x + halfR, y: y + halfR },
+//             { x: x + halfR, y: y - halfR },
+//             { x: x - halfR, y: y + halfR },
+//             { x: x - halfR, y: y - halfR }
+//         ].map(corner => ({
+//             x: corner.x + vx1 * t,
+//             y: corner.y + vy1 * t
+//         }));
+//     }
+
+//     // Function to calculate the circle's center at time t
+//     function getCircleCenter(x, y, t) {
+//         return {
+//             x: x + vx2 * t,
+//             y: y + vy2 * t
+//         };
+//     }
+
+//     // Function to calculate distance from point to line segment
+//     function pointToSegmentDistance(px, py, x1, y1, x2, y2) {
+//         const lineLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+//         if (lineLength === 0) return Math.sqrt((px - x1) ** 2 + (py - y1) ** 2);
+
+//         const t = Math.max(0, Math.min(1, ((px - x1) * (x2 - x1) + (py - y1) * (y2 - y1)) / (lineLength ** 2)));
+//         const closestX = x1 + t * (x2 - x1);
+//         const closestY = y1 + t * (y2 - y1);
+//         return Math.sqrt((px - closestX) ** 2 + (py - closestY) ** 2);
+//     }
+
+//     // Check overlap at time t
+//     function checkOverlap(t) {
+
+//         const circle = getCircleCenter(x2, y2, t);
+//         const squareCorners = getSquareCorners(x1, y1, r1, t);
+//         const halfR = r1 / 2;
+
+//         // Check distance to all corners
+//         for (const corner of squareCorners) {
+//             const dist = Math.sqrt((circle.x - corner.x) ** 2 + (circle.y - corner.y) ** 2);
+//             if (dist <= r2) {
+//                 return true;
+//             }
+//         }
+
+//         // Check distance to edges
+//         const edges = [
+//             { x1: x1 - halfR, y1: y1 - halfR, x2: x1 + halfR, y2: y1 - halfR },
+//             { x1: x1 + halfR, y1: y1 - halfR, x2: x1 + halfR, y2: y1 + halfR },
+//             { x1: x1 + halfR, y1: y1 + halfR, x2: x1 - halfR, y2: y1 + halfR },
+//             { x1: x1 - halfR, y1: y1 + halfR, x2: x1 - halfR, y2: y1 - halfR }
+//         ].map(edge => ({
+//             x1: edge.x1 + vx1 * t,
+//             y1: edge.y1 + vy1 * t,
+//             x2: edge.x2 + vx1 * t,
+//             y2: edge.y2 + vy1 * t
+//         }));
+
+//         for (const edge of edges) {
+//             const dist = pointToSegmentDistance(circle.x, circle.y, edge.x1, edge.y1, edge.x2, edge.y2);
+//             if (dist <= r2) {
+//                 return true;
+//             }
+//         }
+
+//         return false;
+//     }
+
+//     // Solve quadratic equation to find potential times of overlap
+//     const a = (vx1 - vx2) ** 2 + (vy1 - vy2) ** 2;
+//     const b = 2 * ((x1 - x2) * (vx1 - vx2) + (y1 - y2) * (vy1 - vy2));
+//     const c = (x1 - x2) ** 2 + (y1 - y2) ** 2 - (r1 / 2 + r2) ** 2;
+
+//     const discriminant = b * b - 4 * a * c;
+//     if (discriminant < 0) {
+//         return false;
+//     }
+
+//     const sqrtDiscriminant = Math.sqrt(discriminant);
+//     const t1 = (-b - sqrtDiscriminant) / (2 * a);
+//     const t2 = (-b + sqrtDiscriminant) / (2 * a);
+
+//     // Check if the player stops before the overlap point
+//     const maxT = Math.max(t1, t2);
+//     if (maxT < 0 || maxT > player.timeToIntercept) {
+//         return false;
+//     }
+
+//     // Check if overlap occurs at any potential time points
+//     return checkOverlap(t1) || checkOverlap(t2) || checkOverlap(0);
+// }
 
 function splitGameHalf(obj) {
     // Center of the game view
@@ -2860,7 +3183,7 @@ async function loadAIComparison() {
     // $('#ai-2-button').removeClass('robot-button-selected');
     // $('#survey-complete-button-comparison').prop('disabled', true);
 
-     // max targets is 55 first, then 15
+     // max targets is 5 first, then 15
      if (visitedBlocks == 1 && currentCondition <= 4) { // takse us to the correct survey ... 
         $('#ai-1-button').addClass('robot-button-green');
         $('#ai-2-button').addClass('robot-button-purple');
@@ -2905,11 +3228,11 @@ async function loadAIComparison() {
             if (selectedAI === 'ai-1-button') {
                 $('#ai-1-button').addClass('robot-button-selected');
                 $('#ai-2-button').removeClass('robot-button-selected');
-                TOPIC_AI_COMPARISON_DICT["selectedAI"] = "ignorant";
+                TOPIC_AI_COMPARISON_DICT["selectedAI"] = agent1Name;
             } else {
                 $('#ai-2-button').addClass('robot-button-selected');
                 $('#ai-1-button').removeClass('robot-button-selected');
-                TOPIC_AI_COMPARISON_DICT["selectedAI"] = "rules";
+                TOPIC_AI_COMPARISON_DICT["selectedAI"] = agent2Name;
             }
 
             // Enable the submit button
@@ -2930,7 +3253,7 @@ async function loadAIComparison() {
             let SURVEY_END_TIME = new Date();
 
             // Write to database based on the number of surveys completed
-            numSurveyCompleted++;
+            // numSurveyCompleted++;
             // AIComparisonComplete = True
             
             if (numSurveyCompleted == 1) {
@@ -2969,7 +3292,6 @@ async function loadAIComparison() {
         $('#survey-complete-button-comparison').off().click(completeExperiment);
     });
 }
-
 
 function loadAIopenEndedFeedback(numSurveyCompleted) {
     var DEBUG_SURVEY = DEBUG;
@@ -3014,6 +3336,7 @@ function loadAIopenEndedFeedback(numSurveyCompleted) {
             if (numSurveyCompleted == 2) {
                 // push them to the final page of the experiment which redirects participants
                 finalizeBlockRandomization(db1, studyId, currentCondition);
+                finalizeBlockRandomization(db1, studyId, currentTeamingCondition);
                 $("#ai-open-ended-feedback-container").attr("hidden", true);
                 $("#task-header").attr("hidden", true);
                 $("#exp-complete-header").attr("hidden", false);
@@ -3031,170 +3354,392 @@ function loadAIopenEndedFeedback(numSurveyCompleted) {
 }
 
 //**************************************************** SURVEY -- FULL ****************************************************//
-function loadFullSurvey(){
+async function loadFullSurvey(){
     var DEBUG_SURVEY = DEBUG;
-    //      Survey Information
     var TOPIC_FULL_DICT = {
-        "q01"  : null,
-        "q02"  : null,
-        "q03"  : null,
-        "q04"  : null,
-        "q05"  : null,
-        "q06"  : null,
-        "q07"  : null,
-        "q08"  : null,
-        "q09"  : null,
-        // "q10" : null
+        "agent1": {},
+        "agent2": {}
     };
-    var TOPICS_RANKED = 0;
+    var TOTAL_QUESTIONS = 8; // Matches the number of questions in the HTML
 
-    $('.likert-topic-full li input').prop('checked', false);
+    $('.radio-group input[type="radio"]').prop('checked', false);
 
-    /******************************************************************************
-        RUN ON PAGE LOAD
+    // Function to update robot icons and colors
+    function updateRobotIcons() {
+        let agent1Icon = $('#agent1-icon');
+        let agent2Icon = $('#agent2-icon');
+        let agent1Caption = $('#agent1-caption');
+        let agent2Caption = $('#agent2-caption');
 
-            Run the following functions as soon as the page is loaded. This will
-            render the consent.html page appropriately.
-    ******************************************************************************/
+        // Remove any existing color classes
+        agent1Icon.removeClass('robot-green robot-purple robot-blue robot-copper');
+        agent2Icon.removeClass('robot-green robot-purple robot-blue robot-copper');
 
-    $(document).ready(function (){
-        /******************************************************************************
-            FUNCTIONALITY
-
-                All functions that will be used for the survey page.
-        ******************************************************************************/
-        /*
-            Function to control Radio Button Selection
-        */
-        function likertTopicAbility() {
-            /*
-                Radio Button Selection Contoller.
-
-                Only one likert option can be selected for each topic.
-                Keep count of how many topics have been ranked. Once all topics
-                have been ranked, then the submit button can become enabled.
-            */
-            // Retrieve the current topic that was ranked
-            let topic_currently_ranked = $(this).attr("name");
-
-            // Determine is that topic has been ranked before or not
-            if (TOPIC_FULL_DICT[topic_currently_ranked] == null) {
-                // If the topic hasn't bee ranked before, increment counter
-                TOPICS_RANKED++;
-            }
-
-            // Set selection variable
-            TOPIC_FULL_DICT[topic_currently_ranked] = Number($(this).val());
-
-            // if (TOPICS_RANKED == 10) {
-            //     // Enable "Submit" button
-            //     $('#survey-complete-button').prop('disabled', false);
-            //     console.log("All topics ranked");
-            // }
-            var allClicked = true;
-            $('.likert-topic-full').each(function() {
-                if ($(this).find('input:checked').length === 0) {
-                    allClicked = false;
-                    return false; // Exit the loop
-                }
-            });
-
-            // Check if all likert buttons have been clicked and feedback text is not empty whenever an input changes
-            $('.likert-topic-full li input, #survey-full-user-feedback-text').on('input', function() {
-                var allClicked = true;
-                $('.likert-topic-full').each(function() {
-                    if ($(this).find('input:checked').length === 0) {
-                        allClicked = false;
-                        return false; // Exit the loop
-                    }
-                });
-
-                var feedbackText = $('#survey-full-user-feedback-text').val();
-
-                if (allClicked && feedbackText.trim() !== '') {
-                    $('#survey-complete-button-full').prop('disabled', false);
-                } else {
-                    $('#survey-complete-button-full').prop('disabled', true);
-                }
-            });
-
-            if (DEBUG) {
-                console.log(
-                    "Radio Button Selected\n:",
-                    "    Topic :", topic_currently_ranked,
-                    "    Value :", TOPIC_FULL_DICT[topic_currently_ranked]
-                );
-                console.log(
-                    $(this).attr("name")
-                );
-            }
-        };
-
-        function grabFeedbackText(){
-            var feedbackText = document.getElementById('survey-full-user-feedback-text').value;
-            return feedbackText;
+        if (visitedBlocks == 1 && currentCondition <= 4) {
+            agent1Icon.addClass('robot-green');
+            agent2Icon.addClass('robot-purple');
+            agent1Caption.text('Green-Bot');
+            agent2Caption.text('Purple-Bot');
+        } else if (visitedBlocks == 2 && currentCondition <= 4) {
+            agent1Icon.addClass('robot-blue');
+            agent2Icon.addClass('robot-copper');
+            agent1Caption.text('Blue-Bot');
+            agent2Caption.text('Copper-Bot');
+        } else if (visitedBlocks == 1 && currentCondition > 4) {
+            agent1Icon.addClass('robot-blue');
+            agent2Icon.addClass('robot-copper');
+            agent1Caption.text('Blue-Bot');
+            agent2Caption.text('Copper-Bot');
+        } else if (visitedBlocks == 2 && currentCondition > 4) {
+            agent1Icon.addClass('robot-green');
+            agent2Icon.addClass('robot-purple');
+            agent1Caption.text('Green-Bot');
+            agent2Caption.text('Purple-Bot');
         }
+    }
+
+    // Call the function to update robot icons
+    updateRobotIcons();
+
+    function likertTopicAbility() {
+        let [question, agent] = $(this).attr("name").split("_");
+        TOPIC_FULL_DICT[agent][question] = Number($(this).val());
+
+        checkAllAnswered();
+
+        if (DEBUG_SURVEY) {
+            console.log(
+                "Radio Button Selected:",
+                "Question:", question,
+                "Agent:", agent,
+                "Value:", TOPIC_FULL_DICT[agent][question]
+            );
+        }
+    }
+
+    function checkAllAnswered() {
+        var totalAnswered = 0;
+
+        for (let agent in TOPIC_FULL_DICT) {
+            totalAnswered += Object.keys(TOPIC_FULL_DICT[agent]).length;
+        }
+
+        var allAnswered = totalAnswered === TOTAL_QUESTIONS * 2; // 2 agents
+
+        if (DEBUG_SURVEY) {
+            console.log("Total answered:", totalAnswered);
+            console.log("All answered:", allAnswered);
+        }
+
+        $('#survey-complete-button-full').prop('disabled', !allAnswered);
+
+        if (DEBUG_SURVEY) {
+            console.log("Submit button " + (allAnswered ? "enabled" : "disabled"));
+        }
+    }
+
+    async function completeExperiment() {
+        numSurveyCompleted++;
         
-        
-        async function completeExperiment() {
-            /*
-                When submit button is clicked (after ranking), experiment is done.
+        let path;
+        if (numSurveyCompleted == 1) {
+            path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full1';
+        } else if (numSurveyCompleted == 2) {
+            path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full2';
 
-                This will submit the final rankings and then load the
-                "Experiment Complete" page.
-            */
-            numSurveyCompleted++;
+        }
 
-            let feedbackText = grabFeedbackText();
-            
-            if (numSurveyCompleted == 1 && currentCondition == 2) {
-                let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full1' ;
-                let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback1' ;
-                writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
-                writeRealtimeDatabase(db1, path2, feedbackText);
-                
-            } else if (numSurveyCompleted == 2 && currentCondition == 2) {
-                let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full2' ;
-                let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback2' ;
-                writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
-                writeRealtimeDatabase(db1, path2, feedbackText);
-            } else {
-                let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full3' ;
-                let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback' ;
-                writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
-                writeRealtimeDatabase(db1, path2, feedbackText);
-            }
+        await writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
 
-            if (numSurveyCompleted == 3) {
-                // push them to the final page of the experiment which redirects participants
-                // await runGameSequence("Congratulations on Finishing the Main Experiment! Click OK to Continue to the Feedback Survey.");
-                // $("#full-game-container").attr("hidden", true);
-                finalizeBlockRandomization(db1, studyId, currentCondition);
-                // finalizeBlockRandomization(db1, studyId, curSeeds);
-                $("#survey-full-container").attr("hidden", true);
-                $("#task-header").attr("hidden", true);
-                $("#exp-complete-header").attr("hidden", false);
-                $("#complete-page-content-container").attr("hidden", false);
-                await loadCompletePage();
-                // $('#task-complete').load('html/complete.html');
-            } else{ // continue to another block
-                $("#survey-full-container").attr("hidden", true);
-                document.getElementById('survey-full-user-feedback-text').value = '';
-                //$("#survey-full-container").remove();
-                $("#full-game-container").attr("hidden", false);
-                // resizeScoreCanvas()
+    
+        await loadAIComparison();
+        $("#ai-comparison-container").attr("hidden", false);
+        $("#survey-full-container").attr("hidden", true);
+    }
 
-            }
-            // console.log("Submit Button Clicked");
-        };
+    $('.radio-group input[type="radio"]').click(likertTopicAbility);
+    $('#survey-complete-button-full').off().click(completeExperiment);
 
-        //  Handle Likert Selection for ALL Topics
-        $('.likert-topic-full li input').click(likertTopicAbility);
-
-        //  Handle Submitting Survey
-        $('#survey-complete-button-full').off().click(completeExperiment);
-    });
+    // Initial check in case the form is pre-filled
+    checkAllAnswered();
 }
+
+// async function loadFullSurvey(){
+//     var DEBUG_SURVEY = DEBUG;
+//     var TOPIC_FULL_DICT = {
+//         "agent1": {},
+//         "agent2": {}
+//     };
+//     var TOTAL_QUESTIONS = 8; // Updated to match the number of questions in the HTML
+
+//     $('.radio-group input[type="radio"]').prop('checked', false);
+
+//     $(document).ready(function (){
+//         function likertTopicAbility() {
+//             let [question, agent] = $(this).attr("name").split("_");
+//             TOPIC_FULL_DICT[agent][question] = Number($(this).val());
+    
+//             checkAllAnswered();
+    
+//             if (DEBUG_SURVEY) {
+//                 console.log(
+//                     "Radio Button Selected:",
+//                     "Question:", question,
+//                     "Agent:", agent,
+//                     "Value:", TOPIC_FULL_DICT[agent][question]
+//                 );
+//             }
+//         };
+
+//         // function checkAllAnswered() {
+//         //     var allAnswered = true;
+//         //     var totalAnswered = 0;
+
+//         //     for (let agent in TOPIC_FULL_DICT) {
+//         //         totalAnswered += Object.keys(TOPIC_FULL_DICT[agent]).length;
+//         //     }
+
+//         //     allAnswered = totalAnswered === TOTAL_QUESTIONS * 2; // 2 agents
+
+//         //     var feedbackText = $('#survey-full-user-feedback-text').val();
+
+//         //     if (allAnswered && feedbackText.trim() !== '') {
+//         //         $('#survey-complete-button-full').prop('disabled', false);
+//         //     } else {
+//         //         $('#survey-complete-button-full').prop('disabled', true);
+//         //     }
+//         // }
+
+//         function checkAllAnswered() {
+//             var allAnswered = true;
+//             var totalAnswered = 0;
+        
+//             for (let agent in TOPIC_FULL_DICT) {
+//                 totalAnswered += Object.keys(TOPIC_FULL_DICT[agent]).length;
+//             }
+        
+//             allAnswered = totalAnswered === TOTAL_QUESTIONS * 2; // 2 agents
+        
+//             var feedbackText = $('#survey-full-user-feedback-text').val() || '';
+        
+//             if (allAnswered && feedbackText.trim() !== '') {
+//                 $('#survey-complete-button-full').prop('disabled', false);
+//             } else {
+//                 $('#survey-complete-button-full').prop('disabled', true);
+//             }
+//         }
+
+//         function grabFeedbackText(){
+//             return $('#survey-full-user-feedback-text').val();
+//         }
+        
+
+//         async function completeExperiment() {
+//             numSurveyCompleted++;
+
+//             let feedbackText = grabFeedbackText();
+            
+//             let path, path2;
+//             if (numSurveyCompleted == 1) {
+//                 path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full1';
+//                 // path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback1';
+//                 loadAIComparison();
+//             } else if (numSurveyCompleted == 2) {
+//                 path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full2';
+//                 // path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback2';
+//                 loadAIComparison();
+//             } else {
+//                 path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full3';
+//                 // path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback';
+//             }
+
+//             writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
+//             writeRealtimeDatabase(db1, path2, feedbackText);
+
+//             if (numSurveyCompleted == 3) {
+//                 finalizeBlockRandomization(db1, studyId, currentCondition);
+//                 $("#survey-full-container").attr("hidden", true);
+//                 $("#task-header").attr("hidden", true);
+//                 $("#exp-complete-header").attr("hidden", false);
+//                 $("#complete-page-content-container").attr("hidden", false);
+//                 await loadCompletePage();
+//             } else {
+//                 $("#survey-full-container").attr("hidden", true);
+//                 $('#survey-full-user-feedback-text').val('');
+//                 $("#full-game-container").attr("hidden", false);
+//             }
+//         };
+
+//         $('.radio-group input[type="radio"]').click(likertTopicAbility);
+//         $('#survey-full-user-feedback-text').on('input', checkAllAnswered);
+//         $('#survey-complete-button-full').off().click(completeExperiment);
+//     });
+// }
+
+// function loadFullSurvey(){
+//     var DEBUG_SURVEY = DEBUG;
+//     //      Survey Information
+//     var TOPIC_FULL_DICT = {
+//         "q01"  : null,
+//         "q02"  : null,
+//         "q03"  : null,
+//         "q04"  : null,
+//         "q05"  : null,
+//         "q06"  : null,
+//         "q07"  : null,
+//         "q08"  : null,
+//         "q09"  : null,
+//         // "q10" : null
+//     };
+//     var TOPICS_RANKED = 0;
+
+//     $('.likert-topic-full li input').prop('checked', false);
+
+//     /******************************************************************************
+//         RUN ON PAGE LOAD
+
+//             Run the following functions as soon as the page is loaded. This will
+//             render the consent.html page appropriately.
+//     ******************************************************************************/
+
+//     $(document).ready(function (){
+//         /******************************************************************************
+//             FUNCTIONALITY
+
+//                 All functions that will be used for the survey page.
+//         ******************************************************************************/
+//         /*
+//             Function to control Radio Button Selection
+//         */
+//         function likertTopicAbility() {
+//             /*
+//                 Radio Button Selection Contoller.
+
+//                 Only one likert option can be selected for each topic.
+//                 Keep count of how many topics have been ranked. Once all topics
+//                 have been ranked, then the submit button can become enabled.
+//             */
+//             // Retrieve the current topic that was ranked
+//             let topic_currently_ranked = $(this).attr("name");
+
+//             // Determine is that topic has been ranked before or not
+//             if (TOPIC_FULL_DICT[topic_currently_ranked] == null) {
+//                 // If the topic hasn't bee ranked before, increment counter
+//                 TOPICS_RANKED++;
+//             }
+
+//             // Set selection variable
+//             TOPIC_FULL_DICT[topic_currently_ranked] = Number($(this).val());
+
+//             // if (TOPICS_RANKED == 10) {
+//             //     // Enable "Submit" button
+//             //     $('#survey-complete-button').prop('disabled', false);
+//             //     console.log("All topics ranked");
+//             // }
+//             var allClicked = true;
+//             $('.likert-topic-full').each(function() {
+//                 if ($(this).find('input:checked').length === 0) {
+//                     allClicked = false;
+//                     return false; // Exit the loop
+//                 }
+//             });
+
+//             // Check if all likert buttons have been clicked and feedback text is not empty whenever an input changes
+//             $('.likert-topic-full li input, #survey-full-user-feedback-text').on('input', function() {
+//                 var allClicked = true;
+//                 $('.likert-topic-full').each(function() {
+//                     if ($(this).find('input:checked').length === 0) {
+//                         allClicked = false;
+//                         return false; // Exit the loop
+//                     }
+//                 });
+
+//                 var feedbackText = $('#survey-full-user-feedback-text').val();
+
+//                 if (allClicked && feedbackText.trim() !== '') {
+//                     $('#survey-complete-button-full').prop('disabled', false);
+//                 } else {
+//                     $('#survey-complete-button-full').prop('disabled', true);
+//                 }
+//             });
+
+//             if (DEBUG) {
+//                 console.log(
+//                     "Radio Button Selected\n:",
+//                     "    Topic :", topic_currently_ranked,
+//                     "    Value :", TOPIC_FULL_DICT[topic_currently_ranked]
+//                 );
+//                 console.log(
+//                     $(this).attr("name")
+//                 );
+//             }
+//         };
+
+//         function grabFeedbackText(){
+//             var feedbackText = document.getElementById('survey-full-user-feedback-text').value;
+//             return feedbackText;
+//         }
+        
+        
+//         async function completeExperiment() {
+//             /*
+//                 When submit button is clicked (after ranking), experiment is done.
+
+//                 This will submit the final rankings and then load the
+//                 "Experiment Complete" page.
+//             */
+//             numSurveyCompleted++;
+
+//             let feedbackText = grabFeedbackText();
+            
+//             if (numSurveyCompleted == 1 && currentCondition == 2) {
+//                 let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full1' ;
+//                 let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback1' ;
+//                 writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
+//                 writeRealtimeDatabase(db1, path2, feedbackText);
+                
+//             } else if (numSurveyCompleted == 2 && currentCondition == 2) {
+//                 let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full2' ;
+//                 let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback2' ;
+//                 writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
+//                 writeRealtimeDatabase(db1, path2, feedbackText);
+//             } else {
+//                 let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full3' ;
+//                 let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback' ;
+//                 writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
+//                 writeRealtimeDatabase(db1, path2, feedbackText);
+//             }
+
+//             if (numSurveyCompleted == 3) {
+//                 // push them to the final page of the experiment which redirects participants
+//                 // await runGameSequence("Congratulations on Finishing the Main Experiment! Click OK to Continue to the Feedback Survey.");
+//                 // $("#full-game-container").attr("hidden", true);
+//                 finalizeBlockRandomization(db1, studyId, currentCondition);
+//                 // finalizeBlockRandomization(db1, studyId, curSeeds);
+//                 $("#survey-full-container").attr("hidden", true);
+//                 $("#task-header").attr("hidden", true);
+//                 $("#exp-complete-header").attr("hidden", false);
+//                 $("#complete-page-content-container").attr("hidden", false);
+//                 await loadCompletePage();
+//                 // $('#task-complete').load('html/complete.html');
+//             } else{ // continue to another block
+//                 $("#survey-full-container").attr("hidden", true);
+//                 document.getElementById('survey-full-user-feedback-text').value = '';
+//                 //$("#survey-full-container").remove();
+//                 $("#full-game-container").attr("hidden", false);
+//                 // resizeScoreCanvas()
+
+//             }
+//             // console.log("Submit Button Clicked");
+//         };
+
+//         //  Handle Likert Selection for ALL Topics
+//         $('.likert-topic-full li input').click(likertTopicAbility);
+
+//         //  Handle Submitting Survey
+//         $('#survey-complete-button-full').off().click(completeExperiment);
+//     });
+// }
 
 //*************************************************** SURVEY -- WORKLOAD *************************************************//
 function loadWorkLoadSurvey(){

@@ -108,7 +108,7 @@ function calcValueHumanPlan( bestSol , allSol, player , angleThreshold, ctx, obj
 }
 
 // MS8
-function runAIPlanner( objects, player , observableRadius , center, whAgent, stabilityThreshold, prevBestSol, prevAllSol, frame, alpha ) {
+function runAIPlanner( objects, player , observableRadius , center, whAgent, stabilityThreshold, prevBestSol, prevAllSol, frame, alpha, isBottomFeeder) {
     // Function to run the AI planner
 
     // First, find all objects that have not been intercepted yet
@@ -139,6 +139,21 @@ function runAIPlanner( objects, player , observableRadius , center, whAgent, sta
     objectValues.push( 0 );
     ID.push( -1 );
 
+    // console.log(isBottomFeeder);
+    // handle bottom-feeder
+    if (isBottomFeeder) {
+        for (let idx in objectValues){
+            // make the value of the center high so the player will not go to the center
+            if (objectValues[idx] == 0) {
+                objectValues[idx] = 2;
+            }
+
+            // flip values so that high values are not low and vise versa
+            objectValues[idx] = 1 - objectValues[idx];
+            
+        }
+    } 
+
     if ((frame==71) && (whAgent == 'AI')) {
         console.log( "check");
     }
@@ -146,7 +161,7 @@ function runAIPlanner( objects, player , observableRadius , center, whAgent, sta
     // Run the planner on these normalized coordinates
     // MS8
     [ bestSol, allSol ] = planSingleFrame(playerStartX, playerStartY, playerSpeed, objectPositionsX, objectPositionsY, 
-        objectVelocitiesX, objectVelocitiesY, objectValues, circleRadius, ID, alpha );
+        objectVelocitiesX, objectVelocitiesY, objectValues, circleRadius, ID, alpha, isBottomFeeder);
 
     // Convert all coordinates back to screen coordinates
     let solLength = bestSol.interceptionOrder.length;
@@ -397,7 +412,7 @@ function sortArray(values) {
 //     return [ bestSol, allSol ];    
 // }
 // MS20
-function planSingleFrame(playerStartX, playerStartY, playerSpeed, objectPositionsX, objectPositionsY, objectVelocitiesX, objectVelocitiesY, objectValues, circleRadius, ID, alpha ) {
+function planSingleFrame(playerStartX, playerStartY, playerSpeed, objectPositionsX, objectPositionsY, objectVelocitiesX, objectVelocitiesY, objectValues, circleRadius, ID, alpha, isBottomFeeder) {
     const numObjects = objectPositionsX.length;
     if (numObjects==0) {
         throw new Error( 'Expected at least one object');

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Survey</title>
+    <link rel="stylesheet" type="text/css" href="css/game.css">
+    <link rel="stylesheet" href="css/survey-workload-only.css">
+    <link rel="stylesheet" href="css/survey-full.css">
+    <link rel="stylesheet" href="css/complete.css">
+</head>
+<body onload="loadFullSurvey()">
+    <div class="container-fluid" id="full-game-container">
+        <!-- FULL SURVEY CONTAINER -->
+        <div class="col-12 trialbox justify-content-center" id="survey-full-container">
+            <!--------------------------------------------
+            |   Row 1 - Difficulty Question              |
+            --------------------------------------------->
+            <div class="row" id="survey-question-container">
+                <div class="col-12 text-center" id="survey-task-container">
+                    <h5 class="trial-task trial-question trial-information" id="survey-task">
+                        Please indicate the extent to which you agree or disagree with the following statements:
+                    </h5>
+                </div>
+            </div>
+            <!--------------------------------------------
+            |   Row 2 - Topic Options                    |
+            --------------------------------------------->
+            <div class="row" id="survey-likert-table-container">
+                <div class="col-12">
+                    <div class="row" id="survey-likert-legend-header-container">
+                        <div class="col-2 survey-likert-topic-header">
+                            <b>Topic</b>
+                        </div>
+                        <div class="col-5 text-center survey-likert-legend-container">
+                            <b>AI Agent 1</b>
+                        </div>
+                        <div class="col-5 text-center survey-likert-legend-container">
+                            <b>AI Agent 2</b>
+                        </div>
+                    </div>
+                    <div class="row" id="survey-likert-scale-headers">
+                        <div class="col-2"></div>
+                        <div class="col-5 text-center survey-likert-legend-container">
+                            <ul class='likert-legend'>
+                                <li><label><b>Strongly Disagree</b></label><label>1</label></li>
+                                <li><label>2</label></li>
+                                <li><label>3</label></li>
+                                <li><label>4</label></li>
+                                <li><label>5</label></li>
+                                <li><label>6</label></li>
+                                <li><label><b>Strongly Agree</b></label><label>7</label></li>
+                            </ul>
+                        </div>
+                        <div class="col-5 text-center survey-likert-legend-container">
+                            <ul class='likert-legend'>
+                                <li><label><b>Strongly Disagree</b></label><label>1</label></li>
+                                <li><label>2</label></li>
+                                <li><label>3</label></li>
+                                <li><label>4</label></li>
+                                <li><label>5</label></li>
+                                <li><label>6</label></li>
+                                <li><label><b>Strongly Agree</b></label><label>7</label></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Questions -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">How mentally demanding was the task?</div>
+                        <div class="col-5 text-center survey-likert-legend-container">
+                            <ul class='likert-topic-full' id="survey-topic01-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q01_agent1" value="1"></li>
+                                <li><input type="radio" name="q01_agent1" value="2"></li>
+                                <li><input type="radio" name="q01_agent1" value="3"></li>
+                                <li><input type="radio" name="q01_agent1" value="4"></li>
+                                <li><input type="radio" name="q01_agent1" value="5"></li>
+                                <li><input type="radio" name="q01_agent1" value="6"></li>
+                                <li><input type="radio" name="q01_agent1" value="7"></li>
+                            </ul>
+                        </div>
+                        <div class="col-5 text-center survey-likert-legend-container">
+                            <ul class='likert-topic-full' id="survey-topic01-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q01_agent2" value="1"></li>
+                                <li><input type="radio" name="q01_agent2" value="2"></li>
+                                <li><input type="radio" name="q01_agent2" value="3"></li>
+                                <li><input type="radio" name="q01_agent2" value="4"></li>
+                                <li><input type="radio" name="q01_agent2" value="5"></li>
+                                <li><input type="radio" name="q01_agent2" value="6"></li>
+                                <li><input type="radio" name="q01_agent2" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Repeat for each question -->
+                    <div class="row survey-likert-topic-container">
+                        <div class="col-2 survey-likert-topic-header">How successful were you in accomplishing what you were asked to do?</div>
+                        <div class="col-5 text-center survey-likert-legend-container">
+                            <ul class='likert-topic-full' id="survey-topic02-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q02_agent1" value="1"></li>
+                                <li><input type="radio" name="q02_agent1" value="2"></li>
+                                <li><input type="radio" name="q02_agent1" value="3"></li>
+                                <li><input type="radio" name="q02_agent1" value="4"></li>
+                                <li><input type="radio" name="q02_agent1" value="5"></li>
+                                <li><input type="radio" name="q02_agent1" value="6"></li>
+                                <li><input type="radio" name="q02_agent1" value="7"></li>
+                            </ul>
+                        </div>
+                        <div class="col-5 text-center survey-likert-legend-container">
+                            <ul class='likert-topic-full' id="survey-topic02-likert-scale-radio-button-selection">
+                                <li><input type="radio" name="q02_agent2" value="1"></li>
+                                <li><input type="radio" name="q02_agent2" value="2"></li>
+                                <li><input type="radio" name="q02_agent2" value="3"></li>
+                                <li><input type="radio" name="q02_agent2" value="4"></li>
+                                <li><input type="radio" name="q02_agent2" value="5"></li>
+                                <li><input type="radio" name="q02_agent2" value="6"></li>
+                                <li><input type="radio" name="q02_agent2" value="7"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Add more questions as needed -->
+                </div>
+            </div>
+            <!-------------------------------------------------
+            |   Submit/Proceed Button                         |
+            -------------------------------------------------->
+            <div class="row" id="survey-submit-button-container">
+                <div class="col-12 right-button">
+                    <button class="btn btn-primary" id="survey-complete-button-full" disabled>
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPLETE GAME -->
+        <div class="col-12 trialbox" id="complete-page-content-container">
+            <div class="row justify-content-center" id="complete-message-to-participant-container">
+                <div class="col-12" id="complete-message-thank-you">
+                    <h3><b>Thank You!</b></h3>
+                </div>
+                <div class="col-12" id="complete-message-main-text">
+                    <h3>We greatly appreciate your interest and participation in our study.</h3>
+                </div>
+                <div class="col-12" id="complete-message-sub-text">
+                    <h4></h4>
+                </div>
+            </div>
+            <div class="row justify-content-center" id="complete-user-feedback-container">
+                <div class="col-12 text-center" id="user-feedback-header">
+                    <h4><b>User Feedback</b></h4>
+                </div>
+                <div class="col-12 text-center" id="user-feedback-text-container">
+                    <textarea name="participant-feedback" rows="4" id="user-feedback-text"
+                        placeholder="Thank you for participating in this study! Any feedback about your experience is appreciated."></textarea>
+                </div>
+                <div class="col-12" id="user-feedback-button-container">
+                    <button id="user-feedback-button" name="feedback" type="submit" class="btn btn-secondary" disabled>
+                        Submit Feedback
+                    </button>
+                </div>
+            </div>
+            <div class="row justify-content-center" id="complete-unique-code-container">
+                <div class="col-12" id="unique-code-text">
+                    <h4><b>Redirect URL</b></h4>
+                </div>
+                <div class="col-12" id="how-to-get-compensated-text">
+                    <h5>To be compensated, you must click the button below to be redirected back to Prolific.</h5>
+                </div>
+                <div class="col-12" id="compensation-note">
+                    <h5>Once you are redirected, you will not be able to return to this page.</h5>
+                </div>
+                <div class="col-12" id="unique-code-text-box" hidden="true">
+                    <input type="text" value="Your Unique Code" id="code" readonly>
+                </div>
+                <div class="col-12" id="unique-code-copy-button-container">
+                    <button type="button" class="btn btn-primary" id="unique-code-copy-button">
+                        Redirect to Prolific
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadFullSurvey() {
+            var DEBUG_SURVEY = false;  // Set DEBUG_SURVEY to true if you need debugging
+            var TOPIC_FULL_DICT = {
+                "q01_agent1": null,
+                "q01_agent2": null,
+                "q02_agent1": null,
+                "q02_agent2": null,
+                "q03_agent1": null,
+                "q03_agent2": null,
+                "q04_agent1": null,
+                "q04_agent2": null,
+                "q05_agent1": null,
+                "q05_agent2": null,
+                "q06_agent1": null,
+                "q06_agent2": null,
+                "q07_agent1": null,
+                "q07_agent2": null,
+                "q08_agent1": null,
+                "q08_agent2": null,
+                "q09_agent1": null,
+                "q09_agent2": null
+            };
+            var TOPICS_RANKED = 0;
+
+            $('.likert-topic-full li input').prop('checked', false);
+
+            $(document).ready(function () {
+                function likertTopicAbility() {
+                    let topic_currently_ranked = $(this).attr("name");
+                    if (TOPIC_FULL_DICT[topic_currently_ranked] == null) {
+                        TOPICS_RANKED++;
+                    }
+                    TOPIC_FULL_DICT[topic_currently_ranked] = Number($(this).val());
+
+                    var allClicked = true;
+                    $('.likert-topic-full').each(function () {
+                        if ($(this).find('input:checked').length === 0) {
+                            allClicked = false;
+                            return false;
+                        }
+                    });
+
+                    $('.likert-topic-full li input, #survey-full-user-feedback-text').on('input', function () {
+                        var allClicked = true;
+                        $('.likert-topic-full').each(function () {
+                            if ($(this).find('input:checked').length === 0) {
+                                allClicked = false;
+                                return false;
+                            }
+                        });
+
+                        var feedbackText = $('#survey-full-user-feedback-text').val();
+
+                        if (allClicked && feedbackText.trim() !== '') {
+                            $('#survey-complete-button-full').prop('disabled', false);
+                        } else {
+                            $('#survey-complete-button-full').prop('disabled', true);
+                        }
+                    });
+
+                    if (DEBUG_SURVEY) {
+                        console.log(
+                            "Radio Button Selected\n:",
+                            "    Topic :", topic_currently_ranked,
+                            "    Value :", TOPIC_FULL_DICT[topic_currently_ranked]
+                        );
+                        console.log(
+                            $(this).attr("name")
+                        );
+                    }
+                };
+
+                function grabFeedbackText() {
+                    var feedbackText = document.getElementById('survey-full-user-feedback-text').value;
+                    return feedbackText;
+                }
+
+                async function completeExperiment() {
+                    numSurveyCompleted++;
+                    let feedbackText = grabFeedbackText();
+
+                    if (numSurveyCompleted == 1 && currentCondition == 2) {
+                        let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full1';
+                        let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback1';
+                        writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
+                        writeRealtimeDatabase(db1, path2, feedbackText);
+                    } else if (numSurveyCompleted == 2 && currentCondition == 2) {
+                        let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full2';
+                        let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback2';
+                        writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
+                        writeRealtimeDatabase(db1, path2, feedbackText);
+                    } else {
+                        let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full3';
+                        let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback';
+                        writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
+                        writeRealtimeDatabase(db1, path2, feedbackText);
+                    }
+
+                    if (numSurveyCompleted == 2) {
+                        finalizeBlockRandomization(db1, studyId, currentCondition);
+                        $("#survey-full-container").attr("hidden", true);
+                        $("#task-header").attr("hidden", true);
+                        $("#exp-complete-header").attr("hidden", false);
+                        $("#complete-page-content-container").attr("hidden", false);
+                        await loadCompletePage();
+                    } else {
+                        $("#survey-full-container").attr("hidden", true);
+                        document.getElementById('survey-full-user-feedback-text').value = '';
+                        $("#full-game-container").attr("hidden", false);
+                    }
+                };
+
+                $('.likert-topic-full li input').click(likertTopicAbility);
+                $('#survey-complete-button-full').off().click(completeExperiment);
+            });
+        }
+    </script>
+</body>
+</html>
