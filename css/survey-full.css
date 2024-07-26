@@ -233,3 +233,48 @@ Survey styling file.
       margin: 5px 0;
   }
 }
+
+/* Add these styles to your existing CSS file */
+
+.likert-legend-simple {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px 0;
+  font-size: 1.2em;
+}
+
+.legend-left, .legend-right {
+  flex: 0 0 auto;
+  padding: 0 10px;
+  font-weight: bold;
+}
+
+.legend-scale {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  padding: 0 20px;
+}
+
+.legend-scale span {
+  font-weight: bold;
+}
+
+/* Adjust existing styles if needed */
+#survey-question-container {
+  padding-bottom: 0.5rem;
+}
+
+#survey-likert-table-container {
+  margin-top: 1rem;
+}
+
+.separator-column {
+  width: 20px;
+  background-color: #f8f9fa;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+}

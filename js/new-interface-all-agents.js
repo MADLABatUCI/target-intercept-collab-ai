@@ -277,7 +277,7 @@ let teamingSettings = {
 
 let difficultySettings = {
     // 5 targets first
-    1: {0: {1: {AICollab: collabPlayer1,   // Pair A
+    1: {0: {1: {AICollab: collabPlayer1,     // Pair A
                 maxTargets: 5},  
             2: {AICollab: collabPlayer2,
                 maxTargets: 5}},
@@ -286,7 +286,7 @@ let difficultySettings = {
             2: {AICollab: collabPlayer2,
                 maxTargets: 15}}},
 
-    2: {0: {1: {AICollab: collabPlayer2,   // Pair B
+    2: {0: {1: {AICollab: collabPlayer2,    // Pair B
                 maxTargets: 5},  
             2: {AICollab: collabPlayer1,
                 maxTargets: 5}},
@@ -314,7 +314,7 @@ let difficultySettings = {
                 maxTargets: 15}}},
 
      // 15 Targets first
-    5: {0: {1: {AICollab: collabPlayer1,   // Pair A
+    5: {0: {1: {AICollab: collabPlayer1,     // Pair A
                 maxTargets: 15},  
             2: {AICollab: collabPlayer2,
                 maxTargets: 15}},
@@ -420,7 +420,7 @@ let drtLightChoice      = 0; // random choice of light to display
 
 let maxFrames = null;
 if (DEBUG){
-    maxFrames         = 15 * fps;// settings.maxSeconds * fps;
+    maxFrames         = 10 * fps;// settings.maxSeconds * fps;
 } else{ // set it to whatever you want
     maxFrames         = settings.maxSeconds * fps; //120 * 60; // Two minutes in frames
 }
@@ -601,8 +601,8 @@ async function initExperimentSettings() {
     if (!DEBUG){
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
     } else {
-        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-        // assignedTeamingCondition = [2]; // 3 == ignorant and divide
+        // assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
+        assignedTeamingCondition = [1]; // 3 == ignorant and divide
     }
 
     currentTeamingCondition = assignedTeamingCondition[0]+1;
@@ -622,16 +622,16 @@ async function initExperimentSettings() {
 
     curSeeds = randomValues;
 
-    // if (DEBUG){
-    //     currentCondition = 8;
-    // }
+    if (DEBUG){
+        currentCondition = 7;
+    }
 }
 
 // Assign a condition to each new participant.
 if (noAssignment){
     if (DEBUG){ // adjust value as needed for debuggin default is the same as the main experiment
         await initExperimentSettings();
-        // curSeeds = [12,123,12345,123456];
+        curSeeds = [12,123,12345,123456];
         // settings.maxTargets=100;
         // currentCondition = 1;
         // currentTeamingCondition = 1;
@@ -773,7 +773,7 @@ async function endGame() {
         if (visitedBlocks < 2) {
             startGame(currentRound, currentCondition,currentBlock,curSeeds); // Start the next round
         } else{
-            console.log("End of Experiment");
+            // console.log("End of Experiment");
             await loadFullSurvey();
             $("#survey-full-container").attr("hidden", false);
             // loadAIComparison();
@@ -886,18 +886,13 @@ function render() {
     // drawDRTMask(ctx);   
     drawMask(ctx, player);
     drawCenterMarker();                               // Draw the center marker
-    // drawRing();                     
-    // drawGrid();
     ctx.save();
-    // drawCursor();
     drawWorldBoundary();                         
     drawPlayer();                                     
     if (settings.visualizeAIPlayer==1) drawAIPlayer();
     // if (settings.visualizeAIPlayerOffline==1) drawAIPlayerOffline();
     displayAIStatus();                                // Display which ai
     drawAISolution();                                  // Draw AI solution of type specified in settings
-    // drawFullAISolutionDEBUG();                     // Draw the full AI solution
-    // drawTargetLocation();                             // Draw the X where the player is moving towards
     drawObjects();         
     drawLight(drtLightChoice);
     ctx.restore();
@@ -1242,8 +1237,11 @@ function updateObjects(settings) {
     if (settings.AICollab == 4) isBottomFeeder = true;
     
     // SK1 Online AI player
-    [ firstStepCollab, bestSolCollab, allSolCollab ] = runAIPlanner(objectsRemoved, AIplayer , observableRadius , center, 'collab', 
-        settings.AIStabilityThreshold, prevBestSolCollab, allSolCollab, frameCountGame, settings.alpha, isBottomFeeder);
+    // [ firstStepCollab, bestSolCollab, allSolCollab ] = runAIPlanner(objectsRemoved, AIplayer , observableRadius , center, 'collab', 
+    //     settings.AIStabilityThreshold, prevBestSolCollab, allSolCollab, frameCountGame, settings.alpha, isBottomFeeder);
+
+    [ firstStepCollab, bestSolCollab ] = runAIPlanner(objectsRemoved, AIplayer , observableRadius , center, 'collab', 
+            settings.AIStabilityThreshold, prevBestSolCollab, frameCountGame, settings.alpha, isBottomFeeder );
     
     // AI intention for click,target pair
     AIplayer.targetX = firstStepCollab.x; // MS7 -- just save the firstStepOffline object to firebase
@@ -1292,8 +1290,11 @@ function updateObjects(settings) {
     let prevBestSolOffline = bestSolOffline;
     let prevFirstStepOffline = firstStepOffline;
 
-    [ firstStepOffline, bestSolOffline, allSolOffline ] = runAIPlanner(objects, AIplayer_offline , observableRadius , center, 'AI', 
-        settings.AIStabilityThreshold, prevBestSolOffline, allSolOffline, frameCountGame, settings.alpha );
+    // [ firstStepOffline, bestSolOffline, allSolOffline ] = runAIPlanner(objects, AIplayer_offline , observableRadius , center, 'AI', 
+    //     settings.AIStabilityThreshold, prevBestSolOffline, allSolOffline, frameCountGame, settings.alpha );
+
+    [ firstStepOffline, bestSolOffline ] = runAIPlanner(objects, AIplayer_offline , observableRadius , center, 'AI', 
+        settings.AIStabilityThreshold, prevBestSolOffline, frameCountGame, settings.alpha, false );
     
     AIplayer_offline.targetX = firstStepOffline.x; // MS7 -- just save the firstStepOffline object to firebase
     AIplayer_offline.targetY = firstStepOffline.y; 
@@ -1319,6 +1320,7 @@ function updateObjects(settings) {
     // Run the planner conditional on the human player
     // MS8
     // [ firstStep, bestSol, allSol ] = runAIPlanner( objects, player , observableRadius , center, 'human', settings.AIStabilityThreshold, bestSol, allSol, frameCountGame, settings.alpha );
+    [ firstStep, bestSol ] = runAIPlanner( objects, player , observableRadius , center, 'human', frameCountGame, settings.alpha, false );
     
     // if (settings.AIMode>0) {    
     //     // MS6
@@ -1819,7 +1821,7 @@ function drawCompositeShape(obj) {
     // Then draw the inner circle on top
     drawCircle(obj.x, obj.y, obj.fill, obj.innerColor); // Inner circle, smaller radius
 
-    if (DEBUG && obj.willOverlap) drawDebugOverlap(obj, obj.willOverlap);
+    // if (DEBUG && obj.willOverlap) drawDebugOverlap(obj, obj.willOverlap);
     
 }
 
@@ -2931,13 +2933,13 @@ $(document).ready( function(){
                 // num frames it took to make a new target choice 
                 // if (player.targetObjID != null && player.targetObjID != objects[i].ID) { // add a delay variable when a new object is clicked
                 if (!player.moving){ // only clicks that happen when the player is not moving
-                    console.log("number delays", clickTimes.length);
-                    console.log("Number of Frames Player not Moving", numFramesPlayernotMoving)
+                    // console.log("number delays", clickTimes.length);
+                    // console.log("Number of Frames Player not Moving", numFramesPlayernotMoving)
                     clickTimes.push(numFramesPlayernotMoving);
                  
                     let lastNumClicks = 5;  
                     avgResponseTime = getExponentialMovingAverage(lastNumClicks);
-                    console.log("Average Response Time", avgResponseTime); 
+                    // console.log("Average Response Time", avgResponseTime); 
 
                     // if (!clickTimes.length < 1) {
                     //     avgResponseTime = 10;
@@ -2950,7 +2952,7 @@ $(document).ready( function(){
 
                 planDelayFrames = Math.floor(avgResponseTime);
                 // console.log("*** HALFWAY THROUGH THE GAME ***")
-                console.log("Plan Delay Frames", planDelayFrames)
+                // console.log("Plan Delay Frames", planDelayFrames)
 
                 // let willOverlap = willSquareAndCircleOverlap(player.x, player.y, player.dx, player.dy, player.width,
                 //     objects[i].x, objects[i].y, objectVelX, objectVelY, objects[i].size);

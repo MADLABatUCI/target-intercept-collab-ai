@@ -136,33 +136,56 @@ This file contains all of the task information for the experiment.
                   <h5 class="trial-task trial-question trial-information" id="survey-task">
                     Please indicate the extent to which you agree or disagree with the following statements. Respond to each statement for both robot players:
                   </h5>
-                  <div class="scale-description">
+                  <!-- <div class="scale-description">
                     <span class="scale-left">Strongly Disagree (1)</span>
                     <span class="scale-right">Strongly Agree (7)</span>
-                  </div>
+                  </div> -->
                 </div>
-              </div>
+            </div>
+
+                    <!-- Simplified Likert Scale Legend -->
+            <div class="row mt-3 mb-4">
+                <div class="col-12">
+                    <div class="likert-legend-simple">
+                        <span class="legend-left">Strongly Disagree</span>
+                        <div class="legend-scale">
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span>6</span>
+                            <span>7</span>
+                        </div>
+                        <span class="legend-right">Strongly Agree</span>
+                    </div>
+                </div>
+            </div>
             
             <div class="table-responsive">
               <table class="table table-bordered">
                 <thead>
                     <tr>
-                      <th class="topic-header" rowspan="2">Topic</th>
+                      <th class="topic-header" rowspan="2">Statement</th>
                       <th colspan="7">
                         <figure class="robot-figure">
                           <img id="agent1-icon" src="./images/simple-robot-line-removebg-preview.png" alt="AI Agent 1" class="robot-icon">
                           <figcaption id="agent1-caption"><strong>Green-Bot</strong></figcaption>
+                          <figcaption id="agent1-caption"><em>From round 1</em></figcaption>
                         </figure>
                       </th>
+                      <th class="separator-column"></th> <!-- New separator column -->
                       <th colspan="7">
                         <figure class="robot-figure">
                           <img id="agent2-icon" src="./images/simple-robot-line-removebg-preview.png" alt="AI Agent 2" class="robot-icon">
                           <figcaption id="agent2-caption"><strong>Purple-Bot</strong></figcaption>
+                          <figcaption id="agent1-caption"><em>From round 2</em> </figcaption>
                         </figure>
                       </th>
                     </tr>
                     <tr>
                       <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th>
+                      <th class="separator-column"></th> <!-- New separator column -->
                       <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th>
                     </tr>
                   </thead>
@@ -179,7 +202,8 @@ This file contains all of the task information for the experiment.
                         <input type="radio" name="q01_agent1" value="7">
                       </div>
                     </td>
-                    <td colspan="7">
+                    <th class="separator-column"></th> <!-- New separator column -->
+                    <td colspan="8">
                       <div class="radio-group">
                         <input type="radio" name="q01_agent2" value="1">
                         <input type="radio" name="q01_agent2" value="2">
@@ -204,6 +228,7 @@ This file contains all of the task information for the experiment.
                         <input type="radio" name="q02_agent1" value="7">
                       </div>
                     </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
                     <td colspan="7">
                       <div class="radio-group">
                         <input type="radio" name="q02_agent2" value="1">
@@ -229,6 +254,7 @@ This file contains all of the task information for the experiment.
                         <input type="radio" name="q03_agent1" value="7">
                       </div>
                     </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
                     <td colspan="7">
                       <div class="radio-group">
                         <input type="radio" name="q03_agent2" value="1">
@@ -254,6 +280,7 @@ This file contains all of the task information for the experiment.
                         <input type="radio" name="q04_agent1" value="7">
                       </div>
                     </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
                     <td colspan="7">
                       <div class="radio-group">
                         <input type="radio" name="q04_agent2" value="1">
@@ -279,6 +306,7 @@ This file contains all of the task information for the experiment.
                         <input type="radio" name="q05_agent1" value="7">
                       </div>
                     </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
                     <td colspan="7">
                       <div class="radio-group">
                         <input type="radio" name="q05_agent2" value="1">
@@ -304,6 +332,7 @@ This file contains all of the task information for the experiment.
                         <input type="radio" name="q06_agent1" value="7">
                       </div>
                     </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
                     <td colspan="7">
                       <div class="radio-group">
                         <input type="radio" name="q06_agent2" value="1">
@@ -329,6 +358,7 @@ This file contains all of the task information for the experiment.
                         <input type="radio" name="q07_agent1" value="7">
                       </div>
                     </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
                     <td colspan="7">
                       <div class="radio-group">
                         <input type="radio" name="q07_agent2" value="1">
@@ -354,6 +384,7 @@ This file contains all of the task information for the experiment.
                         <input type="radio" name="q08_agent1" value="7">
                       </div>
                     </td>
+                    <th class="separator-column"></th> <!-- New separator column -->
                     <td colspan="7">
                       <div class="radio-group">
                         <input type="radio" name="q08_agent2" value="1">
