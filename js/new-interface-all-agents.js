@@ -235,6 +235,9 @@ let collabPlayer2 = 1;
 let agent1Name;
 let agent2Name;
 
+let agent1ChoiceName;
+let agent2ChoiceName;
+
 let agentNames = {
     0: "Ignorant",
     1: "Omit",
@@ -370,6 +373,22 @@ function updateDifficultySettings() {
 
     // console.log("Updated DifficultySettings:", newDifficultySettings);
     return newDifficultySettings;
+}
+
+async function updateAgentOrdering() {
+    // this function should handle the ordering and naming of the agents
+    // if you are in the first round of that block, you should assign the correct agent.
+
+     // This is needed to handle coloring of the AI player and naming
+     if (currentRound == 1){
+        AIplayer.collabOrder = 1;
+        agent1Name = agentNames[AIplayer.collabType];
+    } else if (currentRound == 2){
+        AIplayer.collabOrder = 2;
+        agent2Name = agentNames[AIplayer.collabType];
+    }
+
+    // console.log("Agent 1 & 2 Names", agent1Name, agent2Name);
 }
 
 // *********************************************** GAME INITIALIZATION ***********************************************//
@@ -583,6 +602,10 @@ const AIplayer_offline = {
     score:0
 };
 
+let visitedBlocks = 0;
+let numSurveyCompleted = 0;
+let AIComparisonComplete = false;
+let prevSetting;
 //**************************************************** BLOCK RANDOMIZATION ******************************************************//
 
 async function initExperimentSettings() {
@@ -602,7 +625,7 @@ async function initExperimentSettings() {
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
     } else {
         // assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-        assignedTeamingCondition = [1]; // 3 == ignorant and divide
+        assignedTeamingCondition = [3]; // 3 == ignorant and divide
     }
 
     currentTeamingCondition = assignedTeamingCondition[0]+1;
@@ -623,7 +646,7 @@ async function initExperimentSettings() {
     curSeeds = randomValues;
 
     if (DEBUG){
-        currentCondition = 7;
+        currentCondition = 6;
     }
 }
 
@@ -647,11 +670,10 @@ if (noAssignment){
     noAssignment = false;
 }
 
-let visitedBlocks = 0;
-let numSurveyCompleted = 0;
-let AIComparisonComplete = false;
-let prevSetting;
+
 // ****************************************************** UPDATE FUNCTIONS ********************************************************//
+
+
 
 // Start Game function
 async function startGame(round, condition, block, seeds) {
@@ -660,12 +682,13 @@ async function startGame(round, condition, block, seeds) {
 
     let blockSetting = difficultySettings[condition][block];
     roundSettings = blockSetting[currentRound];
-
+    
     // reassign default settings to the values grabbed from the current
     // settings.AIMode = roundSettings.AIMode;
     // settings.AIStabilityThreshold = roundSettings.AIStabilityThreshold;
     settings.AICollab = roundSettings.AICollab;
     AIplayer.collabType = roundSettings.AICollab;
+
 
     settings.maxTargets = roundSettings.maxTargets;
     
@@ -674,38 +697,21 @@ async function startGame(round, condition, block, seeds) {
     // if (DEBUG) settings.maxTargets=8; // this was to get many targets for debuggin
    
     // Change to the next seed
-    if (currentBlock == 0) {
+    if (block == 0) {
         settings.randSeed = seeds[currentRound - 1];
-        
-        // This is needed to handle coloring of the AI player and naming
-        if (currentRound == 1){
-            AIplayer.collabOrder = 1;
-            agent1Name = agentNames[AIplayer.collabType];
-        } else if (currentRound == 2){
-            AIplayer.collabOrder = 2;
-            agent2Name = agentNames[AIplayer.collabType];
-        }
-
-    } else if (currentBlock == 1) {
+        await updateAgentOrdering();
+    } else if (block == 1 ) {
         settings.randSeed = seeds[currentRound + 1];
-
-        // handle coloring of the AI player and the naming
-        if (currentRound == 1){
-            AIplayer.collabOrder = 1;
-            agent1Name = agentNames[AIplayer.collabType];
-        } else if (currentRound == 2){
-            AIplayer.collabOrder = 2;
-            agent2Name = agentNames[AIplayer.collabType];
-        }
-    } 
+        if (currentRound == 2) await updateAgentOrdering();
+    }
 
    
-    if (AIplayer.collabOrder == 1  && settings.maxTargets == 5) AIplayer.color = 'rgba(0, 128, 0, 0.5)'; // green transparent
-    if (AIplayer.collabOrder == 2 && settings.maxTargets == 5) AIplayer.color = 'rgba(128, 0, 128, 0.5)'; // purple transparent
+    if (currentRound == 1  && settings.maxTargets == 5) AIplayer.color = 'rgba(0, 128, 0, 0.5)'; // green transparent
+    if (currentRound == 2 && settings.maxTargets == 5) AIplayer.color = 'rgba(128, 0, 128, 0.5)'; // purple transparent
 
     // if (settings.AICollab == 0  && settings.maxTargets == 15) AIplayer.color = 'rgba(128, 128, 128, 0.7)'; // iron transparent
-    if (AIplayer.collabOrder == 1  && settings.maxTargets == 15) AIplayer.color = 'rgba(0, 0, 255, 0.5)'; // blue transparent
-    if (AIplayer.collabOrder == 2 && settings.maxTargets == 15) AIplayer.color = 'rgba(184, 115, 51, 0.5)'; // copper transparent 
+    if (currentRound == 1  && settings.maxTargets == 15) AIplayer.color = 'rgba(0, 0, 255, 0.5)'; // blue transparent
+    if (currentRound == 2 && settings.maxTargets == 15) AIplayer.color = 'rgba(184, 115, 51, 0.5)'; // copper transparent 
 
     if (DEBUG){
         //console.log("Default Settings AI Mode", settings.AIMode);
@@ -3272,7 +3278,7 @@ async function loadAIComparison() {
                 $("#ai-comparison-container").attr("hidden", true);
                 // $("#full-game-container").attr("hidden", false);
                 $("#ai-open-ended-feedback-container").attr("hidden", false);
-                loadAIopenEndedFeedback(numSurveyCompleted);
+                await loadAIopenEndedFeedback(numSurveyCompleted);
                 // push them to the final page of the experiment which redirects participants
                 // await runGameSequence("Congratulations on Finishing the Main Experiment! Click OK to Continue to the Feedback Survey.");
                 // finalizeBlockRandomization(db1, studyId, currentCondition);
@@ -3295,7 +3301,7 @@ async function loadAIComparison() {
     });
 }
 
-function loadAIopenEndedFeedback(numSurveyCompleted) {
+async function loadAIopenEndedFeedback(numSurveyCompleted) {
     var DEBUG_SURVEY = DEBUG;
     // var numSurveyCompleted = 0; // Assuming this variable is defined somewhere in your global scope
 
@@ -3345,6 +3351,8 @@ function loadAIopenEndedFeedback(numSurveyCompleted) {
                 $("#complete-page-content-container").attr("hidden", false);
                 await loadCompletePage();
             } else {
+                // update AI order settings
+                await updateAgentOrdering();
                 $("#ai-open-ended-feedback-container").attr("hidden", true);
                 $("#full-game-container").attr("hidden", false);
             }
@@ -3452,9 +3460,8 @@ async function loadFullSurvey(){
         }
 
         await writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
-
-    
         await loadAIComparison();
+
         $("#ai-comparison-container").attr("hidden", false);
         $("#survey-full-container").attr("hidden", true);
     }
@@ -3466,284 +3473,6 @@ async function loadFullSurvey(){
     checkAllAnswered();
 }
 
-// async function loadFullSurvey(){
-//     var DEBUG_SURVEY = DEBUG;
-//     var TOPIC_FULL_DICT = {
-//         "agent1": {},
-//         "agent2": {}
-//     };
-//     var TOTAL_QUESTIONS = 8; // Updated to match the number of questions in the HTML
-
-//     $('.radio-group input[type="radio"]').prop('checked', false);
-
-//     $(document).ready(function (){
-//         function likertTopicAbility() {
-//             let [question, agent] = $(this).attr("name").split("_");
-//             TOPIC_FULL_DICT[agent][question] = Number($(this).val());
-    
-//             checkAllAnswered();
-    
-//             if (DEBUG_SURVEY) {
-//                 console.log(
-//                     "Radio Button Selected:",
-//                     "Question:", question,
-//                     "Agent:", agent,
-//                     "Value:", TOPIC_FULL_DICT[agent][question]
-//                 );
-//             }
-//         };
-
-//         // function checkAllAnswered() {
-//         //     var allAnswered = true;
-//         //     var totalAnswered = 0;
-
-//         //     for (let agent in TOPIC_FULL_DICT) {
-//         //         totalAnswered += Object.keys(TOPIC_FULL_DICT[agent]).length;
-//         //     }
-
-//         //     allAnswered = totalAnswered === TOTAL_QUESTIONS * 2; // 2 agents
-
-//         //     var feedbackText = $('#survey-full-user-feedback-text').val();
-
-//         //     if (allAnswered && feedbackText.trim() !== '') {
-//         //         $('#survey-complete-button-full').prop('disabled', false);
-//         //     } else {
-//         //         $('#survey-complete-button-full').prop('disabled', true);
-//         //     }
-//         // }
-
-//         function checkAllAnswered() {
-//             var allAnswered = true;
-//             var totalAnswered = 0;
-        
-//             for (let agent in TOPIC_FULL_DICT) {
-//                 totalAnswered += Object.keys(TOPIC_FULL_DICT[agent]).length;
-//             }
-        
-//             allAnswered = totalAnswered === TOTAL_QUESTIONS * 2; // 2 agents
-        
-//             var feedbackText = $('#survey-full-user-feedback-text').val() || '';
-        
-//             if (allAnswered && feedbackText.trim() !== '') {
-//                 $('#survey-complete-button-full').prop('disabled', false);
-//             } else {
-//                 $('#survey-complete-button-full').prop('disabled', true);
-//             }
-//         }
-
-//         function grabFeedbackText(){
-//             return $('#survey-full-user-feedback-text').val();
-//         }
-        
-
-//         async function completeExperiment() {
-//             numSurveyCompleted++;
-
-//             let feedbackText = grabFeedbackText();
-            
-//             let path, path2;
-//             if (numSurveyCompleted == 1) {
-//                 path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full1';
-//                 // path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback1';
-//                 loadAIComparison();
-//             } else if (numSurveyCompleted == 2) {
-//                 path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full2';
-//                 // path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback2';
-//                 loadAIComparison();
-//             } else {
-//                 path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full3';
-//                 // path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback';
-//             }
-
-//             writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
-//             writeRealtimeDatabase(db1, path2, feedbackText);
-
-//             if (numSurveyCompleted == 3) {
-//                 finalizeBlockRandomization(db1, studyId, currentCondition);
-//                 $("#survey-full-container").attr("hidden", true);
-//                 $("#task-header").attr("hidden", true);
-//                 $("#exp-complete-header").attr("hidden", false);
-//                 $("#complete-page-content-container").attr("hidden", false);
-//                 await loadCompletePage();
-//             } else {
-//                 $("#survey-full-container").attr("hidden", true);
-//                 $('#survey-full-user-feedback-text').val('');
-//                 $("#full-game-container").attr("hidden", false);
-//             }
-//         };
-
-//         $('.radio-group input[type="radio"]').click(likertTopicAbility);
-//         $('#survey-full-user-feedback-text').on('input', checkAllAnswered);
-//         $('#survey-complete-button-full').off().click(completeExperiment);
-//     });
-// }
-
-// function loadFullSurvey(){
-//     var DEBUG_SURVEY = DEBUG;
-//     //      Survey Information
-//     var TOPIC_FULL_DICT = {
-//         "q01"  : null,
-//         "q02"  : null,
-//         "q03"  : null,
-//         "q04"  : null,
-//         "q05"  : null,
-//         "q06"  : null,
-//         "q07"  : null,
-//         "q08"  : null,
-//         "q09"  : null,
-//         // "q10" : null
-//     };
-//     var TOPICS_RANKED = 0;
-
-//     $('.likert-topic-full li input').prop('checked', false);
-
-//     /******************************************************************************
-//         RUN ON PAGE LOAD
-
-//             Run the following functions as soon as the page is loaded. This will
-//             render the consent.html page appropriately.
-//     ******************************************************************************/
-
-//     $(document).ready(function (){
-//         /******************************************************************************
-//             FUNCTIONALITY
-
-//                 All functions that will be used for the survey page.
-//         ******************************************************************************/
-//         /*
-//             Function to control Radio Button Selection
-//         */
-//         function likertTopicAbility() {
-//             /*
-//                 Radio Button Selection Contoller.
-
-//                 Only one likert option can be selected for each topic.
-//                 Keep count of how many topics have been ranked. Once all topics
-//                 have been ranked, then the submit button can become enabled.
-//             */
-//             // Retrieve the current topic that was ranked
-//             let topic_currently_ranked = $(this).attr("name");
-
-//             // Determine is that topic has been ranked before or not
-//             if (TOPIC_FULL_DICT[topic_currently_ranked] == null) {
-//                 // If the topic hasn't bee ranked before, increment counter
-//                 TOPICS_RANKED++;
-//             }
-
-//             // Set selection variable
-//             TOPIC_FULL_DICT[topic_currently_ranked] = Number($(this).val());
-
-//             // if (TOPICS_RANKED == 10) {
-//             //     // Enable "Submit" button
-//             //     $('#survey-complete-button').prop('disabled', false);
-//             //     console.log("All topics ranked");
-//             // }
-//             var allClicked = true;
-//             $('.likert-topic-full').each(function() {
-//                 if ($(this).find('input:checked').length === 0) {
-//                     allClicked = false;
-//                     return false; // Exit the loop
-//                 }
-//             });
-
-//             // Check if all likert buttons have been clicked and feedback text is not empty whenever an input changes
-//             $('.likert-topic-full li input, #survey-full-user-feedback-text').on('input', function() {
-//                 var allClicked = true;
-//                 $('.likert-topic-full').each(function() {
-//                     if ($(this).find('input:checked').length === 0) {
-//                         allClicked = false;
-//                         return false; // Exit the loop
-//                     }
-//                 });
-
-//                 var feedbackText = $('#survey-full-user-feedback-text').val();
-
-//                 if (allClicked && feedbackText.trim() !== '') {
-//                     $('#survey-complete-button-full').prop('disabled', false);
-//                 } else {
-//                     $('#survey-complete-button-full').prop('disabled', true);
-//                 }
-//             });
-
-//             if (DEBUG) {
-//                 console.log(
-//                     "Radio Button Selected\n:",
-//                     "    Topic :", topic_currently_ranked,
-//                     "    Value :", TOPIC_FULL_DICT[topic_currently_ranked]
-//                 );
-//                 console.log(
-//                     $(this).attr("name")
-//                 );
-//             }
-//         };
-
-//         function grabFeedbackText(){
-//             var feedbackText = document.getElementById('survey-full-user-feedback-text').value;
-//             return feedbackText;
-//         }
-        
-        
-//         async function completeExperiment() {
-//             /*
-//                 When submit button is clicked (after ranking), experiment is done.
-
-//                 This will submit the final rankings and then load the
-//                 "Experiment Complete" page.
-//             */
-//             numSurveyCompleted++;
-
-//             let feedbackText = grabFeedbackText();
-            
-//             if (numSurveyCompleted == 1 && currentCondition == 2) {
-//                 let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full1' ;
-//                 let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback1' ;
-//                 writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
-//                 writeRealtimeDatabase(db1, path2, feedbackText);
-                
-//             } else if (numSurveyCompleted == 2 && currentCondition == 2) {
-//                 let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full2' ;
-//                 let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback2' ;
-//                 writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
-//                 writeRealtimeDatabase(db1, path2, feedbackText);
-//             } else {
-//                 let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full3' ;
-//                 let path2 = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/aiFeedback' ;
-//                 writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
-//                 writeRealtimeDatabase(db1, path2, feedbackText);
-//             }
-
-//             if (numSurveyCompleted == 3) {
-//                 // push them to the final page of the experiment which redirects participants
-//                 // await runGameSequence("Congratulations on Finishing the Main Experiment! Click OK to Continue to the Feedback Survey.");
-//                 // $("#full-game-container").attr("hidden", true);
-//                 finalizeBlockRandomization(db1, studyId, currentCondition);
-//                 // finalizeBlockRandomization(db1, studyId, curSeeds);
-//                 $("#survey-full-container").attr("hidden", true);
-//                 $("#task-header").attr("hidden", true);
-//                 $("#exp-complete-header").attr("hidden", false);
-//                 $("#complete-page-content-container").attr("hidden", false);
-//                 await loadCompletePage();
-//                 // $('#task-complete').load('html/complete.html');
-//             } else{ // continue to another block
-//                 $("#survey-full-container").attr("hidden", true);
-//                 document.getElementById('survey-full-user-feedback-text').value = '';
-//                 //$("#survey-full-container").remove();
-//                 $("#full-game-container").attr("hidden", false);
-//                 // resizeScoreCanvas()
-
-//             }
-//             // console.log("Submit Button Clicked");
-//         };
-
-//         //  Handle Likert Selection for ALL Topics
-//         $('.likert-topic-full li input').click(likertTopicAbility);
-
-//         //  Handle Submitting Survey
-//         $('#survey-complete-button-full').off().click(completeExperiment);
-//     });
-// }
-
-//*************************************************** SURVEY -- WORKLOAD *************************************************//
 function loadWorkLoadSurvey(){
     var DEBUG_SURVEY                    = DEBUG;
     //      Survey Information

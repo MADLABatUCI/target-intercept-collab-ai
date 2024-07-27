@@ -278,3 +278,34 @@ Survey styling file.
   border-left: 2px solid #333;
   border-right: 2px solid #333;
 }
+/* Add these styles to your existing CSS file */
+
+.likert-description-row th {
+  font-weight: normal;
+  font-style: italic;
+  font-size: 0.9em;
+  text-align: center;
+  padding: 5px;
+  background-color: #f8f9fa;
+}
+
+/* Adjust the existing styles if needed */
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.robot-figure {
+  margin-bottom: 0;
+}
+
+.robot-figure figcaption {
+  margin-bottom: 2px;
+}
+
+/* Ensure the separator column styling is consistent */
+.separator-column {
+  width: 20px;
+  background-color: #f8f9fa;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+}
