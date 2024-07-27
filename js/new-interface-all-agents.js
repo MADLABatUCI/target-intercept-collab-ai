@@ -27,16 +27,6 @@ import { writeRealtimeDatabase,writeURLParameters,readRealtimeDatabase,
 
 // Define the configuration file for first database
 
-// const firebaseConfig_db1 = {
-//     apiKey: "AIzaSyAZKFzh1o0fytvilXTs3sJu_AfvFfAZDGk",
-//     authDomain: "uci-hri-exp2.firebaseapp.com",
-//     databaseURL: "https://uci-hri-exp2-default-rtdb.firebaseio.com",
-//     projectId: "uci-hri-exp2",
-//     storageBucket: "uci-hri-exp2.appspot.com",
-//     messagingSenderId: "1074930278032",
-//     appId: "1:1074930278032:web:34a303f487af2cd82f4215"
-// };
-
 const firebaseConfig_db1 = {
     apiKey: "AIzaSyDcc2RhAdA6I95EYqWpxJ69h8j4OawjzH4",
     authDomain: "collab-ai-f09f1.firebaseapp.com",
