@@ -27,15 +27,25 @@ import { writeRealtimeDatabase,writeURLParameters,readRealtimeDatabase,
 
 // Define the configuration file for first database
 
+// const firebaseConfig_db1 = {
+//     apiKey: "AIzaSyDcc2RhAdA6I95EYqWpxJ69h8j4OawjzH4",
+//     authDomain: "collab-ai-f09f1.firebaseapp.com",
+//     databaseURL: "https://collab-ai-f09f1-default-rtdb.firebaseio.com",
+//     projectId: "collab-ai-f09f1",
+//     storageBucket: "collab-ai-f09f1.appspot.com",
+//     messagingSenderId: "756574854064",
+//     appId: "1:756574854064:web:133da37f9203a849161475"
+//   };
+
+// Your web app's Firebase configuration
 const firebaseConfig_db1 = {
-    apiKey: "AIzaSyDcc2RhAdA6I95EYqWpxJ69h8j4OawjzH4",
-    authDomain: "collab-ai-f09f1.firebaseapp.com",
-    databaseURL: "https://collab-ai-f09f1-default-rtdb.firebaseio.com",
-    projectId: "collab-ai-f09f1",
-    storageBucket: "collab-ai-f09f1.appspot.com",
-    messagingSenderId: "756574854064",
-    appId: "1:756574854064:web:133da37f9203a849161475"
-  };
+    apiKey: "AIzaSyD1fJXd14fcxUDCb-8MUAMSThcR1e5i7FE",
+    authDomain: "collab-ai-full-39f84.firebaseapp.com",
+    projectId: "collab-ai-full-39f84",
+    storageBucket: "collab-ai-full-39f84.appspot.com",
+    messagingSenderId: "535805184208",
+    appId: "1:535805184208:web:2af9ae4c07c035e4c8b6d5"
+};
   
 // Get the reference to the two databases using the configuration files
 const [ db1 , firebaseUserId1 ] = await initializeRealtimeDatabase( firebaseConfig_db1 );
@@ -94,6 +104,7 @@ function writeGameDatabase(){
 
     let path12  = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/blockCondition';
     let path13  = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/seedCondition';
+    let path24  = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/teamingCondition';
 
     // console.log("Writing to database");
     let path1   = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/spawnData';
@@ -119,7 +130,6 @@ function writeGameDatabase(){
     // let path22  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIplayerLocation';
     let path23  = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/AIeventStream_offline';
 
-    
 
     writeRealtimeDatabase(db1, path1, spawnData);
     writeRealtimeDatabase(db1, path2, caughtTargets);
@@ -144,6 +154,7 @@ function writeGameDatabase(){
     // writeRealtimeDatabase(db1, path21, AIplayerLocation_offline);
     // writeRealtimeDatabase(db1, path22, AIplayerLocation);
     writeRealtimeDatabase(db1, path23, AIeventStream_offline);
+    writeRealtimeDatabase(db1, path24, currentTeamingCondition);
 }
 
 //************************************************ ENVIRONMENT INITIALIZATION ********************************************//
@@ -601,10 +612,10 @@ let prevSetting;
 async function initExperimentSettings() {
     const maxCompletionTimeMinutes = 60;
 
-    const aiBlockCondition = 'aiCondition'; // a string we use to represent the condition name
+    const blockOrderCondition = 'blockOrderCondition'; // a string we use to represent the condition name
     let numConditions = 8; // number of conditions
     let numDraws = 1; // number of draws
-    let assignedCondition = await blockRandomization(db1, studyId, aiBlockCondition, numConditions, maxCompletionTimeMinutes, numDraws);
+    let assignedCondition = await blockRandomization(db1, studyId, blockOrderCondition, numConditions, maxCompletionTimeMinutes, numDraws);
     currentCondition = assignedCondition[0]+1;
 
     const teamingBlockCondition = 'teamingCondition'; // a string we use to represent the condition name
@@ -615,7 +626,7 @@ async function initExperimentSettings() {
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
     } else {
         // assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-        assignedTeamingCondition = [3]; // 3 == ignorant and divide
+        assignedTeamingCondition = [6]; // 3 == ignorant and divide
     }
 
     currentTeamingCondition = assignedTeamingCondition[0]+1;
@@ -3333,8 +3344,8 @@ async function loadAIopenEndedFeedback(numSurveyCompleted) {
 
             if (numSurveyCompleted == 2) {
                 // push them to the final page of the experiment which redirects participants
-                finalizeBlockRandomization(db1, studyId, currentCondition);
-                finalizeBlockRandomization(db1, studyId, currentTeamingCondition);
+                finalizeBlockRandomization(db1, studyId, blockOrderCondition);
+                finalizeBlockRandomization(db1, studyId, teamingBlockCondition);
                 $("#ai-open-ended-feedback-container").attr("hidden", true);
                 $("#task-header").attr("hidden", true);
                 $("#exp-complete-header").attr("hidden", false);
