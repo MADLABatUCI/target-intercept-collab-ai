@@ -440,7 +440,7 @@ let drtLightChoice      = 0; // random choice of light to display
 
 let maxFrames = null;
 if (DEBUG){
-    maxFrames         = 10 * fps;// settings.maxSeconds * fps;
+    maxFrames         = 1 * fps;// settings.maxSeconds * fps;
 } else{ // set it to whatever you want
     maxFrames         = settings.maxSeconds * fps; //120 * 60; // Two minutes in frames
 }
@@ -625,8 +625,8 @@ async function initExperimentSettings() {
     if (!DEBUG){
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
     } else {
-        // assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-        assignedTeamingCondition = [6]; // 3 == ignorant and divide
+        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
+        // assignedTeamingCondition = [6]; // 3 == ignorant and divide
     }
 
     currentTeamingCondition = assignedTeamingCondition[0]+1;
@@ -638,7 +638,7 @@ async function initExperimentSettings() {
     if (DEBUG) console.log("Assigned AI Teams", collabPlayer1, collabPlayer2);
 
     var randomValues = [];
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 4; i++) {
         randomValues.push(generateRandomInt(1, 1000000));
     }
 
@@ -649,12 +649,17 @@ async function initExperimentSettings() {
     if (DEBUG){
         currentCondition = 6;
     }
-}
 
+    return [blockOrderCondition, teamingBlockCondition];
+}
+let blockOrderCondition, teamingBlockCondition;
+let conditionsArray = [];
 // Assign a condition to each new participant.
 if (noAssignment){
     if (DEBUG){ // adjust value as needed for debuggin default is the same as the main experiment
-        await initExperimentSettings();
+        conditionsArray = await initExperimentSettings();
+        blockOrderCondition = conditionsArray[0];
+        teamingBlockCondition = conditionsArray[1];
         curSeeds = [12,123,12345,123456];
         // settings.maxTargets=100;
         // currentCondition = 1;
@@ -662,8 +667,16 @@ if (noAssignment){
         console.log('assignedCondition:', currentCondition); // Add this line
         console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
         console.log('assignedSeed:', curSeeds); // Add this line
+
+        console.log("block order condition", blockOrderCondition);
+        console.log("teaming block condition", teamingBlockCondition);
+
     } else {
-        await initExperimentSettings();
+        conditionsArray = await initExperimentSettings();
+        blockOrderCondition = conditionsArray[0];
+        teamingBlockCondition = conditionsArray[1];
+        blockOrderCondition, teamingBlockCondition = await initExperimentSettings();
+        // await initExperimentSettings();
         // console.log('assignedCondition:', currentCondition); // Add this line
         // console.log('assignedSeed:', curSeeds); // Add this line
     }
