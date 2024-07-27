@@ -105,6 +105,7 @@ function writeGameDatabase(){
     let path12  = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/blockCondition';
     let path13  = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/seedCondition';
     let path24  = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/teamingCondition';
+    let path25 = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/teamingOrder';
 
     // console.log("Writing to database");
     let path1   = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/spawnData';
@@ -155,6 +156,7 @@ function writeGameDatabase(){
     // writeRealtimeDatabase(db1, path22, AIplayerLocation);
     writeRealtimeDatabase(db1, path23, AIeventStream_offline);
     writeRealtimeDatabase(db1, path24, currentTeamingCondition);
+    writeRealtimeDatabase(db1, path25, agentOrder);
 }
 
 //************************************************ ENVIRONMENT INITIALIZATION ********************************************//
@@ -235,6 +237,8 @@ let collabPlayer2 = 1;
 
 let agent1Name;
 let agent2Name;
+
+let agentOrder = [];
 
 let agent1ChoiceName;
 let agent2ChoiceName;
@@ -384,9 +388,11 @@ async function updateAgentOrdering() {
      if (currentRound == 1){
         AIplayer.collabOrder = 1;
         agent1Name = agentNames[AIplayer.collabType];
+        agentOrder.push(agent1Name);
     } else if (currentRound == 2){
         AIplayer.collabOrder = 2;
         agent2Name = agentNames[AIplayer.collabType];
+        agentOrder.push(agent2Name);
     }
 
     // console.log("Agent 1 & 2 Names", agent1Name, agent2Name);
@@ -440,7 +446,7 @@ let drtLightChoice      = 0; // random choice of light to display
 
 let maxFrames = null;
 if (DEBUG){
-    maxFrames         = 1 * fps;// settings.maxSeconds * fps;
+    maxFrames         = 10 * fps;// settings.maxSeconds * fps;
 } else{ // set it to whatever you want
     maxFrames         = settings.maxSeconds * fps; //120 * 60; // Two minutes in frames
 }
@@ -799,7 +805,7 @@ async function endGame() {
             // loadAIComparison();
             // $("#ai-comparison-container").attr("hidden", false);
             $("#full-game-container").attr("hidden", true);
-        
+            console.log("Agent order", agentOrder); 
         }
     }
 }
