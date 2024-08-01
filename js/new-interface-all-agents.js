@@ -85,7 +85,7 @@ let studyId = 'placeHolder';
 if (DEBUG){
    studyId    = "uci-hri-experiment-collab-Full-DEBUG";
 } else {
-    studyId   = "uci-hri-experiment-collab-Full";
+    studyId   = "uci-hri-experiment-collab-Full-test";
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
@@ -446,7 +446,7 @@ let drtLightChoice      = 0; // random choice of light to display
 
 let maxFrames = null;
 if (DEBUG){
-    maxFrames         = 10 * fps;// settings.maxSeconds * fps;
+    maxFrames         = 30 * fps;// settings.maxSeconds * fps;
 } else{ // set it to whatever you want
     maxFrames         = settings.maxSeconds * fps; //120 * 60; // Two minutes in frames
 }
@@ -631,8 +631,8 @@ async function initExperimentSettings() {
     if (!DEBUG){
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
     } else {
-        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-        // assignedTeamingCondition = [6]; // 3 == ignorant and divide
+        // assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
+        assignedTeamingCondition = [9]; // 3 == ignorant and divide
     }
 
     currentTeamingCondition = assignedTeamingCondition[0]+1;
@@ -653,11 +653,12 @@ async function initExperimentSettings() {
     curSeeds = randomValues;
 
     if (DEBUG){
-        currentCondition = 6;
+        currentCondition = 3;
     }
 
     return [blockOrderCondition, teamingBlockCondition];
 }
+
 let blockOrderCondition, teamingBlockCondition;
 let conditionsArray = [];
 // Assign a condition to each new participant.
