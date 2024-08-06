@@ -83,7 +83,7 @@ var COLLAB = getCollabTypeParams(); // 0=ignorant; 1=omit; 2=divide; 3=delay
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab-DEBUG-2";
+   studyId    = "uci-hri-experiment-collab-Full-DEBUG";
 } else {
     studyId   = "uci-hri-experiment-collab-Full-test";
 }
@@ -100,12 +100,14 @@ function writeGameDatabase(){
     // writeRealtimeDatabase(db2, pathUID1, firebaseUserId1);
     // writeRealtimeDatabase(db1, pathUID2, firebaseUserId2);
 
+    // Conside a different writing strucutre to fireabase (dictionary structrue where you push each variable)
+
     if (DEBUG) console.log("Writing to database from block", currentBlock, "round", currentRound);
 
     let path12  = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/blockCondition';
     let path13  = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/seedCondition';
     let path24  = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/teamingCondition';
-    let path25 = studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/teamingOrder';
+    let path25 =  studyId + '/participantData/' + firebaseUserId1 + '/condition' + '/teamingOrder';
 
     // console.log("Writing to database");
     let path1   = studyId + '/participantData/' + firebaseUserId1 + '/block' + currentBlock + '/round' + currentRound + '/spawnData';
@@ -145,21 +147,18 @@ function writeGameDatabase(){
     writeRealtimeDatabase(db1, path11, score);
     writeRealtimeDatabase(db1, path12, currentCondition);
     writeRealtimeDatabase(db1, path13, curSeeds);
-    // writeRealtimeDatabase(db1, path14, aiClicks_adjusted);
-    // writeRealtimeDatabase(db1, path15, drtResponses);
-    // writeRealtimeDatabase(db1, path16, drtFalseAlarm);
+
     writeRealtimeDatabase(db1, path17, AIeventStream);
     writeRealtimeDatabase(db1, path18, AIcaughtTargets_offline);
     writeRealtimeDatabase(db1, path19, aiClicks_offline);
     writeRealtimeDatabase(db1, path20, aiScore_offline);
-    // writeRealtimeDatabase(db1, path21, AIplayerLocation_offline);
-    // writeRealtimeDatabase(db1, path22, AIplayerLocation);
+    
     writeRealtimeDatabase(db1, path23, AIeventStream_offline);
     writeRealtimeDatabase(db1, path24, currentTeamingCondition);
     writeRealtimeDatabase(db1, path25, agentOrder);
 }
 
-//************************************************ ENVIRONMENT INITIALIZATION ********************************************//
+//************************************************ ENVIRONMENT INITIALIZATION (Global Variables) ********************************************//
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreCanvas = document.getElementById('scoreCanvas');
@@ -228,21 +227,22 @@ let settings = {
     speedHigh: 2.99,               // highest end of object speed distribution
 };
 
+class Player {
+    constructor(x, y, color, width, height) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.width = width;
+        this.height = height;
+    }
+}
 
-let AICollab1;
-let AICollab2;
-// let collab1, collab2;   
 let collabPlayer1 = 0;
 let collabPlayer2 = 1;
-
 let agent1Name;
 let agent2Name;
 
 let agentOrder = [];
-
-let agent1ChoiceName;
-let agent2ChoiceName;
-
 let agentNames = {
     0: "Ignorant",
     1: "Omit",
@@ -394,34 +394,10 @@ async function updateAgentOrdering() {
         agent2Name = agentNames[AIplayer.collabType];
         agentOrder.push(agent2Name);
     }
-
     // console.log("Agent 1 & 2 Names", agent1Name, agent2Name);
 }
 
 // *********************************************** GAME INITIALIZATION ***********************************************//
-
-function getPermutations(array) {
-    // Base case: if array is empty, there is only one permutation: an empty array
-    if (array.length === 0) return [[]];
-
-    let permutations = [];
-
-    for (let i = 0; i < array.length; i++) {
-        let rest = array.slice(0, i).concat(array.slice(i + 1));
-        let restPermutations = getPermutations(rest);
-
-        for (let perm of restPermutations) {
-            permutations.push([array[i]].concat(perm));
-        }
-    }
-
-    return permutations;
-}
-
-const seedSet = [12, 123, 1234, 12345, 123456];
-const maxTargetSet = [5, 10, 15];
-// const perumutedTargets = getPermutations(maxTargetSet);
-// console.log(perumutedTargets);
 
 // Block randomization variables -- placed here for ordering dependency
 let currentRound = 1;
@@ -432,7 +408,6 @@ let curSeeds = null;
 let noAssignment = true;
 
 let maxRounds = 2;
-let roundID = "round + " + currentRound;
 
 // Timing variables
 let gameStartTime, elapsedTime;
@@ -441,12 +416,10 @@ let isGameRunning       = false;
 let frameCountGame      = 0; // MS: number of updates of the scene
 let deltaFrameCount     = 0; // To limit the size of the Event Stream object; 
 const fps               = 30; // Desired logic updates per second
-let drtCount            = 0; // frame count for the DRT task for displaying the light
-let drtLightChoice      = 0; // random choice of light to display
 
 let maxFrames = null;
 if (DEBUG){
-    maxFrames         = 1 * fps;// settings.maxSeconds * fps;
+    maxFrames         = 30 * fps;// settings.maxSeconds * fps;
 } else{ // set it to whatever you want
     maxFrames         = settings.maxSeconds * fps; //120 * 60; // Two minutes in frames
 }
@@ -465,10 +438,8 @@ let missedTargets   = [];
 let playerClicks    = [];
 let playerLocation  = [];
 let aiClicks        = [];
-let aiClicks_adjusted       = [];
 
 let aiClicks_offline = [];
-let aiClicks_adjusted_offline = [];
 
 
 // ****** PLAN DELAY VARIABLES ****** //
@@ -491,7 +462,6 @@ let AIeventStream_offline = [];
 
 // Variables for cursor
 let cursorSize = 40;
-let mouseX = 0, mouseY = 0;
 
 // Varaiables for HTML elements
 let totalScore = 0;
@@ -501,14 +471,21 @@ let aiScore_offline = 0;
 let numAIChanges = 0; // MS7 count of number of different targets pursued (measure of "neuroticism" or inverse "inertia")
 
 // Player and View Initialization (related to one another)
-const playerSize = 50;
-const player = {
-    // color:"red", 
+class Player = {
+
     color: 'rgba(255, 0, 0, 0.5)',//'rgba(0, 0, 255, 0.5)',
-    x: canvas.width/2 , //center the x,y in the center of the player.
-    y: canvas.height/2 ,
-    dx: 0,
-    dy: 0,
+   
+    // x: canvas.width/2 , //center the x,y in the center of the player.
+    // y: canvas.height/2 ,
+    // dx: 0,
+    // dy: 0,
+    position: Position(
+        x: canvas.width/2 , //center the x,y in the center of the player.
+        y: canvas.height/2 ,
+        dx: 0,
+        dy: 0,    
+    ),
+
     moving:false,
     toCenter:false,
     shownAdvice:false, //MS6: flag to show advice
@@ -522,6 +499,21 @@ const player = {
     height:50,
     score:0
 };
+
+class Position {
+    constructor(x, y, dx, dy, moving, toCenter, targetX, targetY, angle, speed) {
+        this.x = x;
+        this.y = y;
+        this.dx = dx;
+        this.dy = dy;
+        this.moving = moving;
+        this.toCenter = toCenter;
+        this.targetX = targetX;
+        this.targetY = targetY;
+        this.angle = angle;
+        this.speed = speed;
+    }
+}
 
 let humanImg = new Image();
 humanImg.src = './images/human-head-small.png'; // Path to your robot head image
@@ -565,7 +557,6 @@ let firstStepCollab, bestSolCollab, allSolCollab; // MS7  Global variable that h
 
 // let sol; // MS4: global variable that contains planned path for current frame
 
-const AIplayerSize = 50;
 const AIplayer = {
     color: 'rgba(0, 128, 0, 0.5)',//'rgba(255, 0, 0, 0.5)', 
     x: canvas.width/2 + 150, //center the x,y in the center of the player.
@@ -582,6 +573,7 @@ const AIplayer = {
     collabOrder: 0,
     collabType: 0,
 };
+
 let AIcaughtTargets = [];
 let AIplayerLocation = [];
 
@@ -589,7 +581,6 @@ let robotHeadImg = new Image();
 robotHeadImg.src = './images/simple-robot-250px.png'; // Path to your robot head image
 
 let AIcaughtTargets_offline = [];
-let AIplayerLocation_offline = [];
 
 let numFramesPlayernotMoving = 0; // MS6
 let numFramesAfterCaughtTarget = 0; // MS6
@@ -611,28 +602,26 @@ const AIplayer_offline = {
 
 let visitedBlocks = 0;
 let numSurveyCompleted = 0;
-let AIComparisonComplete = false;
-let prevSetting;
 //**************************************************** BLOCK RANDOMIZATION ******************************************************//
 
 async function initExperimentSettings() {
     const maxCompletionTimeMinutes = 60;
 
     const blockOrderCondition = 'blockOrderCondition'; // a string we use to represent the condition name
-    const numConditions = 8; // number of conditions
-    const numDraws = 1; // number of draws
-    const assignedCondition = await blockRandomization(db1, studyId, blockOrderCondition, numConditions, maxCompletionTimeMinutes, numDraws);
+    let numConditions = 8; // number of conditions
+    let numDraws = 1; // number of draws
+    let assignedCondition = await blockRandomization(db1, studyId, blockOrderCondition, numConditions, maxCompletionTimeMinutes, numDraws);
     currentCondition = assignedCondition[0]+1;
 
     const teamingBlockCondition = 'teamingCondition'; // a string we use to represent the condition name
-    const numTeamingConditions = 10; // number of conditions
+    let numTeamingConditions = 10; // number of conditions
     let assignedTeamingCondition;
 
     if (!DEBUG){
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
     } else {
-        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-        // assignedTeamingCondition = [1]; // 3 == ignorant and divide
+        // assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
+        assignedTeamingCondition = [9]; // 3 == ignorant and divide
     }
 
     currentTeamingCondition = assignedTeamingCondition[0]+1;
@@ -652,9 +641,9 @@ async function initExperimentSettings() {
 
     curSeeds = randomValues;
 
-    // if (DEBUG){
-    //     // currentCondition = 3;
-    // }
+    if (DEBUG){
+        currentCondition = 3;
+    }
 
     return [blockOrderCondition, teamingBlockCondition];
 }
@@ -667,7 +656,7 @@ if (noAssignment){
         conditionsArray = await initExperimentSettings();
         blockOrderCondition = conditionsArray[0];
         teamingBlockCondition = conditionsArray[1];
-        // curSeeds = [12,123,12345,123456];
+        curSeeds = [12,123,12345,123456];
         // settings.maxTargets=100;
         // currentCondition = 1;
         // currentTeamingCondition = 1;
@@ -675,8 +664,8 @@ if (noAssignment){
         console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
         console.log('assignedSeed:', curSeeds); // Add this line
 
-        console.log("block order condition", blockOrderCondition);
-        console.log("teaming block condition", teamingBlockCondition);
+        // console.log("block order condition", blockOrderCondition);
+        // console.log("teaming block condition", teamingBlockCondition);
 
     } else {
         conditionsArray = await initExperimentSettings();
@@ -806,7 +795,7 @@ async function endGame() {
             // loadAIComparison();
             // $("#ai-comparison-container").attr("hidden", false);
             $("#full-game-container").attr("hidden", true);
-            if (DEBUG) console.log("Agent order", agentOrder); 
+            console.log("Agent order", agentOrder); 
         }
     }
 }
@@ -910,7 +899,6 @@ var isLightOn    = false;
 // Render function
 function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
-    // drawDRTMask(ctx);   
     drawMask(ctx, player);
     drawCenterMarker();                               // Draw the center marker
     ctx.save();
@@ -921,7 +909,6 @@ function render() {
     displayAIStatus();                                // Display which ai
     drawAISolution();                                  // Draw AI solution of type specified in settings
     drawObjects();         
-    drawLight(drtLightChoice);
     ctx.restore();
     drawScore();                      
 }
@@ -970,6 +957,8 @@ function updateObjects(settings) {
 
             player.x +=  player.dx;
             player.y +=  player.dy;
+
+            // player.updateposition
 
             // console.log("Player Speed", player.velocity);
 
@@ -1096,7 +1085,6 @@ function updateObjects(settings) {
 
                 let interceptData   = {x: player.targetX, y: player.targetY, time: 0, distance: 0, 
                                         intendedTarget: player.targetObjID, AIintendedTarget: AIplayer.ID};
-                // let drtStatus       = {isOn: isLightOn, duration: drtCount, initFrame:drtInitFrame, location: drtLightChoice}; // consider adding more to this
                 let eventType       = 'exit';
 
                 // collapse the 4 object events (spawning, collision, clicking, exiting) into one 1 dataframe
@@ -1135,7 +1123,6 @@ function updateObjects(settings) {
 
                 let interceptData   = {x: player.targetX, y: player.targetY, time: 0, distance: 0, 
                                         intendedTarget: player.targetObjID, AIintendedTarget: AIplayer.ID};
-                // let drtStatus       = {isOn: isLightOn, duration: drtCount, initFrame:drtInitFrame, location: drtLightChoice};
                 let eventType       = 'catch';
                 let eventObject     = {time: frameCountGame, eventType: eventType, 
                                     objectData: objectData, playerData: playerData, 
@@ -1183,7 +1170,6 @@ function updateObjects(settings) {
                                     score:AIplayer.score};
 
                 let interceptData   = {x: AIplayer.targetX, y: AIplayer.targetY, time: 0, distance: 0, intendedTarget: AIplayer.ID};
-                // let drtStatus       = {isOn: isLightOn, duration: drtCount, initFrame:drtInitFrame, location:drtLightChoice}; // consider adding more to this
                 let eventType       = 'catch';
                 let eventObject     = {time: frameCountGame, eventType: eventType, 
                                     objectData: objectData, playerData: AIplayerData, 
@@ -1222,7 +1208,6 @@ function updateObjects(settings) {
                                     score: AIplayer_offline.score};
 
                 let interceptData   = {x: AIplayer_offline.targetX, y: AIplayer_offline.targetY, time: 0, distance: 0, intendedTarget: AIplayer_offline.ID};
-                // let drtStatus       = {isOn: isLightOn, duration: drtCount, initFrame:drtInitFrame, location:drtLightChoice}; // consider adding more to this
                 let eventType       = 'catch';
                 let eventObject     = {time: frameCountGame, eventType: eventType, 
                                     objectData: objectData, playerData: AIplayerData, 
@@ -1427,7 +1412,6 @@ function spawnObject(settings){
 
         let interceptData   = {x: player.targetX, y: player.targetY, time: 0, distance: 0, 
                                 intendedTarget: player.targetObjID, AIintendedTarget: AIplayer.ID};
-        // let drtStatus       = {isOn: isLightOn, duration: drtCount, initFrame:drtInitFrame, location:drtLightChoice}; // consider adding more to this
         let eventType       = 'spawn';
 
         let eventObject     = {time: frameCountGame, eventType: eventType, 
@@ -1961,7 +1945,6 @@ function drawCompositeShapeAI(obj) {
     drawCircle(obj.x, obj.y, obj.fill, 'gray' ); // Inner circle, smaller radius
 }
 
-
 function drawDebugOverlap(obj, willOverlap) {
     ctx.save();
     // console.log("will overlap", willOverlap);
@@ -2421,7 +2404,6 @@ function drawFilledArrow(ctx, toX, toY, arrowWidth) {
 }
 
 // Messaging board status + AI image type
-
 function displayAIStatus() {
     const aiAssistRobot = document.getElementById("aiAssistRobot");
     const aiAssistRobotCaption = document.getElementById("aiAssistRobotCaption");
@@ -2525,6 +2507,7 @@ function closeCustomAlert() {
     document.getElementById('customAlert').style.display = 'none';
 }
 // *************************************** INTERCEPTION ALGORITHMS ********************************** //
+
 // Intercept Function for the Player
 function attemptInterceptLocal(playerPosX, playerPosY, playerSpeed, objectPosX, objectPosY, objectVelX, objectVelY, circleRadius) {
     let success = false;
@@ -3006,8 +2989,8 @@ $(document).ready( function(){
                     objects[i].innerColor = 'red'
                 }
                 
-                if (DEBUG) console.log("frames player not moving", numFramesPlayernotMoving);
-                if (DEBUG) console.log("ai frame delay relative to human :", planDelayFrames);
+                // if (DEBUG) console.log("frames player not moving", numFramesPlayernotMoving);
+                // if (DEBUG) console.log("ai frame delay relative to human :", planDelayFrames);
 
                 // Values for writing to dataframe
                 let objectData      = {ID: objects[i].ID, value: objects[i].value,
@@ -3025,7 +3008,6 @@ $(document).ready( function(){
 
                 let interceptData   = {x: interceptPosX, y: interceptPosY, time: travelTime, distance: totalDistanceTraveled,  
                                         intendedTarget: player.targetObjID, AIintendedTarget: AIplayer.ID};
-                // let drtStatus       = {isOn: isLightOn, duration: drtCount, initFrame:drtInitFrame, location:drtLightChoice}; // consider adding more to this
                 let eventType       = 'clickObject';
 
                 // collapse the 4 object events (spawning, collision, clicking, exiting) into one 1 dataframe
@@ -3061,8 +3043,7 @@ $(document).ready( function(){
                                     angle: player.angle, moving: player.moving,
                                     score:player.score, AIscore: AIplayer.score};
                 let interceptData   = null;
-                // let drtStatus       = {isOn: isLightOn, duration: drtCount, initFrame:drtInitFrame, location:drtLightChoice}; // consider adding more to this
-
+                
                 // collapse the 4 object events (spawning, collision, clicking, exiting) into one 1 dataframe
                 let eventObject     = {time: frameCountGame, eventType: eventType, 
                                     objectData: objectData, playerData: playerData, 
@@ -3089,55 +3070,6 @@ async function runGameSequence(message) {
     isPaused = true;
     await showCustomAlert(message);
     isPaused = false;
-}
-
-// Commented out the event listener for the DRT task
-// window.addEventListener('keydown', function(event) {
-//     if (event.code === 'Space' && isLightOn) {
-//         isLightOn = false; 
-
-//         responseTime = frameCountGame - drtInitFrame;
-        
-//         // console.log("DRT Response: " + deltaResponse);  
-//         let response = {frame: frameCountGame, delta: responseTime, initFrame: drtInitFrame, valid: true};
-
-//         if (DEBUG) console.log("DRT Response:", response);
-
-//         if (responseTime < drtMissLow){
-//             response.valid = false;
-//         }
-
-//         drtResponses.push(response);
-        
-//     } else if(event.code === 'Space' && !isLightOn) {
-//         if (DEBUG) console.log("False Alarm DRT Response: ");  
-
-//         // counter to limit warning caption, set false alarm flag to trigger caption change
-//         counter = 0;
-//         falseAlarmFlag = true;
-
-//         // push to the false alarm array the time of the flase alarm
-//         let response = {frame: frameCountGame};
-//         drtFalseAlarm.push(response);
-//     }
-// });
-
-
-// Toggle AI assistance function
-function toggleAIAssistance() {
-    aiAssistanceOn = !aiAssistanceOn; // Toggle the state
-    const robotImg = document.getElementById('aiAssistRobot');
-    const button = document.getElementById('toggleAIAssistance');
-
-    if (aiAssistanceOn) {
-        button.style.backgroundColor = 'green';
-        button.textContent = 'AI Assistance: ON';
-        robotImg.style.filter = 'drop-shadow(0 0 10px green)'; // Add green glow effect
-    } else {
-        button.style.backgroundColor = 'red';
-        button.textContent = 'AI Assistance: OFF';
-        robotImg.style.filter = 'none'; // Remove glow effect
-    }
 }
 
 // Function to handle canvas click
@@ -3267,9 +3199,9 @@ async function loadAIComparison() {
             // Enable the submit button
             $('#survey-complete-button-comparison').prop('disabled', false);
 
-            if (DEBUG) {
-                console.log("AI Button Selected\n:", "Value :", TOPIC_AI_COMPARISON_DICT["selectedAI"]);
-            }
+            // if (DEBUG) {
+            //     console.log("AI Button Selected\n:", "Value :", TOPIC_AI_COMPARISON_DICT["selectedAI"]);
+            // }
         }
 
         async function completeExperiment() {
@@ -3335,8 +3267,6 @@ async function loadAIopenEndedFeedback(numSurveyCompleted) {
             // Enable the submit button if there's any text in the feedback
             if ($(this).val().trim() !== '') {
                 $('#submit-feedback-button').prop('disabled', false);
-            } else if (DEBUG_SURVEY){
-                $('#submit-feedback-button').prop('disabled', false);
             } else {
                 $('#submit-feedback-button').prop('disabled', true);
             }
@@ -3366,12 +3296,12 @@ async function loadAIopenEndedFeedback(numSurveyCompleted) {
 
             if (numSurveyCompleted == 2) {
                 // push them to the final page of the experiment which redirects participants
+                finalizeBlockRandomization(db1, studyId, blockOrderCondition);
+                finalizeBlockRandomization(db1, studyId, teamingBlockCondition);
                 $("#ai-open-ended-feedback-container").attr("hidden", true);
                 $("#task-header").attr("hidden", true);
                 $("#exp-complete-header").attr("hidden", false);
                 $("#complete-page-content-container").attr("hidden", false);
-                finalizeBlockRandomization(db1, studyId, blockOrderCondition);
-                finalizeBlockRandomization(db1, studyId, teamingBlockCondition);
                 await loadCompletePage();
             } else {
                 // update AI order settings
@@ -3440,14 +3370,14 @@ async function loadFullSurvey(){
 
         checkAllAnswered();
 
-        if (DEBUG_SURVEY) {
-            console.log(
-                "Radio Button Selected:",
-                "Question:", question,
-                "Agent:", agent,
-                "Value:", TOPIC_FULL_DICT[agent][question]
-            );
-        }
+        // if (DEBUG_SURVEY) {
+        //     console.log(
+        //         "Radio Button Selected:",
+        //         "Question:", question,
+        //         "Agent:", agent,
+        //         "Value:", TOPIC_FULL_DICT[agent][question]
+        //     );
+        // }
     }
 
     function checkAllAnswered() {
@@ -3459,17 +3389,16 @@ async function loadFullSurvey(){
 
         var allAnswered = totalAnswered === TOTAL_QUESTIONS * 2; // 2 agents
 
-        if (DEBUG_SURVEY) {
-            console.log("Total answered:", totalAnswered);
-            console.log("All answered:", allAnswered);
-            allAnswered = true;
-        }
+        // if (DEBUG_SURVEY) {
+        //     console.log("Total answered:", totalAnswered);
+        //     console.log("All answered:", allAnswered);
+        // }
 
         $('#survey-complete-button-full').prop('disabled', !allAnswered);
 
-        if (DEBUG_SURVEY) {
-            console.log("Submit button " + (allAnswered ? "enabled" : "disabled"));
-        }
+        // if (DEBUG_SURVEY) {
+        //     console.log("Submit button " + (allAnswered ? "enabled" : "disabled"));
+        // }
     }
 
     async function completeExperiment() {
@@ -3568,16 +3497,16 @@ function loadWorkLoadSurvey(){
             }
 
 
-            if (DEBUG_SURVEY) {
-                console.log(
-                    "Radio Button Selected\n:",
-                    "    Topic :", topic_currently_ranked,
-                    "    Value :", TOPIC_Workload_DICT[topic_currently_ranked]
-                );
-                console.log(
-                    $(this).attr("name")
-                );
-            }
+            // if (DEBUG_SURVEY) {
+            //     console.log(
+            //         "Radio Button Selected\n:",
+            //         "    Topic :", topic_currently_ranked,
+            //         "    Value :", TOPIC_Workload_DICT[topic_currently_ranked]
+            //     );
+            //     console.log(
+            //         $(this).attr("name")
+            //     );
+            // }
         };
 
         async function completeExperiment() {

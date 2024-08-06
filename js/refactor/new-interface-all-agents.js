@@ -83,7 +83,7 @@ var COLLAB = getCollabTypeParams(); // 0=ignorant; 1=omit; 2=divide; 3=delay
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab-DEBUG-2";
+   studyId    = "uci-hri-experiment-collab-Full-test-DEBUG";
 } else {
     studyId   = "uci-hri-experiment-collab-Full-test";
 }
@@ -229,8 +229,6 @@ let settings = {
 };
 
 
-let AICollab1;
-let AICollab2;
 // let collab1, collab2;   
 let collabPlayer1 = 0;
 let collabPlayer2 = 1;
@@ -243,7 +241,8 @@ let agentOrder = [];
 let agent1ChoiceName;
 let agent2ChoiceName;
 
-let agentNames = {
+//TODO: make this an enum
+const agentNames = {
     0: "Ignorant",
     1: "Omit",
     2: "Divide",
@@ -251,6 +250,7 @@ let agentNames = {
     4: "Bottom-Feeder"
 }
 
+//TODO: functionally generate this
 let teamingSettings = {
     1: {AICollab1 : 0,          // ignorant
         AICollab2 : 3},         // delay
@@ -283,6 +283,7 @@ let teamingSettings = {
         AICollab2 : 2}          // divide,
 };
 
+// TODO: functionally generate this
 let difficultySettings = {
     // 5 targets first
     1: {0: {1: {AICollab: collabPlayer1,     // Pair A
@@ -360,6 +361,30 @@ let difficultySettings = {
 
 };
 
+let gameOrder = {}
+
+async function generateGameOrder(condition, teamingCondition) {
+    // Create a deep copy of the difficulty settings for this condition
+    let gameOrder = JSON.parse(JSON.stringify(difficultySettings[condition]));
+
+    // Get the AI types for this teaming condition
+    let aiCollab1 = teamingSettings[teamingCondition].AICollab1;
+    let aiCollab2 = teamingSettings[teamingCondition].AICollab2;
+
+    // Populate the gameOrder with actual AI types
+    for (let block in gameOrder) {
+        for (let round in gameOrder[block]) {
+            if (gameOrder[block][round].AICollab === 0) {
+                gameOrder[block][round].AICollab = aiCollab1;
+            } else if (gameOrder[block][round].AICollab === 1) {
+                gameOrder[block][round].AICollab = aiCollab2;
+            }
+        }
+    }
+
+    return gameOrder;
+}
+
 // function assigns the condition's agent types to the difficulty settings
 function updateDifficultySettings() {
     let newDifficultySettings = JSON.parse(JSON.stringify(difficultySettings)); // Create a deep copy
@@ -380,19 +405,46 @@ function updateDifficultySettings() {
     return newDifficultySettings;
 }
 
-async function updateAgentOrdering() {
+async function updateAgentOrdering(block, round) {
     // this function should handle the ordering and naming of the agents
     // if you are in the first round of that block, you should assign the correct agent.
 
+
+    let updated = false;
      // This is needed to handle coloring of the AI player and naming
-     if (currentRound == 1){
-        AIplayer.collabOrder = 1;
-        agent1Name = agentNames[AIplayer.collabType];
-        agentOrder.push(agent1Name);
-    } else if (currentRound == 2){
-        AIplayer.collabOrder = 2;
-        agent2Name = agentNames[AIplayer.collabType];
-        agentOrder.push(agent2Name);
+
+     if (block == 1){
+        if (round == 1){
+            AIplayer.collabOrder = 1;
+            agent1Name = agentNames[AIplayer.collabType];
+            agentOrder.push(agent1Name);
+            updated = true
+        } else if (round == 2){
+            AIplayer.collabOrder = 2;
+            agent2Name = agentNames[AIplayer.collabType];
+            agentOrder.push(agent2Name);
+            updated = true
+        }
+    } else if (block == 2){ {
+        if (round == 1){
+            AIplayer.collabOrder = 2;
+            agent2Name = agentNames[AIplayer.collabType];
+            agentOrder.push(agent2Name);
+            updated = true
+        } else if (round == 2){
+            AIplayer.collabOrder = 1;
+            agent1Name = agentNames[AIplayer.collabType];
+            agentOrder.push(agent1Name);
+            updated = true
+        }
+    }
+
+    console.log("ENCOUNTERED AGENTS (IN ORDER):", agentOrder);
+
+    if (!updated){
+        console.log
+        console.assert(updated)
+
     }
 
     // console.log("Agent 1 & 2 Names", agent1Name, agent2Name);
@@ -566,7 +618,7 @@ let firstStepCollab, bestSolCollab, allSolCollab; // MS7  Global variable that h
 // let sol; // MS4: global variable that contains planned path for current frame
 
 const AIplayerSize = 50;
-const AIplayer = {
+let AIplayer = {
     color: 'rgba(0, 128, 0, 0.5)',//'rgba(255, 0, 0, 0.5)', 
     x: canvas.width/2 + 150, //center the x,y in the center of the player.
     y: canvas.height/2 + 150,
@@ -582,6 +634,7 @@ const AIplayer = {
     collabOrder: 0,
     collabType: 0,
 };
+
 let AIcaughtTargets = [];
 let AIplayerLocation = [];
 
@@ -619,20 +672,20 @@ async function initExperimentSettings() {
     const maxCompletionTimeMinutes = 60;
 
     const blockOrderCondition = 'blockOrderCondition'; // a string we use to represent the condition name
-    const numConditions = 8; // number of conditions
-    const numDraws = 1; // number of draws
-    const assignedCondition = await blockRandomization(db1, studyId, blockOrderCondition, numConditions, maxCompletionTimeMinutes, numDraws);
+    let numConditions = 8; // number of conditions
+    let numDraws = 1; // number of draws
+    let assignedCondition = await blockRandomization(db1, studyId, blockOrderCondition, numConditions, maxCompletionTimeMinutes, numDraws);
     currentCondition = assignedCondition[0]+1;
 
     const teamingBlockCondition = 'teamingCondition'; // a string we use to represent the condition name
-    const numTeamingConditions = 10; // number of conditions
+    let numTeamingConditions = 10; // number of conditions
     let assignedTeamingCondition;
 
     if (!DEBUG){
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
     } else {
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-        // assignedTeamingCondition = [1]; // 3 == ignorant and divide
+        // assignedTeamingCondition = [5]; // 3 == ignorant and divide
     }
 
     currentTeamingCondition = assignedTeamingCondition[0]+1;
@@ -643,17 +696,17 @@ async function initExperimentSettings() {
 
     if (DEBUG) console.log("Assigned AI Teams", collabPlayer1, collabPlayer2);
 
+
     var randomValues = [];
     for (var i = 0; i < 4; i++) {
         randomValues.push(generateRandomInt(1, 1000000));
     }
 
     noAssignment = false;
-
     curSeeds = randomValues;
 
     // if (DEBUG){
-    //     // currentCondition = 3;
+    //     currentCondition = 8;
     // }
 
     return [blockOrderCondition, teamingBlockCondition];
@@ -667,7 +720,7 @@ if (noAssignment){
         conditionsArray = await initExperimentSettings();
         blockOrderCondition = conditionsArray[0];
         teamingBlockCondition = conditionsArray[1];
-        // curSeeds = [12,123,12345,123456];
+        curSeeds = [12,123,12345,123456];
         // settings.maxTargets=100;
         // currentCondition = 1;
         // currentTeamingCondition = 1;
@@ -675,8 +728,8 @@ if (noAssignment){
         console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
         console.log('assignedSeed:', curSeeds); // Add this line
 
-        console.log("block order condition", blockOrderCondition);
-        console.log("teaming block condition", teamingBlockCondition);
+        // console.log("block order condition", blockOrderCondition);
+        // console.log("teaming block condition", teamingBlockCondition);
 
     } else {
         conditionsArray = await initExperimentSettings();
@@ -694,8 +747,6 @@ if (noAssignment){
 
 // ****************************************************** UPDATE FUNCTIONS ********************************************************//
 
-
-
 // Start Game function
 async function startGame(round, condition, block, seeds) {
 
@@ -703,30 +754,27 @@ async function startGame(round, condition, block, seeds) {
 
     let blockSetting = difficultySettings[condition][block];
     roundSettings = blockSetting[currentRound];
-    
-    // reassign default settings to the values grabbed from the current
-    // settings.AIMode = roundSettings.AIMode;
-    // settings.AIStabilityThreshold = roundSettings.AIStabilityThreshold;
+
     settings.AICollab = roundSettings.AICollab;
     AIplayer.collabType = roundSettings.AICollab;
-
-
     settings.maxTargets = roundSettings.maxTargets;
-    
-
-    // Debug setting for max targets
-    // if (DEBUG) settings.maxTargets=8; // this was to get many targets for debuggin
    
-    // Change to the next seed
+    // Change to the next seed and ai player
+    // console.log("Before updateAgentOrdering - AIplayer.collabType:", AIplayer.collabType);
+    await updateAgentOrdering(block, currentRound)
+    // console.log("After updateAgentOrdering - AIplayer.collabType:", AIplayer.collabType);
+
     if (block == 0) {
         settings.randSeed = seeds[currentRound - 1];
-        await updateAgentOrdering();
+        // await updateAgentOrdering();
     } else if (block == 1 ) {
         settings.randSeed = seeds[currentRound + 1];
-        if (currentRound == 2) await updateAgentOrdering();
     }
 
-   
+    // settings.AICollab = gameOrder[block][round].AICollab;
+    // AIplayer.collabType = gameOrder[block][round].AICollab;
+
+
     if (currentRound == 1  && settings.maxTargets == 5) AIplayer.color = 'rgba(0, 128, 0, 0.5)'; // green transparent
     if (currentRound == 2 && settings.maxTargets == 5) AIplayer.color = 'rgba(128, 0, 128, 0.5)'; // purple transparent
 
@@ -806,7 +854,7 @@ async function endGame() {
             // loadAIComparison();
             // $("#ai-comparison-container").attr("hidden", false);
             $("#full-game-container").attr("hidden", true);
-            if (DEBUG) console.log("Agent order", agentOrder); 
+            console.log("Agent order", agentOrder); 
         }
     }
 }
@@ -1204,7 +1252,7 @@ function updateObjects(settings) {
 
                 aiScore_offline           += obj.value;
                 AIplayer_offline.score    += obj.value;
-                if (DEBUG) console.log("AI Offline Score: ", AIplayer_offline.score);
+                // if (DEBUG) console.log("AI Offline Score: ", AIplayer_offline.score);
 
                 // *************************** Data Writing *********************************//
 
@@ -3006,8 +3054,8 @@ $(document).ready( function(){
                     objects[i].innerColor = 'red'
                 }
                 
-                if (DEBUG) console.log("frames player not moving", numFramesPlayernotMoving);
-                if (DEBUG) console.log("ai frame delay relative to human :", planDelayFrames);
+                // if (DEBUG) console.log("frames player not moving", numFramesPlayernotMoving);
+                // if (DEBUG) console.log("ai frame delay relative to human :", planDelayFrames);
 
                 // Values for writing to dataframe
                 let objectData      = {ID: objects[i].ID, value: objects[i].value,
@@ -3268,7 +3316,7 @@ async function loadAIComparison() {
             $('#survey-complete-button-comparison').prop('disabled', false);
 
             if (DEBUG) {
-                console.log("AI Button Selected\n:", "Value :", TOPIC_AI_COMPARISON_DICT["selectedAI"]);
+                // console.log("AI Button Selected\n:", "Value :", TOPIC_AI_COMPARISON_DICT["selectedAI"]);
             }
         }
 
@@ -3335,8 +3383,6 @@ async function loadAIopenEndedFeedback(numSurveyCompleted) {
             // Enable the submit button if there's any text in the feedback
             if ($(this).val().trim() !== '') {
                 $('#submit-feedback-button').prop('disabled', false);
-            } else if (DEBUG_SURVEY){
-                $('#submit-feedback-button').prop('disabled', false);
             } else {
                 $('#submit-feedback-button').prop('disabled', true);
             }
@@ -3366,12 +3412,12 @@ async function loadAIopenEndedFeedback(numSurveyCompleted) {
 
             if (numSurveyCompleted == 2) {
                 // push them to the final page of the experiment which redirects participants
+                finalizeBlockRandomization(db1, studyId, blockOrderCondition);
+                finalizeBlockRandomization(db1, studyId, teamingBlockCondition);
                 $("#ai-open-ended-feedback-container").attr("hidden", true);
                 $("#task-header").attr("hidden", true);
                 $("#exp-complete-header").attr("hidden", false);
                 $("#complete-page-content-container").attr("hidden", false);
-                finalizeBlockRandomization(db1, studyId, blockOrderCondition);
-                finalizeBlockRandomization(db1, studyId, teamingBlockCondition);
                 await loadCompletePage();
             } else {
                 // update AI order settings
@@ -3440,14 +3486,14 @@ async function loadFullSurvey(){
 
         checkAllAnswered();
 
-        if (DEBUG_SURVEY) {
-            console.log(
-                "Radio Button Selected:",
-                "Question:", question,
-                "Agent:", agent,
-                "Value:", TOPIC_FULL_DICT[agent][question]
-            );
-        }
+        // if (DEBUG_SURVEY) {
+        //     console.log(
+        //         "Radio Button Selected:",
+        //         "Question:", question,
+        //         "Agent:", agent,
+        //         "Value:", TOPIC_FULL_DICT[agent][question]
+        //     );
+        // }
     }
 
     function checkAllAnswered() {
@@ -3459,17 +3505,16 @@ async function loadFullSurvey(){
 
         var allAnswered = totalAnswered === TOTAL_QUESTIONS * 2; // 2 agents
 
-        if (DEBUG_SURVEY) {
-            console.log("Total answered:", totalAnswered);
-            console.log("All answered:", allAnswered);
-            allAnswered = true;
-        }
+        // if (DEBUG_SURVEY) {
+        //     console.log("Total answered:", totalAnswered);
+        //     console.log("All answered:", allAnswered);
+        // }
 
         $('#survey-complete-button-full').prop('disabled', !allAnswered);
 
-        if (DEBUG_SURVEY) {
-            console.log("Submit button " + (allAnswered ? "enabled" : "disabled"));
-        }
+        // if (DEBUG_SURVEY) {
+        //     console.log("Submit button " + (allAnswered ? "enabled" : "disabled"));
+        // }
     }
 
     async function completeExperiment() {
