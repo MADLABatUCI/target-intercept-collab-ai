@@ -83,9 +83,9 @@ var COLLAB = getCollabTypeParams(); // 0=ignorant; 1=omit; 2=divide; 3=delay
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab-testing-conditions-DEBUG";
+   studyId    = "uci-hri-experiment-collab-aug8-DEBUG";
 } else {
-    studyId   = "uci-hri-experiment-collab-testing-conditions";
+    studyId   = "uci-hri-experiment-collab-aug8";
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
@@ -239,9 +239,6 @@ let agent1Name;
 let agent2Name;
 
 let agentOrder = [];
-
-let agent1ChoiceName;
-let agent2ChoiceName;
 
 let agentNames = {
     0: "Ignorant",
@@ -632,10 +629,11 @@ async function initExperimentSettings() {
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
     } else {
         assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-        // assignedTeamingCondition = [1]; // 3 == ignorant and divide
+        // assignedTeamingCondition = [4]; // 3 == ignorant and divide
     }
 
     currentTeamingCondition = assignedTeamingCondition[0]+1;
+
     collabPlayer1 = teamingSettings[currentTeamingCondition].AICollab1;
     collabPlayer2 = teamingSettings[currentTeamingCondition].AICollab2;
 
@@ -652,9 +650,9 @@ async function initExperimentSettings() {
 
     curSeeds = randomValues;
 
-    // if (DEBUG){
-    //     // currentCondition = 3;
-    // }
+    if (DEBUG){
+        currentCondition = 5;
+    }
 
     return [blockOrderCondition, teamingBlockCondition];
 }
@@ -667,10 +665,10 @@ if (noAssignment){
         conditionsArray = await initExperimentSettings();
         blockOrderCondition = conditionsArray[0];
         teamingBlockCondition = conditionsArray[1];
-        // curSeeds = [12,123,12345,123456];
-        // settings.maxTargets=100;
-        // currentCondition = 1;
-        // currentTeamingCondition = 1;
+        // conditionsArray = await initExperimentSettings();
+        
+        // check if the initExperimentSettings double call explains the misfunc
+        
         console.log('assignedCondition:', currentCondition); // Add this line
         console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
         console.log('assignedSeed:', curSeeds); // Add this line
@@ -682,7 +680,7 @@ if (noAssignment){
         conditionsArray = await initExperimentSettings();
         blockOrderCondition = conditionsArray[0];
         teamingBlockCondition = conditionsArray[1];
-        blockOrderCondition, teamingBlockCondition = await initExperimentSettings();
+    
         // await initExperimentSettings();
         // console.log('assignedCondition:', currentCondition); // Add this line
         // console.log('assignedSeed:', curSeeds); // Add this line
@@ -693,7 +691,6 @@ if (noAssignment){
 
 
 // ****************************************************** UPDATE FUNCTIONS ********************************************************//
-
 
 
 // Start Game function

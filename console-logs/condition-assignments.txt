@@ -1,0 +1,124 @@
+metadata.js:41 DEBUG MODE: true
+new-interface-all-agents.js:642 Assigned AI Teams 1 2
+new-interface-all-agents.js:642 Assigned AI Teams 3 2
+new-interface-all-agents.js:672 assignedCondition: 5
+new-interface-all-agents.js:673 assignedTeamingCondition: 7
+new-interface-all-agents.js:674 assignedSeed: (4) [549727, 496591, 510945, 933051]
+new-interface-all-agents.js:676 block order condition blockOrderCondition
+new-interface-all-agents.js:677 teaming block condition teamingCondition
+new-interface-all-agents.js:736 Current Collab AI Mode 2
+new-interface-all-agents.js:737 Current Settings {AICollab: 2, maxTargets: 15}
+new-interface-all-agents.js:738 Current Block 0
+new-interface-all-agents.js:739 Current Round 1
+new-interface-all-agents.js:740 Current Max Targets 15
+new-interface-all-agents.js:741 Current Seeds:  549727
+new-interface-all-agents.js:103 Writing to database from block 0 round 1
+new-interface-all-agents.js:736 Current Collab AI Mode 2
+new-interface-all-agents.js:737 Current Settings {AICollab: 2, maxTargets: 15}
+new-interface-all-agents.js:738 Current Block 0
+new-interface-all-agents.js:739 Current Round 2
+new-interface-all-agents.js:740 Current Max Targets 15
+new-interface-all-agents.js:741 Current Seeds:  496591
+new-interface-all-agents.js:103 Writing to database from block 0 round 2
+new-interface-all-agents.js:779 Visited Blocks 0
+new-interface-all-agents.js:3460 Total answered: 0
+new-interface-all-agents.js:3461 All answered: false
+new-interface-all-agents.js:3468 Submit button enabled
+new-interface-all-agents.js:736 Current Collab AI Mode 2
+new-interface-all-agents.js:737 Current Settings {AICollab: 2, maxTargets: 5}
+new-interface-all-agents.js:738 Current Block 1
+new-interface-all-agents.js:739 Current Round 1
+new-interface-all-agents.js:740 Current Max Targets 5
+new-interface-all-agents.js:741 Current Seeds:  510945
+new-interface-all-agents.js:3268 AI Button Selected
+: Value : Divide
+new-interface-all-agents.js:103 Writing to database from block 1 round 1
+new-interface-all-agents.js:736 Current Collab AI Mode 2
+new-interface-all-agents.js:737 Current Settings {AICollab: 2, maxTargets: 5}
+new-interface-all-agents.js:738 Current Block 1
+new-interface-all-agents.js:739 Current Round 2
+new-interface-all-agents.js:740 Current Max Targets 5
+new-interface-all-agents.js:741 Current Seeds:  933051
+new-interface-all-agents.js:103 Writing to database from block 1 round 2
+new-interface-all-agents.js:779 Visited Blocks 1
+new-interface-all-agents.js:3460 Total answered: 0
+new-interface-all-agents.js:3461 All answered: false
+new-interface-all-agents.js:3468 Submit button enabled
+new-interface-all-agents.js:806 Agent order (4) ['Divide', 'Divide', 'Divide', 'Divide']
+
+
+REPEATED ERROR: 
+DEBUG MODE: true
+new-interface-all-agents.js:642 Assigned AI Teams 1 2
+new-interface-all-agents.js:642 Assigned AI Teams 4 2
+new-interface-all-agents.js:672 assignedCondition: 5
+new-interface-all-agents.js:673 assignedTeamingCondition: 10
+new-interface-all-agents.js:674 assignedSeed: (4) [562767, 455504, 761097, 994292]
+new-interface-all-agents.js:676 block order condition blockOrderCondition
+new-interface-all-agents.js:677 teaming block condition teamingCondition
+new-interface-all-agents.js:736 Current Collab AI Mode 2
+new-interface-all-agents.js:737 Current Settings {AICollab: 2, maxTargets: 15}
+new-interface-all-agents.js:738 Current Block 0
+new-interface-all-agents.js:739 Current Round 1
+new-interface-all-agents.js:740 Current Max Targets 15
+new-interface-all-agents.js:741 Current Seeds:  562767
+new-interface-all-agents.js:103 Writing to database from block 0 round 1
+new-interface-all-agents.js:736 Current Collab AI Mode 2
+new-interface-all-agents.js:737 Current Settings {AICollab: 2, maxTargets: 15}
+new-interface-all-agents.js:738 Current Block 0
+new-interface-all-agents.js:739 Current Round 2
+new-interface-all-agents.js:740 Current Max Targets 15
+new-interface-all-agents.js:741 Current Seeds:  455504
+new-interface-all-agents.js:103 Writing to database from block 0 round 2
+new-interface-all-agents.js:779 Visited Blocks 0
+new-interface-all-agents.js:3460 Total answered: 0
+new-interface-all-agents.js:3461 All answered: false
+new-interface-all-agents.js:3468 Submit button enabled
+new-interface-all-agents.js:736 Current Collab AI Mode 2
+new-interface-all-agents.js:737 Current Settings {AICollab: 2, maxTargets: 5}
+new-interface-all-agents.js:738 Current Block 1
+new-interface-all-agents.js:739 Current Round 1
+new-interface-all-agents.js:740 Current Max Targets 5
+new-interface-all-agents.js:741 Current Seeds:  761097
+new-interface-all-agents.js:3268 AI Button Selected
+: Value : Divide
+new-interface-all-agents.js:103 Writing to database from block 1 round 1
+new-interface-all-agents.js:736 Current Collab AI Mode 2
+new-interface-all-agents.js:737 Current Settings {AICollab: 2, maxTargets: 5}
+new-interface-all-agents.js:738 Current Block 1
+new-interface-all-agents.js:739 Current Round 2
+new-interface-all-agents.js:740 Current Max Targets 5
+new-interface-all-agents.js:741 Current Seeds:  994292
+
+DEBUG MODE: true
+new-interface-all-agents.js:642 Assigned AI Teams 0 3
+new-interface-all-agents.js:642 Assigned AI Teams 1 4
+new-interface-all-agents.js:672 assignedCondition: 5
+new-interface-all-agents.js:673 assignedTeamingCondition: 8
+new-interface-all-agents.js:674 assignedSeed: (4) [129551, 216319, 465568, 242723]
+new-interface-all-agents.js:676 block order condition blockOrderCondition
+new-interface-all-agents.js:677 teaming block condition teamingCondition
+new-interface-all-agents.js:736 Current Collab AI Mode 1
+new-interface-all-agents.js:737 Current Settings {AICollab: 1, maxTargets: 15}
+new-interface-all-agents.js:738 Current Block 0
+new-interface-all-agents.js:739 Current Round 1
+new-interface-all-agents.js:740 Current Max Targets 15
+new-interface-all-agents.js:741 Current Seeds:  129551
+new-interface-all-agents.js:103 Writing to database from block 0 round 1
+new-interface-all-agents.js:736 Current Collab AI Mode 3
+new-interface-all-agents.js:737 Current Settings {AICollab: 3, maxTargets: 15}
+new-interface-all-agents.js:738 Current Block 0
+new-interface-all-agents.js:739 Current Round 2
+new-interface-all-agents.js:740 Current Max Targets 15
+new-interface-all-agents.js:741 Current Seeds:  216319
+new-interface-all-agents.js:103 Writing to database from block 0 round 2
+new-interface-all-agents.js:779 Visited Blocks 0
+new-interface-all-agents.js:3460 Total answered: 0
+new-interface-all-agents.js:3461 All answered: false
+new-interface-all-agents.js:3468 Submit button enabled
+new-interface-all-agents.js:736 Current Collab AI Mode 1
+new-interface-all-agents.js:737 Current Settings {AICollab: 1, maxTargets: 5}
+new-interface-all-agents.js:738 Current Block 1
+new-interface-all-agents.js:739 Current Round 1
+new-interface-all-agents.js:740 Current Max Targets 5
+new-interface-all-agents.js:741 Current Seeds:  465568
