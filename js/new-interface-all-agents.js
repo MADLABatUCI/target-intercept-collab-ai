@@ -83,9 +83,9 @@ var COLLAB = getCollabTypeParams(); // 0=ignorant; 1=omit; 2=divide; 3=delay
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab-aug8-DEBUG";
+   studyId    = "uci-hri-experiment-collab-aug13-DEBUG";
 } else {
-    studyId   = "uci-hri-experiment-collab-aug8";
+    studyId   = "uci-hri-experiment-collab-aug13";
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
