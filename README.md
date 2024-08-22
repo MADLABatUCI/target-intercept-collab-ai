@@ -19,16 +19,16 @@ URL parameters allow you to access the different teaming conditions. For example
 
 | Condition | AICollab1 | AICollab2 |
 | --------- | --------- | --------- |
-| 1         | 0 (ignorant) | 3 (delay) |
-| 2         | 0 (ignorant) | 1 (omit) |
-| 3         | 0 (ignorant) | 4 (bottom-feeder) |
-| 4         | 0 (ignorant) | 2 (divide) |
-| 5         | 3 (delay) | 1 (omit) |
-| 6         | 3 (delay) | 4 (bottom-feeder) |
-| 7         | 3 (delay) | 2 (divide) |
-| 8         | 1 (omit) | 4 (bottom-feeder) |
-| 9         | 1 (omit) | 2 (divide) |
-| 10        | 4 (bottom-feeder) | 2 (divide) |
+| 1         | ignorant |   delay |
+| 2         | ignorant | omit |
+| 3         | ignorant | bottom-feeder |
+| 4         | ignorant | divide |
+| 5         | delay | omit |
+| 6         | delay | bottom-feeder |
+| 7         | delay | divide |
+| 8         | omit | bottom-feeder |
+| 9         | omit | divide |
+| 10        | bottom-feeder | divide |
 
 <h2>
 Basic overview of the code.
