@@ -13,11 +13,20 @@ How to demo the game:
 </h2>
 URL parameters allow you to skip past the experimental procedure where we outline the game components. To do so, you can use  [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true) which adds a flag, '?debug=true'. 
 
-URL parameters allow you to access the different collaborative AI players.
+URL parameters allow you to access the different teaming conditions. 
 
-To do so,
-
-https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab
+| Condition | AICollab1 | AICollab2 |
+| --------- | --------- | --------- |
+| 1         | 0 (ignorant) | 3 (delay) |
+| 2         | 0 (ignorant) | 1 (omit) |
+| 3         | 0 (ignorant) | 4 (bottom-feeder) |
+| 4         | 0 (ignorant) | 2 (divide) |
+| 5         | 3 (delay) | 1 (omit) |
+| 6         | 3 (delay) | 4 (bottom-feeder) |
+| 7         | 3 (delay) | 2 (divide) |
+| 8         | 1 (omit) | 4 (bottom-feeder) |
+| 9         | 1 (omit) | 2 (divide) |
+| 10        | 4 (bottom-feeder) | 2 (divide) |
 
 <h2>
 Basic overview of the code.

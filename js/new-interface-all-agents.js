@@ -615,6 +615,7 @@ let prevSetting;
 async function initExperimentSettings() {
     const maxCompletionTimeMinutes = 60;
     if (DEBUG){
+        // here we'll add URL accessable parameters to change the currentTeaming condition
         currentCondition = 5;
         currentTeamingCondition = 3;
         curSeeds = [12345, 12345, 12345, 12345];
@@ -656,25 +657,21 @@ let conditionsArray = [];
 // Assign a condition to each new participant.
 if (noAssignment){
     if (DEBUG){ // adjust value as needed for debuggin default is the same as the main experiment
-        // conditionsArray = await initExperimentSettings();
         // blockOrderCondition = conditionsArray[0];
         // teamingBlockCondition = conditionsArray[1];
 
         initExperimentSettings();
 
-        // console.log('assignedCondition:', currentCondition); // Add this line
-        // console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
-        // console.log('assignedSeed:', curSeeds); // Add this line
-
-        console.log("block order condition", blockOrderCondition);
-        console.log("teaming block condition", teamingBlockCondition);
+        console.log('assignedCondition:', currentCondition); // Add this line
+        console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
+        console.log('assignedSeed:', curSeeds); // Add this line
 
     } else {
+        // havin the names for each condition is needed for block randomization
         conditionsArray = await initExperimentSettings();
         blockOrderCondition = conditionsArray[0];
         teamingBlockCondition = conditionsArray[1];
-    
-        // await initExperimentSettings();
+
         // console.log('assignedCondition:', currentCondition); // Add this line
         // console.log('assignedSeed:', curSeeds); // Add this line
     }
