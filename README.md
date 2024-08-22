@@ -35,7 +35,7 @@ URL parameters allow you to access the different teaming conditions. For example
 
 To see which agent you are currently playing with, access the console logs in the your browser's developer settings.
 
-<h4>Default Ordering of AI Agent ordering and Max Targets</h4>
+<h4>Default Ordering of AI Agents and Max Targets</h4>
 
 | Round | Current Agent | Current Max Targets|
 | --------- | --------- | --------- |

@@ -25,31 +25,18 @@ import { writeRealtimeDatabase,writeURLParameters,readRealtimeDatabase,
     blockRandomization,finalizeBlockRandomization,
     initializeRealtimeDatabase,initializeSecondRealtimeDatabase } from "./firebasepsych1.1.js";
 
-// Define the configuration file for first database
-
-// const firebaseConfig_db1 = {
-//     apiKey: "AIzaSyDcc2RhAdA6I95EYqWpxJ69h8j4OawjzH4",
-//     authDomain: "collab-ai-f09f1.firebaseapp.com",
-//     databaseURL: "https://collab-ai-f09f1-default-rtdb.firebaseio.com",
-//     projectId: "collab-ai-f09f1",
-//     storageBucket: "collab-ai-f09f1.appspot.com",
-//     messagingSenderId: "756574854064",
-//     appId: "1:756574854064:web:133da37f9203a849161475"
-//   };
-
 // Your web app's Firebase configuration
-const firebaseConfig_db1 = {
-    apiKey: "AIzaSyD1fJXd14fcxUDCb-8MUAMSThcR1e5i7FE",
-    authDomain: "collab-ai-full-39f84.firebaseapp.com",
-    projectId: "collab-ai-full-39f84",
-    storageBucket: "collab-ai-full-39f84.appspot.com",
-    messagingSenderId: "535805184208",
-    appId: "1:535805184208:web:2af9ae4c07c035e4c8b6d5"
-};
+// const firebaseConfig_db1 = {
+//     apiKey: YOUR_API_KEY,
+//     authDomain: YOUR_AUTH_DOMAIN,
+//     projectId: YOUR_PROJECT_ID,
+//     storageBucket: YOUR_STORAGE_BUCKET,
+//     messagingSenderId: YOUR_MESSAGE_SENDER_ID,
+//     appId: YOUR_API_KEY
+// };
   
 // Get the reference to the two databases using the configuration files
 // const [ db1 , firebaseUserId1 ] = await initializeRealtimeDatabase( firebaseConfig_db1 );
-// const [ db2 , firebaseUserId2 ] = await initializeSecondRealtimeDatabase( firebaseConfig_db2 );
 
 // console.log("Firebase UserId=" + firebaseUserId);
 
@@ -62,13 +49,11 @@ function getDebugParams(){
 
 function getCollabTypeParams(){
     const urlParams = new URLSearchParams(window.location.search);
-    let collabType = parseInt(urlParams.get('collab'), 5);
+    let collabType = parseInt(urlParams.get('collab'), 10);
 
     // console.log("collabType: ", collabType);
 
-    if (collabType == 0){
-        collabType = 0
-    } else if (isNaN(collabType)){
+    if (isNaN(collabType)){
         collabType = 1
     }
     
@@ -83,9 +68,9 @@ var COLLAB = getCollabTypeParams(); // 0=ignorant; 1=omit; 2=divide; 3=delay
 let studyId = 'placeHolder';
 
 if (DEBUG){
-   studyId    = "uci-hri-experiment-collab-aug8-DEBUG";
+   studyId    = "your_realtime_database_name_debug";
 } else {
-    studyId   = "uci-hri-experiment-collab-aug8";
+    studyId   = "your_realtime_database_name";
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
@@ -614,43 +599,59 @@ let prevSetting;
 
 async function initExperimentSettings() {
     const maxCompletionTimeMinutes = 60;
-    if (DEBUG){
-        // here we'll add URL accessable parameters to change the currentTeaming condition
-        currentCondition = 1;
-        currentTeamingCondition = 3;
-        curSeeds = [12345, 12345, 12345, 12345];
+
+    // const blockOrderCondition = 'blockOrderCondition'; // a string we use to represent the condition name
+    const numConditions = 8; // number of conditions
+    const numDraws = 1; // number of draws
+    // const assignedCondition = await blockRandomization(db1, studyId, blockOrderCondition, numConditions, maxCompletionTimeMinutes, numDraws);
+    let assignedCondition;
+
+    if (DEBUG) assignedCondition = [5]; // 3 == ignorant and divide
+
+    if (DEBUG){ 
+        currentCondition = COLLAB;
     } else {
-        const blockOrderCondition = 'blockOrderCondition'; // a string we use to represent the condition name
-        const numConditions = 8; // number of conditions
-        const numDraws = 1; // number of draws
-        const assignedCondition = await blockRandomization(db1, studyId, blockOrderCondition, numConditions, maxCompletionTimeMinutes, numDraws);
         currentCondition = assignedCondition[0]+1;
-
-        const teamingBlockCondition = 'teamingCondition'; // a string we use to represent the condition name
-        const numTeamingConditions = 10; // number of conditions
-        let assignedTeamingCondition;
-
-        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-
-        currentTeamingCondition = assignedTeamingCondition[0]+1;
-
-        collabPlayer1 = teamingSettings[currentTeamingCondition].AICollab1;
-        collabPlayer2 = teamingSettings[currentTeamingCondition].AICollab2;
-
-        difficultySettings = updateDifficultySettings();
-
-        if (DEBUG) console.log("Assigned AI Teams", collabPlayer1, collabPlayer2);
-
-        var randomValues = [];
-        for (var i = 0; i < 4; i++) {
-            randomValues.push(generateRandomInt(1, 1000000));
-        }
-        noAssignment = false;
-        curSeeds = randomValues;
-        return [blockOrderCondition, teamingBlockCondition];
     }
-    return;
+
+    let teamingBlockCondition = 'teamingCondition'; // a string we use to represent the condition name
+    const numTeamingConditions = 10; // number of conditions
+    let assignedTeamingCondition;
+
+    // if (DEBUG){
+    //     // assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
+    //     assignedTeamingCondition = [4]; // 3 == ignorant and divide
+    // } else {
+    //     assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
+    // }
+
+    if (DEBUG) currentTeamingCondition = COLLAB; // 3 == ignorant and divide 
+
+    // currentTeamingCondition = assignedTeamingCondition[0]+1;
+
+    collabPlayer1 = teamingSettings[currentTeamingCondition].AICollab1;
+    collabPlayer2 = teamingSettings[currentTeamingCondition].AICollab2;
+
+    difficultySettings = updateDifficultySettings();
+
+    if (DEBUG) console.log("Assigned AI Teams", collabPlayer1, collabPlayer2);
+
+    var randomValues = [];
+    for (var i = 0; i < 4; i++) {
+        randomValues.push(generateRandomInt(1, 1000000));
+    }
+
+    noAssignment = false;
+
+    curSeeds = randomValues;
+
+    if (DEBUG){
+        currentCondition = 1;
+    }
+
+    // return [blockOrderCondition, teamingBlockCondition];
 }
+
 
 let blockOrderCondition, teamingBlockCondition;
 let conditionsArray = [];
@@ -660,7 +661,7 @@ if (noAssignment){
         // blockOrderCondition = conditionsArray[0];
         // teamingBlockCondition = conditionsArray[1];
 
-        initExperimentSettings();
+        await initExperimentSettings();
 
         console.log('assignedCondition:', currentCondition); // Add this line
         console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
