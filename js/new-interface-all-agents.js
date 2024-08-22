@@ -48,7 +48,7 @@ const firebaseConfig_db1 = {
 };
   
 // Get the reference to the two databases using the configuration files
-const [ db1 , firebaseUserId1 ] = await initializeRealtimeDatabase( firebaseConfig_db1 );
+// const [ db1 , firebaseUserId1 ] = await initializeRealtimeDatabase( firebaseConfig_db1 );
 // const [ db2 , firebaseUserId2 ] = await initializeSecondRealtimeDatabase( firebaseConfig_db2 );
 
 // console.log("Firebase UserId=" + firebaseUserId);
@@ -89,8 +89,8 @@ if (DEBUG){
 }
 
 // WRITE PROLIFIC PARTICIPANT DATA TO DB1
-let pathnow = studyId + '/participantData/' + firebaseUserId1 + '/participantInfo';
-writeURLParameters(db1, pathnow);
+// let pathnow = studyId + '/participantData/' + firebaseUserId1 + '/participantInfo';
+// writeURLParameters(db1, pathnow);
 
 // database write function
 function writeGameDatabase(){
@@ -614,47 +614,41 @@ let prevSetting;
 
 async function initExperimentSettings() {
     const maxCompletionTimeMinutes = 60;
-
-    const blockOrderCondition = 'blockOrderCondition'; // a string we use to represent the condition name
-    const numConditions = 8; // number of conditions
-    const numDraws = 1; // number of draws
-    const assignedCondition = await blockRandomization(db1, studyId, blockOrderCondition, numConditions, maxCompletionTimeMinutes, numDraws);
-    currentCondition = assignedCondition[0]+1;
-
-    const teamingBlockCondition = 'teamingCondition'; // a string we use to represent the condition name
-    const numTeamingConditions = 10; // number of conditions
-    let assignedTeamingCondition;
-
-    if (!DEBUG){
-        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-    } else {
-        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
-        // assignedTeamingCondition = [4]; // 3 == ignorant and divide
-    }
-
-    currentTeamingCondition = assignedTeamingCondition[0]+1;
-
-    collabPlayer1 = teamingSettings[currentTeamingCondition].AICollab1;
-    collabPlayer2 = teamingSettings[currentTeamingCondition].AICollab2;
-
-    difficultySettings = updateDifficultySettings();
-
-    if (DEBUG) console.log("Assigned AI Teams", collabPlayer1, collabPlayer2);
-
-    var randomValues = [];
-    for (var i = 0; i < 4; i++) {
-        randomValues.push(generateRandomInt(1, 1000000));
-    }
-
-    noAssignment = false;
-
-    curSeeds = randomValues;
-
     if (DEBUG){
         currentCondition = 5;
-    }
+        currentTeamingCondition = 3;
+        curSeeds = [12345, 12345, 12345, 12345];
+    } else {
+        const blockOrderCondition = 'blockOrderCondition'; // a string we use to represent the condition name
+        const numConditions = 8; // number of conditions
+        const numDraws = 1; // number of draws
+        const assignedCondition = await blockRandomization(db1, studyId, blockOrderCondition, numConditions, maxCompletionTimeMinutes, numDraws);
+        currentCondition = assignedCondition[0]+1;
 
-    return [blockOrderCondition, teamingBlockCondition];
+        const teamingBlockCondition = 'teamingCondition'; // a string we use to represent the condition name
+        const numTeamingConditions = 10; // number of conditions
+        let assignedTeamingCondition;
+
+        assignedTeamingCondition = await blockRandomization(db1, studyId, teamingBlockCondition, numTeamingConditions, maxCompletionTimeMinutes, numDraws);
+
+        currentTeamingCondition = assignedTeamingCondition[0]+1;
+
+        collabPlayer1 = teamingSettings[currentTeamingCondition].AICollab1;
+        collabPlayer2 = teamingSettings[currentTeamingCondition].AICollab2;
+
+        difficultySettings = updateDifficultySettings();
+
+        if (DEBUG) console.log("Assigned AI Teams", collabPlayer1, collabPlayer2);
+
+        var randomValues = [];
+        for (var i = 0; i < 4; i++) {
+            randomValues.push(generateRandomInt(1, 1000000));
+        }
+        noAssignment = false;
+        curSeeds = randomValues;
+        return [blockOrderCondition, teamingBlockCondition];
+    }
+    return;
 }
 
 let blockOrderCondition, teamingBlockCondition;
@@ -662,16 +656,15 @@ let conditionsArray = [];
 // Assign a condition to each new participant.
 if (noAssignment){
     if (DEBUG){ // adjust value as needed for debuggin default is the same as the main experiment
-        conditionsArray = await initExperimentSettings();
-        blockOrderCondition = conditionsArray[0];
-        teamingBlockCondition = conditionsArray[1];
         // conditionsArray = await initExperimentSettings();
-        
-        // check if the initExperimentSettings double call explains the misfunc
-        
-        console.log('assignedCondition:', currentCondition); // Add this line
-        console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
-        console.log('assignedSeed:', curSeeds); // Add this line
+        // blockOrderCondition = conditionsArray[0];
+        // teamingBlockCondition = conditionsArray[1];
+
+        initExperimentSettings();
+
+        // console.log('assignedCondition:', currentCondition); // Add this line
+        // console.log('assignedTeamingCondition:', currentTeamingCondition); // Add this line 
+        // console.log('assignedSeed:', curSeeds); // Add this line
 
         console.log("block order condition", blockOrderCondition);
         console.log("teaming block condition", teamingBlockCondition);
@@ -764,7 +757,7 @@ async function startGame(round, condition, block, seeds) {
 async function endGame() {
     isGameRunning = false;
 
-    writeGameDatabase();
+    // writeGameDatabase();
 
     if (currentRound < maxRounds) {//&& numSurveyCompleted < 3) {
         currentRound++;
@@ -2712,15 +2705,15 @@ async function loadAIComparison() {
             // Write to database based on the number of surveys completed
             
             if (numSurveyCompleted == 1) {
-                let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/AIcomparison1' ;
-                await writeRealtimeDatabase(db1, path, TOPIC_AI_COMPARISON_DICT);
+                // let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/AIcomparison1' ;
+                // await writeRealtimeDatabase(db1, path, TOPIC_AI_COMPARISON_DICT);
                 $("#ai-comparison-container").attr("hidden", true);
                 $("#ai-open-ended-feedback-container").attr("hidden", false);
                 loadAIopenEndedFeedback(numSurveyCompleted);
                 
             } else if (numSurveyCompleted == 2) {
-                let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/AIcomparison2' ;
-                await writeRealtimeDatabase(db1, path, TOPIC_AI_COMPARISON_DICT);
+                // let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/AIcomparison2' ;
+                // await writeRealtimeDatabase(db1, path, TOPIC_AI_COMPARISON_DICT);
                 $("#ai-comparison-container").attr("hidden", true);
                 $("#ai-open-ended-feedback-container").attr("hidden", false);
                 await loadAIopenEndedFeedback(numSurveyCompleted);
@@ -2771,11 +2764,11 @@ async function loadAIopenEndedFeedback(numSurveyCompleted) {
             // await writeRealtimeDatabase(db1, path, feedbackData);
             
             if (numSurveyCompleted == 1) {
-                let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/OpenEnded1' ;
-                await writeRealtimeDatabase(db1, path, feedbackData);
+                // let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/OpenEnded1' ;
+                // await writeRealtimeDatabase(db1, path, feedbackData);
             } else if (numSurveyCompleted == 2) {
-                let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/OpenEnded2' ;
-                await writeRealtimeDatabase(db1, path, feedbackData);
+                // let path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/OpenEnded2' ;
+                // await writeRealtimeDatabase(db1, path, feedbackData);
             }
 
             if (numSurveyCompleted == 2) {
@@ -2784,8 +2777,8 @@ async function loadAIopenEndedFeedback(numSurveyCompleted) {
                 $("#task-header").attr("hidden", true);
                 $("#exp-complete-header").attr("hidden", false);
                 $("#complete-page-content-container").attr("hidden", false);
-                finalizeBlockRandomization(db1, studyId, blockOrderCondition);
-                finalizeBlockRandomization(db1, studyId, teamingBlockCondition);
+                // finalizeBlockRandomization(db1, studyId, blockOrderCondition);
+                // finalizeBlockRandomization(db1, studyId, teamingBlockCondition);
                 await loadCompletePage();
             } else {
                 // update AI order settings
@@ -2891,13 +2884,13 @@ async function loadFullSurvey(){
         
         let path;
         if (numSurveyCompleted == 1) {
-            path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full1';
+            // path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full1';
         } else if (numSurveyCompleted == 2) {
-            path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full2';
+            // path = studyId + '/participantData/' + firebaseUserId1 + '/selfAssessment/full2';
 
         }
 
-        await writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
+        // await writeRealtimeDatabase(db1, path, TOPIC_FULL_DICT);
         await loadAIComparison();
 
         $("#ai-comparison-container").attr("hidden", false);
@@ -2922,7 +2915,7 @@ async function loadCompletePage(){
     ******************************************************************************/
     // console.log("Database and firebaseuid: ", db1, firebaseUserId1); 
     // Database Path
-    var COMPLETE_DB_PATH        = EXPERIMENT_DATABASE_NAME + '/participantData/' + firebaseUserId1 + '/userFeedback';
+    // var COMPLETE_DB_PATH        = EXPERIMENT_DATABASE_NAME + '/participantData/' + firebaseUserId1 + '/userFeedback';
 
     $(document).ready(function (){
         /******************************************************************************
@@ -2982,8 +2975,8 @@ async function loadCompletePage(){
 
             let feedbacktext = $('#user-feedback-text').val();
             //let path = studyId + '/participantData/' + firebaseUserId1 + 'paricipantInfo/' + 'feedback';
-            let currentPath = studyId + '/participantData/' + firebaseUserId1 + '/participantInfo/' + 'feedback'
-            writeRealtimeDatabase(db1, currentPath, feedbacktext);
+            // let currentPath = studyId + '/participantData/' + firebaseUserId1 + '/participantInfo/' + 'feedback'
+            // writeRealtimeDatabase(db1, currentPath, feedbacktext);
     
             replaceClass('#user-feedback-button', "btn-secondary", "btn-primary");
         };

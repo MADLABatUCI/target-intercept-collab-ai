@@ -9,6 +9,17 @@ This is a collaborative AI game written in JavaScript. Feel free to take inspira
 <!-- ![Game Preview](images/game-preview.gif) -->
 
 <h2>
+How to demo the game:
+</h2>
+URL parameters allow you to skip past the experimental procedure where we outline the game components. To do so, you can use  [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true) which adds a flag, '?debug=true'. 
+
+URL parameters allow you to access the different collaborative AI players.
+
+To do so,
+
+https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab
+
+<h2>
 Basic overview of the code.
 </h2>
 
