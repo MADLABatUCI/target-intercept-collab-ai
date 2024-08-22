@@ -17,6 +17,7 @@ URL parameters allow you to skip past the instructions. Follow this [link](https
 URL parameters allow you to access the different teaming conditions. For example, to access teaming condition #1,  use [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1). This link appends another URL parameter "__&collab=1__" to access one of the 10 agents. Adjust the value of __collab__ to access the different teaming conditions.
 
 
+<h3>Teaming Conditions Table</h3>
 | Condition | AICollab1 | AICollab2 |
 | --------- | --------- | --------- |
 | 1         | ignorant |   delay |
@@ -31,7 +32,7 @@ URL parameters allow you to access the different teaming conditions. For example
 | 10        | bottom-feeder | divide |
 
 
-To see which agent you are currently playing with, access the console logs in the your developer settings.
+To see which agent you are currently playing with, access the console logs in the your browser's developer settings.
 
 The default ordering of the AI and max targets will be this:
 | Round | Current Agent | Current Max Targets|
