@@ -18,6 +18,7 @@ URL parameters allow you to access the different teaming conditions. For example
 
 
 <h3>Teaming Conditions Table</h3>
+
 | Condition | AICollab1 | AICollab2 |
 | --------- | --------- | --------- |
 | 1         | ignorant |   delay |
