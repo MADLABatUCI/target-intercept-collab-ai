@@ -14,7 +14,7 @@ How to demo the task:
 
 URL parameters allow you to skip past the instructions. Follow this [link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1) to gain access to the task without instructions. This link adds a URL parameter "__?debug=true__" 
 
-URL parameters allow you to access the different teaming conditions. For example, to access teaming condition #1,  use [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1). This link appends another URL parameter "__&collab=1__" to access one of the 10 agents. Adjust the value of __collab__ to access the different teaming conditions.
+URL parameters allow you to access the different teaming conditions. For example, to access teaming condition #1,  use [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1). This link appends another URL parameter "__&collab=1__" to access the correct teaming condition including the AI agents _ignorant_ and _delay_. Adjust the value of __collab__ to access the different teaming conditions.
 
 
 <h4>Teaming Conditions Table</h4>
