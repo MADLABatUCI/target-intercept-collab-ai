@@ -2,7 +2,7 @@
 Target Intercept Collaborative AI Game
 </h1>
 
-This is a collaborative AI game written in JavaScript. Feel free to take inspiration as long as you cite this as inspiration. Email Sheer Karny (skarny@uci.edu) for citation instructions.
+This is a collaborative AI game written in JavaScript.
 
 <!-- The premise of this game is to work with a collaborative AI agent to gain the highest possible score. Here is what gameplay looks like. -->
 
@@ -33,7 +33,7 @@ URL parameters allow you to access the different teaming conditions. For example
 | 10        | bottom-feeder | divide |
 
 
-To see which agent you are currently playing with, access the console logs in the your browser's developer settings. To do this, press __F12__ in Windows or __fn + F12__ in MacOS.
+To see which agent you are currently playing with, access the console logs in the your browser's developer tools. To do this, press __F12__ in Windows or __fn + F12__ in MacOS.
 
 <h4>Default Ordering of AI Agents and Max Targets</h4>
 
