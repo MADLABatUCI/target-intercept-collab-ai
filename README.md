@@ -9,12 +9,12 @@ This is a collaborative AI game written in JavaScript. Feel free to take inspira
 <!-- ![Game Preview](images/game-preview.gif) -->
 
 <h2>
-How to demo the game:
+How to demo the task:
 </h2>
 
 URL parameters allow you to skip past the instructions. Follow this [link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1) to gain access to the task without instructions. This link adds a URL parameter "__?debug=true__" 
 
-URL parameters allow you to access the different teaming conditions. For example, to access teaming condition #1,  use [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1). This link appends another URL parameter "__&collab=1__" to access one of the 10 agents. 
+URL parameters allow you to access the different teaming conditions. For example, to access teaming condition #1,  use [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1). This link appends another URL parameter "__&collab=1__" to access one of the 10 agents. Adjust the value of __collab__ to access the different teaming conditions.
 
 
 | Condition | AICollab1 | AICollab2 |
@@ -29,6 +29,19 @@ URL parameters allow you to access the different teaming conditions. For example
 | 8         | omit | bottom-feeder |
 | 9         | omit | divide |
 | 10        | bottom-feeder | divide |
+
+
+To see which agent you are currently playing with, access the console logs in the your developer settings.
+
+The default ordering of the AI and max targets will be this:
+| Round | Current Agent | Current Max Targets|
+| --------- | --------- | --------- |
+| 1         | AICollab1 | 5 |
+| 2         | AICollab2 | 5 |
+| 3         | AICollab1 | 15 |
+| 4         | AICollab2 | 15 |
+
+
 
 <h2>
 Basic overview of the code.

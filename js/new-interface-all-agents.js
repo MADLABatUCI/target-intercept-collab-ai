@@ -616,7 +616,7 @@ async function initExperimentSettings() {
     const maxCompletionTimeMinutes = 60;
     if (DEBUG){
         // here we'll add URL accessable parameters to change the currentTeaming condition
-        currentCondition = 5;
+        currentCondition = 1;
         currentTeamingCondition = 3;
         curSeeds = [12345, 12345, 12345, 12345];
     } else {
