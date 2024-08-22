@@ -33,7 +33,7 @@ URL parameters allow you to access the different teaming conditions. For example
 | 10        | bottom-feeder | divide |
 
 
-To see which agent you are currently playing with, access the console logs in the your browser's developer settings.
+To see which agent you are currently playing with, access the console logs in the your browser's developer settings. To do this, press __F12__ in Windows or __fn + F12__ in MacOS.
 
 <h4>Default Ordering of AI Agents and Max Targets</h4>
 
