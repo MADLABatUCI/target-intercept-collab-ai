@@ -14,24 +14,22 @@ How to demo the task:
 
 URL parameters allow you to skip past the instructions. Follow this [link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1) to gain access to the task without instructions. This link adds a URL parameter "__?debug=true__" 
 
-URL parameters allow you to access the different teaming conditions. For example, to access teaming condition #1,  use [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1). This link appends another URL parameter "__&collab=1__" to access the correct teaming condition including the AI agents _ignorant_ and _delay_. Adjust the value of __collab__ to access the different teaming conditions.
-
-
 <h4>Teaming Conditions Table</h4>
 
-| Condition | AICollab1 | AICollab2 |
-| --------- | --------- | --------- |
-| 1         | ignorant |   delay |
-| 2         | ignorant | omit |
-| 3         | ignorant | bottom-feeder |
-| 4         | ignorant | divide |
-| 5         | delay | omit |
-| 6         | delay | bottom-feeder |
-| 7         | delay | divide |
-| 8         | omit | bottom-feeder |
-| 9         | omit | divide |
-| 10        | bottom-feeder | divide |
+| Condition | Agent 1 | Agent 2 | Link|
+| --------- | --------- | --------- | --------- |
+| 1         | ignorant |   delay    |[link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1)|
+| 2         | ignorant | omit       | [link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=2)|
+| 3         | ignorant | bottom-feeder |[link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=3)|
+| 4         | ignorant | divide |[link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=4)|
+| 5         | delay | omit |[link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=5)|
+| 6         | delay | bottom-feeder |[link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=6)|
+| 7         | delay | divide |[link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=7)|
+| 8         | omit | bottom-feeder |[link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=8)|
+| 9         | omit | divide |[link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=9)|
+| 10        | bottom-feeder | divide |[link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=10)|
 
+URL parameters allow you to access the different teaming conditions. For example, to access teaming condition #1,  use [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1). This link appends another URL parameter "__&collab=1__" to access the correct teaming condition including the AI agents _ignorant_ and _delay_. Adjust the value of __collab__ to access the different teaming conditions.
 
 To see which agent you are currently playing with, access the console logs in the your browser's developer tools. To do this, press __F12__ in Windows or __fn + F12__ in MacOS.
 
