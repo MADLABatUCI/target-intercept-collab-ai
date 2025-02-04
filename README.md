@@ -115,5 +115,9 @@ Skipping through different sections of the game:
 Starting at line 93 (in the DEBUG conditional), you can manipulate which of the gameplay components to individually open. The default is loading the 'consent.html' page which is the first page all actual participants will encounter. However, you can skip into 1. the main experiment, & 2. the interactive instruction section pages. To do this, you need only intialize the correct HTML attribute that accompanies that page. The code that does this is there for you to uncomment and skip into each of those pages. 
 
 <h2>
-Structure of the AI algorithm:
+Structure of the AI algorithm: _'AIplanner-1.5.2.js'_
 </h2>
+Called in _'index.html'_.
+
+Two main functions that run the AI planner are _runAIPlanner_ and _planSingleFrame_.
+_runAIPlanner_ is called in game engine, _'new-interface-all-agents.js'_, whose outputs guide the AI player's movements. You can find the manipulation of all the AI player's behaviors documented in the main game engine under the comment ``Apply the AI type to remove certain objects'' and in the AI Planner if the flag for __isBottomFeeder__ is set to 'true'.
