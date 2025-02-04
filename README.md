@@ -1,12 +1,36 @@
 <h1>
-Target Intercept Collaborative AI Game
+Human-AI Collaboration: Trade-offs Between Performance and Preferences
 </h1>
 
-This is a collaborative AI game written in JavaScript.
+A repository for the paper "Human-AI Collaboration: Trade-offs Between Performance and Preferences."
 
+Authors: Lukas W. Mayer1 *†, Sheer Karny 1†, Jackie Ayoub 2, Miao Song 2, Danyang Tian2, Ehsan Moradi-Pari2, Mark Steyvers 1
+
+1 *Department of Cognitive Sciences, University of California, Irvine, Irvine, California, USA.6
+Honda Research Institute USA, Inc., Ann Arbor, Michigan, USA.7
+
+E-mail(s): lwmayer[at]uci.edu; skarny[at]uci.edu; mark.steyvers[at]uci.edu;
+
+†These authors contributed equally to this work.
 <!-- The premise of this game is to work with a collaborative AI agent to gain the highest possible score. Here is what gameplay looks like. -->
 
 <!-- ![Game Preview](images/game-preview.gif) -->
+
+
+<h2>
+Abstract
+</h2>
+
+Despite the growing interest in collaborative AI, designing systems that seamlessly integrate human input remains a major challenge. In this study, we developed a task to systematically examine human preferences for collaborative agents. We created and evaluated five collaborative AI agents with strategies that differ in the manner and degree they adapt to human actions. Participants interacted with a subset of these agents, evaluated their perceived traits, and selected their preferred agent. We used a Bayesian model to understand how agents' strategies influence the Human-AI team performance, AI's perceived traits, and the factors shaping human preferences in pairwise agent comparisons. Our results show that agents who are more considerate of human actions are preferred over purely performance-maximizing agents. Moreover, we show that such human-centric design can improve the likability of AI collaborators without reducing performance. We find evidence for inequality-aversion effects being a driver of human choices, suggesting that people prefer collaborative agents which allow them to meaningfully contribute to the team. Taken together, these findings demonstrate how collaboration with AI can benefit from development efforts which include both subjective and objective metrics.
+
+<h3>
+Required Submission Content
+</h3>
+
+- System requirements: IDE that can develop in Javascript, CSS, and HTML. Helpful to develop with local host such as VS code's "Live Server"
+- No need for installation of external software packages.
+- Demo is shown below.
+- To understand how to leverage Google's Firebase for gathering experimental data from this experiment, see: https://canvas.eee.uci.edu/courses/54190.
 
 <h2>
 How to demo the task:
