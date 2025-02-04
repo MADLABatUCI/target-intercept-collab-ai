@@ -30,7 +30,9 @@ Required Submission Content
 - System requirements: IDE that can develop in Javascript, CSS, and HTML. Helpful to develop with local host such as VS code's "Live Server"
 - No need for installation of external software packages.
 - Demo is shown below.
-- To understand how to leverage Google's Firebase for gathering experimental data from this experiment, see: https://canvas.eee.uci.edu/courses/54190.
+- To understand how to leverage __Google's Firebase Realtime Database__ for gathering data from this experiment, see: https://canvas.eee.uci.edu/courses/54190.
+- This experiment gathers structured data once a Realitme Database is initialized, data gathering methods are uncommented, and demo material is resolved back to full experiment function.
+- Instructions for use are described below.
 
 <h2>
 How to demo the task:
