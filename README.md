@@ -118,7 +118,7 @@ Starting at line 93 (in the DEBUG conditional), you can manipulate which of the 
 Structure of the AI algorithm: 'AIplanner-1.5.2.js'
 </h2>
 
-Called in _'index.html'_.
+Originally called in _'index.html'_.
 
 Two main functions that run the AI planner are _runAIPlanner_ and _planSingleFrame_.
 _runAIPlanner_ is called in game engine, _'new-interface-all-agents.js'_, whose outputs guide the AI player's movements. You can find the manipulation of all the AI player's behaviors documented in the main game engine under the comment, 
