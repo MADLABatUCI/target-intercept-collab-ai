@@ -31,7 +31,7 @@ Required Submission Content
 - No need for installation of external software packages.
 - Demo is shown below.
 - To understand how to leverage __Google's Firebase Realtime Database__ for gathering data from this experiment, see: https://canvas.eee.uci.edu/courses/54190.
-- This experiment gathers structured data once a Realitme Database is initialized, data gathering methods are uncommented, and demo material is resolved back to full experiment function.
+- This experiment gathers structured dictionary data once a Realitme Database is initialized, data gathering methods are uncommented, and demo material is resolved back to full experiment function.
 - Instructions for use are described below.
 
 <h2>
