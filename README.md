@@ -64,10 +64,10 @@ To see which agent you are currently playing with, access the console logs in th
 | 3         | AICollab1 | 15 |
 | 4         | AICollab2 | 15 |
 
-<h4>Note:</h4>
-URL parameters allow you to skip past the instructions. Follow this [link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1) to gain access to the task without instructions. This link adds a URL parameter "__?debug=true__". This codebase is intended for demonstration purposes. You will not be able to go to the main task with full instructions using the present code and will require some light code manipulation.
+#### Note:
+URL parameters allow you to skip past the instructions. Follow this [link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1) to gain access to the task without instructions. This link adds a URL parameter `?debug=true`. This codebase is intended for demonstration purposes. You will not be able to go to the main task with full instructions using the present code and will require some light code manipulation.
 
-URL parameters allow you to access the different teaming conditions. For example, to access teaming condition #1,  use [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1). This link appends another URL parameter "__&collab=1__" to access the correct teaming condition including the AI agents _ignorant_ and _delay_. Adjust the value of __collab__ to access the different teaming conditions.
+URL parameters allow you to access the different teaming conditions. For example, to access teaming condition #1, use [this link](https://madlabatuci.github.io/target-intercept-collab-ai/?debug=true&collab=1). This link appends another URL parameter `&collab=1` to access the correct teaming condition including the AI agents *ignorant* and *delay*. Adjust the value of **collab** to access the different teaming conditions.
 
 <h2>
 Basic overview of the code.
