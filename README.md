@@ -109,8 +109,9 @@ The JavaScript children of each of the fornamed HTML pages:
 
 
 <h4>
-To engage the revised experiment you have to reference _'new-interface-all-agents-exp2.js'_ instead of _'new-interface-all-agents.js'_ in the HTML file _'game-main-exp.html'_ .
+To engage experiment 2 (survey-order manipulation): 
 </h4>
+reference _'new-interface-all-agents-exp2.js'_ instead of _'new-interface-all-agents.js'_ in the HTML file _'game-main-exp.html'_ .
 
 <h2>
 Main experiment game and AI code.
