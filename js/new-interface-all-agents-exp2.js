@@ -27,16 +27,16 @@ import { writeRealtimeDatabase,writeURLParameters,readRealtimeDatabase,
 
 // Define the configuration file for first database
 const firebaseConfig_db1 = {
-    apiKey: "AIzaSyB9jFpk1axkFKviC9Le7Kme2z6IoOnLjPc",
-    authDomain: "collab-ai-revisions.firebaseapp.com",
-    databaseURL: "https://collab-ai-revisions-default-rtdb.firebaseio.com", // Add this line
-    projectId: "collab-ai-revisions",
-    storageBucket: "collab-ai-revisions.firebasestorage.app",
-    messagingSenderId: "366974348151",
-    appId: "1:366974348151:web:8e8a3786482eb761e68f72"
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "", // Add this line
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ""
 };
 
-// Get the reference to the two databases using the configuration files
+// Get the reference to the two databases using the configuration files, Create a firebase configuration before initializing.
 const [ db1 , firebaseUserId1 ] = await initializeRealtimeDatabase( firebaseConfig_db1 );
 // const [ db2 , firebaseUserId2 ] = await initializeSecondRealtimeDatabase( firebaseConfig_db2 );
 
